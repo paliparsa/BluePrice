@@ -409,15 +409,21 @@
 </div>
 
 <script>
+  // bcryptjs loaded via CDN exports as window.dcodeIO.bcrypt in browser environments
+  var bcrypt = (typeof window.bcrypt !== 'undefined') ? window.bcrypt
+              : (window.dcodeIO && window.dcodeIO.bcrypt) ? window.dcodeIO.bcrypt
+              : null;
+
   // ============================================================
   // CONFIG & STATE
   // ============================================================
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$dlImg.fZY6IWzns5PPKCsuFC1EM/xlPQYz0yu6DN51R3LAgxHmHli';
+  var ADMIN_HASH = '$2b$12$ldbcyZXXAJFonIjCqb5VgumIf5kzxgAOaY3Swvj2fs.UP6Dni1uqG';
   var config = {};
   var githubCfg = {};
+
   var loginAttempts = 0;
   var loginLocked = false;
 
@@ -450,6 +456,16 @@
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال بررسی...';
     errEl.textContent = '';
+
+    // Check bcrypt library loaded
+    if (!bcrypt) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ورود';
+      errEl.style.color = '#ffaa00';
+      errEl.textContent = '⚠️ خطا: کتابخانه bcrypt بارگذاری نشد. اتصال اینترنت را بررسی کنید.';
+      return;
+    }
+
 
     // Verify against bcrypt hash injected at build time
     try {
