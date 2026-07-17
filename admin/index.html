@@ -437,34 +437,52 @@
     if (!pw) return;
 
     var btn = document.getElementById('login-btn');
+    var errEl = document.getElementById('login-error');
+
+    // Detect if GitHub Actions never replaced the placeholder
+    if (ADMIN_HASH === '__ADMIN_HASH_PLACEHOLDER__') {
+      errEl.style.color = '#ffaa00';
+      errEl.textContent = '⚠️ هنوز deploy نشده — لطفاً مراحل زیر را بررسی کنید';
+      errEl.title = 'The ADMIN_HASH placeholder was not replaced. Check your GitHub Actions workflow ran successfully and that GitHub Pages is serving from the gh-pages branch.';
+      return;
+    }
+
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال بررسی...';
-    document.getElementById('login-error').textContent = '';
+    errEl.textContent = '';
 
     // Verify against bcrypt hash injected at build time
-    bcrypt.compare(pw, ADMIN_HASH, function(err, result) {
+    try {
+      bcrypt.compare(pw, ADMIN_HASH, function(err, result) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ورود';
+
+        if (err || !result) {
+          loginAttempts++;
+          if (loginAttempts >= 5) {
+            loginLocked = true;
+            errEl.textContent = 'تعداد تلاش بیش از حد. ۳۰ ثانیه قفل شد.';
+            setTimeout(function() { loginLocked = false; loginAttempts = 0; errEl.textContent = ''; }, 30000);
+          } else {
+            errEl.textContent = 'رمز عبور نادرست است (' + (5 - loginAttempts) + ' تلاش باقی‌مانده)';
+            setTimeout(function() { errEl.textContent = ''; }, 4000);
+          }
+        } else {
+          loginAttempts = 0;
+          sessionStorage.setItem('admin_auth', '1');
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('admin-screen').style.display = 'block';
+          init();
+        }
+      });
+    } catch(e) {
       btn.disabled = false;
       btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ورود';
-
-      if (err || !result) {
-        loginAttempts++;
-        if (loginAttempts >= 5) {
-          loginLocked = true;
-          document.getElementById('login-error').textContent = 'تعداد تلاش بیش از حد. ۳۰ ثانیه قفل شد.';
-          setTimeout(function() { loginLocked = false; loginAttempts = 0; document.getElementById('login-error').textContent = ''; }, 30000);
-        } else {
-          document.getElementById('login-error').textContent = 'رمز عبور نادرست است (' + (5 - loginAttempts) + ' تلاش باقی‌مانده)';
-          setTimeout(function() { document.getElementById('login-error').textContent = ''; }, 4000);
-        }
-      } else {
-        loginAttempts = 0;
-        sessionStorage.setItem('admin_auth', '1');
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('admin-screen').style.display = 'block';
-        init();
-      }
-    });
+      errEl.style.color = '#ffaa00';
+      errEl.textContent = '⚠️ خطا در بررسی رمز: ' + e.message;
+    }
   }
+
 
   function doLogout() {
     sessionStorage.removeItem('admin_auth');
