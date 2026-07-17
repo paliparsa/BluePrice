@@ -213,6 +213,12 @@
       <div class="sidebar-item" onclick="switchTab('tab-contact')" data-tab="tab-contact">
         <i class="fab fa-telegram"></i> اطلاعات تماس
       </div>
+      <div class="sidebar-item" onclick="switchTab('tab-announcement')" data-tab="tab-announcement">
+        <i class="fas fa-bullhorn"></i> بنر اعلان
+      </div>
+      <div class="sidebar-item" onclick="switchTab('tab-faq')" data-tab="tab-faq">
+        <i class="fas fa-circle-question"></i> سوالات متداول
+      </div>
       <div class="sidebar-item" onclick="switchTab('tab-github')" data-tab="tab-github">
         <i class="fab fa-github"></i> انتشار GitHub
       </div>
@@ -287,6 +293,14 @@
       <!-- PLANS -->
       <div class="tab-panel" id="tab-plans">
         <div class="section-title"><i class="fas fa-tags"></i> پلن‌های قیمتی</div>
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="field-row full">
+            <div class="field">
+              <label><i class="fas fa-fire"></i> پلن محبوب‌ترین (برای نمایش برچسب ویژه)</label>
+              <input type="text" id="popular-plan" placeholder="مثال: سرویس تانل">
+            </div>
+          </div>
+        </div>
         <div class="plan-tabs" id="plan-tabs"></div>
         <div id="plan-editors"></div>
       </div>
@@ -343,6 +357,39 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- ANNOUNCEMENT -->
+      <div class="tab-panel" id="tab-announcement">
+        <div class="section-title"><i class="fas fa-bullhorn"></i> بنر اعلان</div>
+        <div class="card">
+          <div class="card-title">نمایش بنر در بالای صفحه</div>
+          <div class="info-box">بنر اعلان در بالای صفحه نشان داده می‌شود و کاربر می‌تواند آن را ببندد. برای اطلاعیه‌های فوری مناسب است.</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت</label>
+              <select id="ann-enabled">
+                <option value="true">فعال (نمایش داده شود)</option>
+                <option value="false">غیرفعال (پنهان)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row full">
+            <div class="field">
+              <label>متن بنر</label>
+              <input type="text" id="ann-text" placeholder="🔥 تخفیف ویژه ۳۰٪ با کد BLUEGATE30">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="tab-panel" id="tab-faq">
+        <div class="section-title"><i class="fas fa-circle-question"></i> سوالات متداول</div>
+        <div id="faq-editor"></div>
+        <button class="add-option-btn" style="margin-top:8px;" onclick="addFaqItem()">
+          <i class="fas fa-plus"></i> افزودن سوال
+        </button>
       </div>
 
       <!-- GITHUB PUBLISH -->
@@ -420,7 +467,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$Sc9jJ2YRI8kViLgV8HAWnOvcPOTrK.MdI3y5Bl9e9PNNQ6bDXf7pK';
+  var ADMIN_HASH = '$2b$12$2gKJrTMaQcSkbBaVkIdF/.v4ma8jREwBWXQfPr5YmWLkIb.ZeXXs.';
   var config = {};
   var githubCfg = {};
 
@@ -567,9 +614,49 @@
     document.getElementById('tg-supportHandle').value = tg.supportHandle || '';
     document.getElementById('tg-joinBtnText').value = tg.joinBtnText || '';
 
+    // Announcement
+    var ann = config.announcement || {};
+    var annEl = document.getElementById('ann-enabled');
+    if (annEl) annEl.value = ann.enabled ? 'true' : 'false';
+    var annText = document.getElementById('ann-text');
+    if (annText) annText.value = ann.text || '';
+
+    var popPlanEl = document.getElementById('popular-plan');
+    if (popPlanEl) popPlanEl.value = config.popularPlan || '';
+
     renderDiscountCodes();
     renderFeatures();
     renderPlans();
+    renderFaq();
+  }
+
+  // ============================================================
+  // FAQ EDITOR
+  // ============================================================
+  function renderFaq() {
+    var el = document.getElementById('faq-editor');
+    if (!el) return;
+    el.innerHTML = '';
+    var faqData = config.faq || [];
+    faqData.forEach(function(item, fi) {
+      var card = document.createElement('div');
+      card.className = 'feature-card';
+      card.innerHTML =
+        '<div class="feature-card-header"><span>سوال ' + (fi+1) + '</span>' +
+        '<button class="del-btn" onclick="removeFaqItem(' + fi + ')"><i class="fas fa-trash"></i></button></div>' +
+        '<div class="field-row full"><div class="field"><label>سوال</label><textarea onchange="config.faq[' + fi + '].q=this.value">' + escHtml(item.q) + '</textarea></div></div>' +
+        '<div class="field-row full"><div class="field"><label>جواب</label><textarea onchange="config.faq[' + fi + '].a=this.value">' + escHtml(item.a) + '</textarea></div></div>';
+      el.appendChild(card);
+    });
+  }
+  function addFaqItem() {
+    config.faq = config.faq || [];
+    config.faq.push({ q: 'سوال جدید', a: 'جواب' });
+    renderFaq();
+  }
+  function removeFaqItem(idx) {
+    config.faq.splice(idx, 1);
+    renderFaq();
   }
 
   // ============================================================
@@ -756,6 +843,19 @@
     config.telegram.supportHandle = document.getElementById('tg-supportHandle').value;
     config.telegram.joinBtnText = document.getElementById('tg-joinBtnText').value;
 
+    // Announcement
+    config.announcement = config.announcement || {};
+    var annEl = document.getElementById('ann-enabled');
+    if (annEl) config.announcement.enabled = annEl.value === 'true';
+    var annText = document.getElementById('ann-text');
+    if (annText) config.announcement.text = annText.value;
+
+    // Popular Plan
+    var popPlanEl = document.getElementById('popular-plan');
+    if (popPlanEl) config.popularPlan = popPlanEl.value;
+
+    // FAQ is already updated by its onchange handlers directly in config.faq
+    
     collectDiscountCodes();
   }
 
