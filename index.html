@@ -202,7 +202,62 @@
   .lens-flare { position: fixed; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(0,180,255,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
 
   @media (max-width: 1100px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } .features-row { grid-template-columns: repeat(2, 1fr); } .banner-wrapper { padding: 20px 16px; } .top-row { flex-direction: column; gap: 16px; align-items: center; } .gift-badge { max-width: 100%; } .discount-inner { flex-direction: column; border-radius: 20px; padding: 20px; } .discount-input { width: 100%; } }
+  @media (max-width: 700px) {
+    .pricing-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; gap: 16px; padding-bottom: 20px; scrollbar-width: none; }
+    .pricing-grid::-webkit-scrollbar { display: none; }
+    .price-card { min-width: 82vw; scroll-snap-align: center; flex-shrink: 0; }
+    .features-row { grid-template-columns: repeat(2, 1fr); }
+    .banner-wrapper { padding: 20px 16px; }
+    .top-row { flex-direction: column; gap: 16px; align-items: center; }
+    .gift-badge { max-width: 100%; }
+    .discount-inner { flex-direction: column; border-radius: 20px; padding: 20px; }
+    .discount-input { width: 100%; }
+    .sticky-inner { padding: 0 16px; }
+    .faq-section { padding: 0 16px 32px; }
+  }
+
+  /* === ANNOUNCEMENT BANNER === */
+  .announcement-banner { position: relative; z-index: 10; background: linear-gradient(90deg, rgba(168,85,247,0.15), rgba(0,180,255,0.15), rgba(168,85,247,0.15)); border-bottom: 1px solid rgba(0,180,255,0.2); padding: 10px 48px 10px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #c0d8ff; display: flex; align-items: center; justify-content: center; gap: 10px; animation: bannerShimmer 4s linear infinite; background-size: 200% 100%; }
+  @keyframes bannerShimmer { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
+  .announcement-banner .close-btn { position: absolute; left: 14px; background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; line-height: 1; transition: color 0.2s; padding: 4px; }
+  .announcement-banner .close-btn:hover { color: #fff; }
+  .announcement-banner.hidden { display: none; }
+
+  /* === STICKY HEADER === */
+  .sticky-header { position: fixed; top: -80px; left: 0; right: 0; z-index: 200; transition: top 0.35s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .sticky-header.visible { top: 0; }
+  .sticky-inner { background: rgba(5,10,26,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,180,255,0.15); padding: 0 40px; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+  .sticky-logo { display: flex; align-items: center; gap: 10px; }
+  .sticky-logo .s-icon { color: var(--neon-blue); font-size: 20px; filter: drop-shadow(0 0 6px rgba(0,180,255,0.5)); }
+  .sticky-logo span { font-size: 16px; font-weight: 800; background: linear-gradient(135deg, #fff, var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .sticky-cta { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); border: none; border-radius: 10px; padding: 8px 20px; color: #000; font-family: 'Vazirmatn', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 16px rgba(0,180,255,0.3); }
+  .sticky-cta:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+  /* === POPULAR BADGE === */
+  .popular-badge { position: absolute; top: -1px; right: 20px; background: linear-gradient(135deg, #ffaa00, #ff6600); border-radius: 0 0 12px 12px; padding: 5px 14px; font-size: 12px; font-weight: 800; color: #000; display: flex; align-items: center; gap: 6px; z-index: 3; box-shadow: 0 4px 16px rgba(255,170,0,0.4); animation: popularPulse 2s ease-in-out infinite; }
+  @keyframes popularPulse { 0%,100%{box-shadow:0 4px 16px rgba(255,170,0,0.4)} 50%{box-shadow:0 4px 28px rgba(255,170,0,0.7)} }
+  .price-card.is-popular { transform: translateY(-4px); }
+  .price-card.is-popular:hover { transform: translateY(-10px) scale(1.02); }
+
+  /* === PRICE WITH DISCOUNT === */
+  .price-display { text-align: center; margin-bottom: 15px; min-height: 55px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px; }
+  .price-original { font-size: 14px; color: var(--neon-red); text-decoration: line-through; opacity: 0.7; display: none; }
+  .price-display .price-value { font-size: 32px; font-weight: 900; transition: all 0.2s ease; line-height: 1; }
+  .price-display .price-value.animate { transform: scale(1.1); filter: brightness(1.5); }
+  .price-display .unit { font-size: 12px; color: var(--text-muted); margin-right: 4px; font-weight: 600; }
+  .savings-label { font-size: 11px; color: var(--neon-green); font-weight: 700; display: none; background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); border-radius: 6px; padding: 3px 8px; margin-top: 4px; }
+
+  /* === FAQ === */
+  .faq-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; }
+  .faq-title { font-size: 22px; font-weight: 800; color: var(--text-white); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,180,255,0.15); display: flex; align-items: center; gap: 10px; }
+  .faq-title i { color: var(--neon-blue); }
+  .faq-item { background: linear-gradient(180deg, rgba(0,60,140,0.08), rgba(0,30,80,0.04)); border: 1px solid rgba(0,180,255,0.12); border-radius: 14px; margin-bottom: 10px; overflow: hidden; transition: border-color 0.3s; }
+  .faq-item:hover { border-color: rgba(0,180,255,0.25); }
+  .faq-q { padding: 16px 20px; font-size: 15px; font-weight: 700; color: var(--text-white); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; user-select: none; }
+  .faq-q .faq-chevron { color: var(--neon-blue); transition: transform 0.3s; flex-shrink: 0; font-size: 13px; }
+  .faq-item.open .faq-chevron { transform: rotate(180deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 14px; color: var(--text-muted); line-height: 1.8; padding: 0 20px; }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 16px; }
 </style>
 </head>
 <body>
@@ -213,6 +268,24 @@
 <div class="light-streak" style="top: 72%; width: 250px; animation-duration: 14s; animation-delay: 6s;"></div>
 <div class="lens-flare" style="top: 10%; left: 15%;"></div>
 <div class="lens-flare" style="top: 60%; right: 10%;"></div>
+
+<!-- Announcement Banner -->
+<div id="announcement-banner" class="announcement-banner hidden">
+  <i class="fas fa-bullhorn" style="color:var(--neon-purple);"></i>
+  <span id="announcement-text"></span>
+  <button class="close-btn" onclick="dismissAnnouncement()" title="بستن">&#x2715;</button>
+</div>
+
+<!-- Sticky Header -->
+<div class="sticky-header" id="sticky-header">
+  <div class="sticky-inner">
+    <div class="sticky-logo">
+      <i class="fas fa-shield-halved s-icon"></i>
+      <span id="sticky-brand">BlueGate</span>
+    </div>
+    <button class="sticky-cta" onclick="document.getElementById('pricing-grid').scrollIntoView({behavior:'smooth'})">خرید پلن &#x2193;</button>
+  </div>
+</div>
 
 <div id="toast" class="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg"></span></div>
 
@@ -284,9 +357,16 @@
 
 </main>
 
+<!-- FAQ Section (outside main for full-width) -->
+<section class="faq-section" id="faq-section" style="display:none">
+  <div class="faq-title"><i class="fas fa-circle-question"></i> سوالات متداول</div>
+  <div id="faq-list"></div>
+</section>
+
 <script>
   let siteConfig = {};
   let discountCodes = {};
+  let activeDiscount = 0; // current discount percentage applied
 
   async function loadConfig() {
     try {
@@ -303,43 +383,75 @@
     document.title = cfg.site.title;
     document.getElementById('brand-name').textContent = cfg.site.brandName;
     document.getElementById('main-title').textContent = cfg.site.brandName;
+    document.getElementById('sticky-brand').textContent = cfg.site.brandName;
     document.getElementById('capsule-text').textContent = cfg.site.capsuleText;
     document.getElementById('gift-badge-text').innerHTML = cfg.site.giftBadgeText.replace(/\n/g, '<br>');
     document.getElementById('countdown-title').innerHTML = '<i class="fas fa-fire"></i> ' + cfg.countdown.title;
     document.getElementById('refund-text').textContent = cfg.refundBanner;
     document.getElementById('tg-join-text').textContent = cfg.telegram.joinBtnText;
-    document.getElementById('tgBtn').onclick = () => window.open(cfg.telegram.channelUrl, '_blank', 'noopener,noreferrer');
+    document.getElementById('tgBtn').onclick = function() { window.open(cfg.telegram.channelUrl, '_blank', 'noopener,noreferrer'); };
 
     document.getElementById('contact-handles').innerHTML =
       '<a href="' + cfg.telegram.channelUrl + '" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> ' + cfg.telegram.channelHandle + '</a>' +
       '<a href="' + cfg.telegram.supportUrl + '" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> ' + cfg.telegram.supportHandle + '</a>';
 
+    // Announcement banner
+    var ann = cfg.announcement;
+    if (ann && ann.enabled && ann.text && !sessionStorage.getItem('ann_dismissed')) {
+      var bannerEl = document.getElementById('announcement-banner');
+      document.getElementById('announcement-text').textContent = ann.text;
+      bannerEl.classList.remove('hidden');
+    }
+
     document.getElementById('features-row').innerHTML = cfg.features.map(function(f) {
       return '<div class="feature-box"><div class="feat-icon"><i class="fas ' + f.icon + '"></i></div><h4>' + f.title + '</h4><p>' + f.text + '</p></div>';
     }).join('');
 
-    const delays = ['delay-1', 'delay-2', 'delay-3', 'delay-4'];
+    // FAQ section
+    var faqData = cfg.faq || [];
+    if (faqData.length > 0) {
+      document.getElementById('faq-section').style.display = 'block';
+      document.getElementById('faq-list').innerHTML = faqData.map(function(item, i) {
+        return '<div class="faq-item" id="faq-' + i + '">' +
+          '<div class="faq-q" onclick="toggleFaq(' + i + ')">' +
+          '<span>' + item.q + '</span>' +
+          '<i class="fas fa-chevron-down faq-chevron"></i>' +
+          '</div>' +
+          '<div class="faq-a">' + item.a + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    var delays = ['delay-1', 'delay-2', 'delay-3', 'delay-4'];
+    var popularPlan = cfg.popularPlan || '';
     document.getElementById('pricing-grid').innerHTML = cfg.plans.map(function(plan, idx) {
-      const delay = delays[idx] || '';
-      const featuresHTML = plan.features.length
+      var delay = delays[idx] || '';
+      var isPopular = plan.id === popularPlan || plan.title === popularPlan;
+      var popularHTML = isPopular ? '<div class="popular-badge"><i class="fas fa-fire"></i> محبوب‌ترین</div>' : '';
+      var popularClass = isPopular ? ' is-popular' : '';
+      var featuresHTML = plan.features.length
         ? '<ul class="feature-list">' + plan.features.map(function(f) { return '<li><span class="check"><i class="fas fa-check"></i></span> ' + f + '</li>'; }).join('') + '</ul>'
         : '';
-      const noteHTML = plan.note ? '<div class="card-note">' + plan.note + '</div>' : '';
-      const infinityHTML = plan.isUnlimited ? '<div class="infinity-symbol">&#8734;</div>' : '';
-      const shimmerHTML = plan.theme === 'gold' ? '<div class="shimmer"></div>' : '';
-      const optionsHTML = plan.options.map(function(opt, i) {
+      var noteHTML = plan.note ? '<div class="card-note">' + plan.note + '</div>' : '';
+      var infinityHTML = plan.isUnlimited ? '<div class="infinity-symbol">&#8734;</div>' : '';
+      var shimmerHTML = plan.theme === 'gold' ? '<div class="shimmer"></div>' : '';
+      var optionsHTML = plan.options.map(function(opt, i) {
         return '<div class="toggle-btn' + (i === 0 ? ' active' : '') + '" data-volume="' + opt.volume + '" data-price="' + opt.price + '">' + opt.label + '</div>';
       }).join('');
 
-      return '<article class="price-card card-' + plan.theme + ' animate-in ' + delay + '" data-plan="' + plan.title + '">' +
-        '<div class="card-bg"></div>' + shimmerHTML +
+      return '<article class="price-card card-' + plan.theme + popularClass + ' animate-in ' + delay + '" data-plan="' + plan.title + '">' +
+        '<div class="card-bg"></div>' + shimmerHTML + popularHTML +
         '<span class="card-icon"><i class="fas ' + plan.icon + '"></i></span>' +
         '<h3 class="card-title">' + plan.title + '</h3>' +
         '<p class="card-subtitle">' + plan.subtitle + '</p>' +
         featuresHTML + infinityHTML +
         '<div class="price-divider"></div>' + noteHTML +
         '<div class="toggle-container" data-card="' + plan.id + '"><div class="toggle-slider"></div>' + optionsHTML + '</div>' +
-        '<div class="price-display"><span class="price-value">' + plan.options[0].price + '</span> <span class="unit">تومان</span></div>' +
+        '<div class="price-display">' +
+          '<span class="price-original"></span>' +
+          '<div><span class="price-value">' + plan.options[0].price + '</span> <span class="unit">تومان</span></div>' +
+          '<span class="savings-label"></span>' +
+        '</div>' +
         '<a href="#" class="buy-btn" target="_blank"><i class="fas fa-bag-shopping"></i> خرید پلن</a>' +
         '</article>';
     }).join('');
@@ -347,6 +459,7 @@
     startCountdown(cfg.countdown.endDate);
     initToggles();
     initCardGlow();
+    initStickyHeader();
 
     var subtitleEl = document.getElementById('subtitle-el');
     var originalText = cfg.site.subtitle;
@@ -381,7 +494,9 @@
       var btns = container.querySelectorAll('.toggle-btn');
       var slider = container.querySelector('.toggle-slider');
       var card = container.closest('.price-card');
-      var priceDisplay = card.querySelector('.price-value');
+      var priceValueEl = card.querySelector('.price-value');
+      var priceOrigEl = card.querySelector('.price-original');
+      var savingsEl = card.querySelector('.savings-label');
       var buyBtn = card.querySelector('.buy-btn');
       var planName = card.dataset.plan;
       var supportUrl = siteConfig.telegram ? siteConfig.telegram.supportUrl : 'https://t.me/BlueGateSupport';
@@ -391,9 +506,19 @@
         btns.forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
         moveSlider(btn);
-        priceDisplay.classList.add('animate');
-        priceDisplay.textContent = btn.dataset.price;
-        setTimeout(function() { priceDisplay.classList.remove('animate'); }, 200);
+        var rawPrice = parseInt(btn.dataset.price) || 0;
+        var finalPrice = activeDiscount > 0 ? Math.round(rawPrice * (1 - activeDiscount / 100)) : rawPrice;
+        priceValueEl.classList.add('animate');
+        priceValueEl.textContent = finalPrice;
+        setTimeout(function() { priceValueEl.classList.remove('animate'); }, 200);
+        if (activeDiscount > 0 && priceOrigEl) {
+          priceOrigEl.textContent = rawPrice + ' تومان';
+          priceOrigEl.style.display = 'block';
+          if (savingsEl) { savingsEl.textContent = 'صرفه‌جویی: ' + (rawPrice - finalPrice) + ' تومان'; savingsEl.style.display = 'inline-block'; }
+        } else {
+          if (priceOrigEl) priceOrigEl.style.display = 'none';
+          if (savingsEl) savingsEl.style.display = 'none';
+        }
         var text = 'سلام، قصد خرید پلن ' + planName + ' با حجم ' + btn.dataset.volume + ' را دارم.';
         buyBtn.href = supportUrl + '?text=' + encodeURIComponent(text);
       }
@@ -427,9 +552,12 @@
     var code = input.value.trim().toUpperCase();
     if (!code) { showToast('لطفا کد تخفیف را وارد کنید', true); return; }
     if (discountCodes[code] !== undefined) {
-      showToast('کد تخفیف ' + discountCodes[code] + '٪ با موفقیت اعمال شد!');
+      activeDiscount = discountCodes[code];
+      showToast('کد تخفیف ' + activeDiscount + '٪ با موفقیت اعمال شد! قیمت‌ها به‌روز شدند.');
       input.style.borderColor = 'var(--neon-green)';
       input.style.boxShadow = '0 0 10px rgba(0, 255, 136, 0.4)';
+      // Re-run toggles to update all displayed prices
+      initToggles();
     } else {
       showToast('کد تخفیف نامعتبر است', true);
       input.style.borderColor = 'var(--neon-red)';
@@ -440,6 +568,33 @@
 
   document.getElementById('discount-btn').addEventListener('click', applyDiscount);
   document.getElementById('discount-input').addEventListener('keypress', function(e) { if (e.key === 'Enter') applyDiscount(); });
+
+  // Sticky header
+  function initStickyHeader() {
+    var hero = document.querySelector('.main-logo-section');
+    var stickyEl = document.getElementById('sticky-header');
+    if (!hero || !stickyEl) return;
+    var observer = new IntersectionObserver(function(entries) {
+      if (!entries[0].isIntersecting) { stickyEl.classList.add('visible'); }
+      else { stickyEl.classList.remove('visible'); }
+    }, { threshold: 0 });
+    observer.observe(hero);
+  }
+
+  // Announcement dismiss
+  function dismissAnnouncement() {
+    document.getElementById('announcement-banner').classList.add('hidden');
+    sessionStorage.setItem('ann_dismissed', '1');
+  }
+
+  // FAQ toggle
+  function toggleFaq(idx) {
+    var item = document.getElementById('faq-' + idx);
+    if (!item) return;
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
+    if (!isOpen) item.classList.add('open');
+  }
 
   window.addEventListener('resize', function() { initToggles(); });
   window.addEventListener('load', function() { initToggles(); });
