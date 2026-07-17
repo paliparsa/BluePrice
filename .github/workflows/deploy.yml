@@ -42,18 +42,18 @@ jobs:
             const hash = bcrypt.hashSync(password, 12);
             console.log('Password hashed successfully (hash not logged for security)');
 
-            // Inject into admin panel
-            const filePath = 'admin/index.html';
+            // Inject into admin panel at secret URL
+            const filePath = '_p8x2k4m/index.html';
             let content = fs.readFileSync(filePath, 'utf8');
 
             if (!content.includes('__ADMIN_HASH_PLACEHOLDER__')) {
-              console.error('ERROR: Placeholder not found in admin/index.html');
+              console.error('ERROR: Placeholder not found in _p8x2k4m/index.html');
               process.exit(1);
             }
 
             content = content.replace('__ADMIN_HASH_PLACEHOLDER__', hash);
             fs.writeFileSync(filePath, content);
-            console.log('Hash injected into admin/index.html successfully');
+            console.log('Hash injected into _p8x2k4m/index.html successfully');
           "
 
       - name: Deploy to GitHub Pages (gh-pages branch)
