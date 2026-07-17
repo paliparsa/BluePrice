@@ -1,0 +1,105 @@
+{
+  "site": {
+    "title": "BlueGate - دروازه‌ای به اینترنت آزاد",
+    "brandName": "BlueGate",
+    "subtitle": "دروازه‌ای به اینترنت آزاد",
+    "capsuleText": "لیست سرویس‌های ما",
+    "giftBadgeText": "کیفیت، امنیت\nو قیمت مناسب\nدر یکجا!"
+  },
+  "countdown": {
+    "title": "پیشنهاد ویژه: ۳۰٪ تخفیف تا پایان هفته",
+    "endDate": "2026-07-25T23:59:59"
+  },
+  "discountCodes": {
+    "BLUEGATE30": 30,
+    "WELCOME10": 10
+  },
+  "telegram": {
+    "channelUrl": "https://t.me/BllueGate",
+    "channelHandle": "@BllueGate",
+    "supportUrl": "https://t.me/BlueGateSupport",
+    "supportHandle": "@BlueGateSupport",
+    "joinBtnText": "همین حالا به جمع کاربران BlueGate بپیوندید!"
+  },
+  "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
+  "features": [
+    { "icon": "fa-rocket", "title": "سرعت بالا", "text": "اتصال پایدار و پرسرعت" },
+    { "icon": "fa-lock", "title": "امنیت کامل", "text": "حریم خصوصی شما در اولویت ماست" },
+    { "icon": "fa-headset", "title": "پشتیبانی ۲۴/۷", "text": "همیشه همراه شما" },
+    { "icon": "fa-star", "title": "کیفیت تضمینی", "text": "تجربه‌ای متفاوت" }
+  ],
+  "plans": [
+    {
+      "id": "national",
+      "theme": "blue",
+      "icon": "fa-shield-halved",
+      "title": "سرویس ملی",
+      "subtitle": "مناسب استفاده در زمان قطعی اینترنت",
+      "features": [
+        "پایداری و سرعت بالا",
+        "بدون محدودیت زمان",
+        "بدون شرایط اضطراری"
+      ],
+      "note": "",
+      "options": [
+        { "label": "5GB", "volume": "5 گیگ", "price": 195 },
+        { "label": "10GB", "volume": "10 گیگ", "price": 390 },
+        { "label": "15GB", "volume": "15 گیگ", "price": 585 },
+        { "label": "20GB", "volume": "20 گیگ", "price": 780 }
+      ]
+    },
+    {
+      "id": "tunnel",
+      "theme": "purple",
+      "icon": "fa-bolt",
+      "title": "سرویس تانل",
+      "subtitle": "مناسب استفاده روزمره",
+      "features": [
+        "سرعت و پایداری عالی",
+        "مناسب شرایط عادی اینترنت",
+        "ارزش خرید بالا"
+      ],
+      "note": "حجم‌های بیشتر از ۲۵ گیگ: هر گیگ فقط 11 تومان",
+      "options": [
+        { "label": "5GB", "volume": "5 گیگ", "price": 75 },
+        { "label": "10GB", "volume": "10 گیگ", "price": 139 },
+        { "label": "15GB", "volume": "15 گیگ", "price": 195 },
+        { "label": "20GB", "volume": "20 گیگ", "price": 259 },
+        { "label": "25GB", "volume": "25 گیگ", "price": 299 }
+      ]
+    },
+    {
+      "id": "economy",
+      "theme": "green",
+      "icon": "fa-wallet",
+      "title": "سرویس اقتصادی",
+      "subtitle": "بصرفه‌ترین گزینه",
+      "features": [
+        "قیمت عالی",
+        "مناسب مصرف روزانه",
+        "کیفیت قابل اعتماد"
+      ],
+      "note": "هر گیگ فقط ۵ تومان",
+      "options": [
+        { "label": "20GB", "volume": "20 گیگ", "price": 99 },
+        { "label": "25GB", "volume": "25 گیگ", "price": 125 },
+        { "label": "30GB", "volume": "30 گیگ", "price": 149 },
+        { "label": "35GB", "volume": "35 گیگ", "price": 175 }
+      ]
+    },
+    {
+      "id": "unlimited",
+      "theme": "gold",
+      "icon": "fa-crown",
+      "title": "سرویس نامحدود",
+      "subtitle": "آزادی واقعی، بدون محدودیت",
+      "features": [],
+      "note": "مصرف منصفانه برای هر کاربر",
+      "isUnlimited": true,
+      "options": [
+        { "label": "تک کاربره", "volume": "تک کاربره", "price": 249 },
+        { "label": "دو کاربره", "volume": "دو کاربره", "price": 399 }
+      ]
+    }
+  ]
+}
