@@ -6,6 +6,7 @@
 <title>BlueGate Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
 <style>
   :root {
     --bg: #07101f;
@@ -173,8 +174,7 @@
     <div class="login-error" id="login-error"></div>
 
     <div class="login-hint">
-      <strong>رمز پیش‌فرض:</strong> <code>admin123</code><br>
-      برای تغییر رمز، در تنظیمات GitHub پنل را ویرایت کنید.
+      رمز عبور توسط مدیر سیستم تنظیم شده است.
     </div>
   </div>
 </div>
@@ -412,9 +412,14 @@
   // ============================================================
   // CONFIG & STATE
   // ============================================================
-  var ADMIN_PASSWORD = 'admin123';
+  // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
+  // The placeholder below is replaced with a real bcrypt hash — the plaintext password
+  // never appears in any source file or deployed file.
+  var ADMIN_HASH = '__ADMIN_HASH_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
+  var loginAttempts = 0;
+  var loginLocked = false;
 
   // ============================================================
   // LOGIN
@@ -424,17 +429,41 @@
   });
 
   function doLogin() {
-    var pw = document.getElementById('login-password').value;
-    var storedPw = sessionStorage.getItem('admin_password') || ADMIN_PASSWORD;
-    if (pw === storedPw) {
-      sessionStorage.setItem('admin_auth', '1');
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('admin-screen').style.display = 'block';
-      init();
-    } else {
-      document.getElementById('login-error').textContent = 'رمز عبور نادرست است';
-      setTimeout(function() { document.getElementById('login-error').textContent = ''; }, 3000);
+    if (loginLocked) {
+      document.getElementById('login-error').textContent = 'تعداد تلاش بیش از حد مجاز. لطفاً ۳۰ ثانیه صبر کنید.';
+      return;
     }
+    var pw = document.getElementById('login-password').value;
+    if (!pw) return;
+
+    var btn = document.getElementById('login-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال بررسی...';
+    document.getElementById('login-error').textContent = '';
+
+    // Verify against bcrypt hash injected at build time
+    bcrypt.compare(pw, ADMIN_HASH, function(err, result) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ورود';
+
+      if (err || !result) {
+        loginAttempts++;
+        if (loginAttempts >= 5) {
+          loginLocked = true;
+          document.getElementById('login-error').textContent = 'تعداد تلاش بیش از حد. ۳۰ ثانیه قفل شد.';
+          setTimeout(function() { loginLocked = false; loginAttempts = 0; document.getElementById('login-error').textContent = ''; }, 30000);
+        } else {
+          document.getElementById('login-error').textContent = 'رمز عبور نادرست است (' + (5 - loginAttempts) + ' تلاش باقی‌مانده)';
+          setTimeout(function() { document.getElementById('login-error').textContent = ''; }, 4000);
+        }
+      } else {
+        loginAttempts = 0;
+        sessionStorage.setItem('admin_auth', '1');
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('admin-screen').style.display = 'block';
+        init();
+      }
+    });
   }
 
   function doLogout() {
