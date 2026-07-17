@@ -1,0 +1,67 @@
+name: Build & Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write   # Needed to push to gh-pages branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install bcryptjs
+        run: npm install bcryptjs
+
+      - name: Inject hashed password into admin panel
+        env:
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+        run: |
+          node -e "
+            const bcrypt = require('bcryptjs');
+            const fs = require('fs');
+
+            const password = process.env.ADMIN_PASSWORD;
+            if (!password) {
+              console.error('ERROR: ADMIN_PASSWORD secret is not set!');
+              process.exit(1);
+            }
+
+            // Hash with cost factor 12 (secure but not too slow for login UX)
+            const hash = bcrypt.hashSync(password, 12);
+            console.log('Password hashed successfully (hash not logged for security)');
+
+            // Inject into admin panel
+            const filePath = 'admin/index.html';
+            let content = fs.readFileSync(filePath, 'utf8');
+
+            if (!content.includes('__ADMIN_HASH_PLACEHOLDER__')) {
+              console.error('ERROR: Placeholder not found in admin/index.html');
+              process.exit(1);
+            }
+
+            content = content.replace('__ADMIN_HASH_PLACEHOLDER__', hash);
+            fs.writeFileSync(filePath, content);
+            console.log('Hash injected into admin/index.html successfully');
+          "
+
+      - name: Deploy to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: gh-pages
+          # Exclude the node_modules we installed
+          exclude_assets: 'node_modules'
+          commit_message: 'deploy: ${{ github.sha }}'
