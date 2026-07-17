@@ -409,6 +409,11 @@
 </div>
 
 <script>
+  // bcryptjs loaded via CDN exports as window.dcodeIO.bcrypt in browser environments
+  var bcrypt = (typeof window.bcrypt !== 'undefined') ? window.bcrypt
+              : (window.dcodeIO && window.dcodeIO.bcrypt) ? window.dcodeIO.bcrypt
+              : null;
+
   // ============================================================
   // CONFIG & STATE
   // ============================================================
@@ -418,6 +423,7 @@
   var ADMIN_HASH = '__ADMIN_HASH_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
+
   var loginAttempts = 0;
   var loginLocked = false;
 
@@ -450,6 +456,16 @@
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> در حال بررسی...';
     errEl.textContent = '';
+
+    // Check bcrypt library loaded
+    if (!bcrypt) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> ورود';
+      errEl.style.color = '#ffaa00';
+      errEl.textContent = '⚠️ خطا: کتابخانه bcrypt بارگذاری نشد. اتصال اینترنت را بررسی کنید.';
+      return;
+    }
+
 
     // Verify against bcrypt hash injected at build time
     try {
