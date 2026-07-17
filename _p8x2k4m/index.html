@@ -892,9 +892,9 @@
         'Accept': 'application/vnd.github.v3+json'
       };
 
-      // Get current file SHA (needed for update)
+      // Get current file SHA (needed for update) - using timestamp to bust GitHub API cache
       var sha = null;
-      var getRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + path + '?ref=' + branch, { headers: headers });
+      var getRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + path + '?ref=' + branch + '&t=' + Date.now(), { headers: headers });
       if (getRes.ok) {
         var fileData = await getRes.json();
         sha = fileData.sha;
