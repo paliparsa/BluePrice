@@ -118,6 +118,20 @@
     { "q": "آیا لاگ فعالیت من ذخیره می‌شود؟", "a": "خیر. BlueGate هیچ لاگی از فعالیت کاربران ذخیره نمی‌کند. حریم خصوصی شما کاملاً محفوظ است." },
     { "q": "تفاوت سرویس ملی و سرویس تانل چیست؟", "a": "سرویس ملی مخصوص زمان قطعی اینترنت است و در شرایط اضطراری عملکرد بهتری دارد. سرویس تانل برای استفاده روزمره بهینه شده و سرعت بالاتری دارد." }
   ],
+  "tutorials": [
+    { "os": "Android", "icon": "fab fa-android", "app": "v2rayNG", "steps": ["دانلود از گوگل پلی", "کپی کردن لینک اشتراک", "اضافه کردن از کلیپ‌بورد در برنامه"] },
+    { "os": "iOS", "icon": "fab fa-apple", "app": "V2Box / Shadowrocket", "steps": ["دانلود از اپ استور", "کپی کردن لینک اشتراک", "وارد کردن در برنامه با علامت +"] },
+    { "os": "Windows", "icon": "fab fa-windows", "app": "Nekoray / v2rayN", "steps": ["دانلود نسخه ویندوز", "کپی کردن لینک", "Paste کردن در برنامه"] }
+  ],
+  "reviews": [
+    { "name": "امیرمحمد", "rating": 5, "text": "واقعاً سرعت و پایداری عالیه. قطعی نداره اصلاً." },
+    { "name": "سارا", "rating": 5, "text": "پشتیبانی فوق‌العاده سریع جواب داد. مرسی از تیم خوبتون." },
+    { "name": "علیرضا", "rating": 5, "text": "سرویس تانل برای یوتیوب و اینستاگرام خیلی خوب جواب میده." }
+  ],
+  "contactForm": {
+    "enabled": true,
+    "endpoint": "https://formspree.io/f/YOUR_FORMSPREE_ID"
+  },
   "en": {
     "site": {
       "title": "BlueGate - Gateway to the Free Internet",
@@ -197,6 +211,16 @@
       { "q": "How does the refund guarantee work?", "a": "If you are not satisfied in the first 72 hours, just tell support. Full refund, no questions asked." },
       { "q": "Are my activity logs saved?", "a": "No. BlueGate keeps zero logs. Your privacy is protected." },
       { "q": "What's the difference between National and Tunnel?", "a": "National is for severe outages. Tunnel is optimized for daily use and higher speeds." }
+    ],
+    "tutorials": [
+      { "os": "Android", "app": "v2rayNG", "steps": ["Download from Google Play", "Copy subscription link", "Add from clipboard in app"] },
+      { "os": "iOS", "app": "V2Box / Shadowrocket", "steps": ["Download from App Store", "Copy subscription link", "Import using the + icon"] },
+      { "os": "Windows", "app": "Nekoray / v2rayN", "steps": ["Download Windows version", "Copy link", "Paste into application"] }
+    ],
+    "reviews": [
+      { "name": "Amir", "text": "Truly excellent speed and stability. No drops at all." },
+      { "name": "Sarah", "text": "Support replied extremely fast. Thanks to the great team." },
+      { "name": "Ali", "text": "Tunnel service works really well for YouTube and Instagram." }
     ]
   }
 }
