@@ -152,8 +152,9 @@
   .info-box strong { color: var(--blue); }
 
   @media (max-width: 1200px) {
-    .preview-panel { display: none; }
-    .admin-content { max-width: none; border-left: none; }
+    .admin-body { flex-wrap: wrap; }
+    .admin-content { max-width: none; border-left: none; width: 100%; border-bottom: 2px solid var(--border); height: auto; min-height: 50vh; }
+    .preview-panel { width: 100%; height: 60vh; display: flex; position: static; }
   }
   @media (max-width: 768px) {
     .sidebar { display: none; }
@@ -514,7 +515,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$FJdbmEK7z2j6p2FsOsuwVeX9J3YZPwxEcxeyz958SdGwlJ7iKsa7q';
+  var ADMIN_HASH = '$2b$12$3FsQ2DU62U.ftzrJ9hTspuZUEgVVKekOWsRf3jkvfHFism.EVIo8K';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
