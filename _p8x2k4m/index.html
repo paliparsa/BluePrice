@@ -240,6 +240,9 @@
       <div class="sidebar-item" onclick="switchTab('tab-reviews')" data-tab="tab-reviews">
         <i class="fas fa-star"></i> نظرات کاربران
       </div>
+      <div class="sidebar-item" onclick="switchTab('tab-interactive')" data-tab="tab-interactive">
+        <i class="fas fa-magic"></i> ابزارهای تعاملی
+      </div>
       <div class="sidebar-item" onclick="switchTab('tab-en')" data-tab="tab-en">
         <i class="fas fa-language"></i> ترجمه‌های انگلیسی
       </div>
@@ -469,6 +472,101 @@
         </button>
       </div>
 
+      <!-- INTERACTIVE TOOLS -->
+      <div class="tab-panel" id="tab-interactive">
+        <div class="section-title"><i class="fas fa-magic"></i> ابزارهای تعاملی (Interactive Features)</div>
+        <div class="info-box">فعال‌سازی ویژگی‌های خاص برای افزایش جذابیت سایت و تعامل کاربر.</div>
+        
+        <div class="card">
+          <div class="card-title"><i class="fas fa-user-secret"></i> اسکنر مرورگر (Expose Scanner)</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت</label>
+              <select id="int-scanner-enabled">
+                <option value="true">فعال</option>
+                <option value="false">غیرفعال</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>عنوان بخش</label>
+              <input type="text" id="int-scanner-title" placeholder="What your ISP sees">
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><i class="fas fa-dove"></i> مینی‌گیم پرنده (Catch the Bird)</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت</label>
+              <select id="int-bird-enabled">
+                <option value="true">فعال</option>
+                <option value="false">غیرفعال</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>کد تخفیف هدیه</label>
+              <input type="text" id="int-bird-code" placeholder="SECRET10">
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><i class="fas fa-dharmachakra"></i> گردونه شانس (Spin the Wheel)</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت (نمایش در اولین بازدید)</label>
+              <select id="int-wheel-enabled">
+                <option value="true">فعال</option>
+                <option value="false">غیرفعال</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>کد تخفیف برنده</label>
+              <input type="text" id="int-wheel-code" placeholder="WHEEL20">
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><i class="fas fa-tachometer-alt"></i> تست سرعت مجازی (Speed Test)</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت</label>
+              <select id="int-speed-enabled">
+                <option value="true">فعال</option>
+                <option value="false">غیرفعال</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>حداکثر سرعت نمایش داده شده (Mbps)</label>
+              <input type="number" id="int-speed-max" placeholder="850">
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><i class="fas fa-eye-slash"></i> کلید مخفی (Boss Key)</div>
+          <div class="info-box">با فشردن کلید ESC سایت فوراً به یک صفحه جستجوی گوگل یا اکسل تغییر می‌کند.</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت</label>
+              <select id="int-boss-enabled">
+                <option value="true">فعال</option>
+                <option value="false">غیرفعال</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>تم مخفی‌ساز</label>
+              <select id="int-boss-theme">
+                <option value="google">جستجوی گوگل (Google)</option>
+                <option value="excel">صفحه گسترده (Excel)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- ENGLISH TRANSLATIONS -->
       <div class="tab-panel" id="tab-en">
         <div class="section-title"><i class="fas fa-language"></i> ترجمه‌های انگلیسی (English)</div>
@@ -587,7 +685,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$GQ5wYmrZNGoydo6avelp2OkW4EXRlH75iEnzF9njJWiS7pe8VdDR2';
+  var ADMIN_HASH = '$2b$12$.6EZIPQlpL2z0ZKcQ2vguO04vK/95pL3QU7.AW//4DrN8QJ8vT63S';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -792,6 +890,39 @@
     // Advanced
     var advGaId = document.getElementById('adv-gaid');
     if (advGaId) advGaId.value = (config.analytics && config.analytics.gaId) ? config.analytics.gaId : '';
+
+    // Interactive
+    var int = config.interactive || {};
+    int.scanner = int.scanner || { enabled: false, title: 'What your ISP sees' };
+    int.bird = int.bird || { enabled: false, code: 'SECRET10' };
+    int.wheel = int.wheel || { enabled: false, code: 'WHEEL20' };
+    int.speed = int.speed || { enabled: false, max: 850 };
+    int.boss = int.boss || { enabled: false, theme: 'google' };
+
+    var scEnabledEl = document.getElementById('int-scanner-enabled');
+    if (scEnabledEl) scEnabledEl.value = int.scanner.enabled ? 'true' : 'false';
+    var scTitleEl = document.getElementById('int-scanner-title');
+    if (scTitleEl) scTitleEl.value = int.scanner.title;
+
+    var biEnabledEl = document.getElementById('int-bird-enabled');
+    if (biEnabledEl) biEnabledEl.value = int.bird.enabled ? 'true' : 'false';
+    var biCodeEl = document.getElementById('int-bird-code');
+    if (biCodeEl) biCodeEl.value = int.bird.code;
+
+    var whEnabledEl = document.getElementById('int-wheel-enabled');
+    if (whEnabledEl) whEnabledEl.value = int.wheel.enabled ? 'true' : 'false';
+    var whCodeEl = document.getElementById('int-wheel-code');
+    if (whCodeEl) whCodeEl.value = int.wheel.code;
+
+    var spEnabledEl = document.getElementById('int-speed-enabled');
+    if (spEnabledEl) spEnabledEl.value = int.speed.enabled ? 'true' : 'false';
+    var spMaxEl = document.getElementById('int-speed-max');
+    if (spMaxEl) spMaxEl.value = int.speed.max;
+
+    var boEnabledEl = document.getElementById('int-boss-enabled');
+    if (boEnabledEl) boEnabledEl.value = int.boss.enabled ? 'true' : 'false';
+    var boThemeEl = document.getElementById('int-boss-theme');
+    if (boThemeEl) boThemeEl.value = int.boss.theme;
 
     renderDiscountCodes();
     renderFeatures();
@@ -1193,6 +1324,38 @@
     config.analytics = config.analytics || {};
     var advGaId = document.getElementById('adv-gaid');
     if (advGaId) config.analytics.gaId = advGaId.value.trim();
+
+    // Interactive
+    config.interactive = config.interactive || {};
+    config.interactive.scanner = config.interactive.scanner || {};
+    var scEnabledEl = document.getElementById('int-scanner-enabled');
+    if (scEnabledEl) config.interactive.scanner.enabled = (scEnabledEl.value === 'true');
+    var scTitleEl = document.getElementById('int-scanner-title');
+    if (scTitleEl) config.interactive.scanner.title = scTitleEl.value;
+
+    config.interactive.bird = config.interactive.bird || {};
+    var biEnabledEl = document.getElementById('int-bird-enabled');
+    if (biEnabledEl) config.interactive.bird.enabled = (biEnabledEl.value === 'true');
+    var biCodeEl = document.getElementById('int-bird-code');
+    if (biCodeEl) config.interactive.bird.code = biCodeEl.value;
+
+    config.interactive.wheel = config.interactive.wheel || {};
+    var whEnabledEl = document.getElementById('int-wheel-enabled');
+    if (whEnabledEl) config.interactive.wheel.enabled = (whEnabledEl.value === 'true');
+    var whCodeEl = document.getElementById('int-wheel-code');
+    if (whCodeEl) config.interactive.wheel.code = whCodeEl.value;
+
+    config.interactive.speed = config.interactive.speed || {};
+    var spEnabledEl = document.getElementById('int-speed-enabled');
+    if (spEnabledEl) config.interactive.speed.enabled = (spEnabledEl.value === 'true');
+    var spMaxEl = document.getElementById('int-speed-max');
+    if (spMaxEl) config.interactive.speed.max = parseInt(spMaxEl.value) || 850;
+
+    config.interactive.boss = config.interactive.boss || {};
+    var boEnabledEl = document.getElementById('int-boss-enabled');
+    if (boEnabledEl) config.interactive.boss.enabled = (boEnabledEl.value === 'true');
+    var boThemeEl = document.getElementById('int-boss-theme');
+    if (boThemeEl) config.interactive.boss.theme = boThemeEl.value;
 
     // FAQ is already updated by its onchange handlers directly in config.faq
     
