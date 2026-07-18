@@ -24,9 +24,10 @@ jobs:
       - name: Install bcryptjs
         run: npm install bcryptjs
 
-      - name: Inject hashed password into admin panel
+      - name: Inject credentials into admin panel
         env:
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          ADMIN_2FA_SECRET: ${{ secrets.ADMIN_2FA_SECRET }}
         run: |
           node -e "
             const bcrypt = require('bcryptjs');
@@ -36,6 +37,11 @@ jobs:
             if (!password) {
               console.error('ERROR: ADMIN_PASSWORD secret is not set!');
               process.exit(1);
+            }
+            
+            const totpSecret = process.env.ADMIN_2FA_SECRET;
+            if (!totpSecret) {
+              console.warn('WARNING: ADMIN_2FA_SECRET is not set. 2FA will not work!');
             }
 
             // Hash with cost factor 12 (secure but not too slow for login UX)
@@ -52,8 +58,11 @@ jobs:
             }
 
             content = content.replace('__ADMIN_HASH_PLACEHOLDER__', hash);
+            if (totpSecret) {
+              content = content.replace('__ADMIN_2FA_SECRET_PLACEHOLDER__', totpSecret);
+            }
             fs.writeFileSync(filePath, content);
-            console.log('Hash injected into _p8x2k4m/index.html successfully');
+            console.log('Credentials injected into _p8x2k4m/index.html successfully');
           "
 
       - name: Deploy to GitHub Pages (gh-pages branch)
