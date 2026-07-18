@@ -234,6 +234,12 @@
       <div class="sidebar-item" onclick="switchTab('tab-faq')" data-tab="tab-faq">
         <i class="fas fa-circle-question"></i> سوالات متداول
       </div>
+      <div class="sidebar-item" onclick="switchTab('tab-tutorials')" data-tab="tab-tutorials">
+        <i class="fas fa-book-open"></i> راهنمای اتصال
+      </div>
+      <div class="sidebar-item" onclick="switchTab('tab-reviews')" data-tab="tab-reviews">
+        <i class="fas fa-star"></i> نظرات کاربران
+      </div>
       <div class="sidebar-item" onclick="switchTab('tab-en')" data-tab="tab-en">
         <i class="fas fa-language"></i> ترجمه‌های انگلیسی
       </div>
@@ -284,6 +290,20 @@
             <div class="field">
               <label>متن بنر ضمانت بازگشت</label>
               <input type="text" id="refund-banner" placeholder="اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.">
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title">لوگوی سایت</div>
+          <div class="info-box">یک فایل تصویری با حجم کم (ترجیحا مربع زیر ۱۰۰ کیلوبایت) انتخاب کنید. این لوگو جایگزین آیکون سپر در سایت می‌شود.</div>
+          <div class="field-row">
+            <div class="field">
+              <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+              <button class="del-btn" onclick="clearLogo()" style="margin-top: 10px; width: auto; padding: 5px 15px;"><i class="fas fa-trash"></i> حذف لوگو</button>
+            </div>
+            <div class="field" style="display: flex; align-items: center; justify-content: center;">
+              <img id="logo-preview" src="" style="max-height: 64px; border-radius: 8px; display: none;">
             </div>
           </div>
         </div>
@@ -428,6 +448,24 @@
         <div id="faq-editor"></div>
         <button class="add-option-btn" style="margin-top:8px;" onclick="addFaqItem()">
           <i class="fas fa-plus"></i> افزودن سوال
+        </button>
+      </div>
+
+      <!-- TUTORIALS -->
+      <div class="tab-panel" id="tab-tutorials">
+        <div class="section-title"><i class="fas fa-book-open"></i> راهنمای اتصال</div>
+        <div id="tutorials-editor"></div>
+        <button class="add-option-btn" style="margin-top:8px;" onclick="addTutorial()">
+          <i class="fas fa-plus"></i> افزودن راهنما
+        </button>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="tab-panel" id="tab-reviews">
+        <div class="section-title"><i class="fas fa-star"></i> نظرات کاربران</div>
+        <div id="reviews-editor"></div>
+        <button class="add-option-btn" style="margin-top:8px;" onclick="addReview()">
+          <i class="fas fa-plus"></i> افزودن نظر
         </button>
       </div>
 
@@ -696,6 +734,13 @@
     document.getElementById('site-giftBadgeText').value = s.giftBadgeText || '';
     document.getElementById('refund-banner').value = config.refundBanner || '';
 
+    if (s.logoBase64) {
+      document.getElementById('logo-preview').src = s.logoBase64;
+      document.getElementById('logo-preview').style.display = 'block';
+    } else {
+      document.getElementById('logo-preview').style.display = 'none';
+    }
+
     var cd = config.countdown || {};
     document.getElementById('countdown-title').value = cd.title || '';
     if (cd.endDate) {
@@ -736,6 +781,8 @@
     renderFeatures();
     renderPlans();
     renderFaq();
+    renderTutorials();
+    renderReviews();
     renderEnglishEditor();
   }
 
@@ -750,6 +797,8 @@
     en.telegram = en.telegram || {};
     en.features = en.features || [];
     en.faq = en.faq || [];
+    en.tutorials = en.tutorials || [];
+    en.reviews = en.reviews || [];
     en.plans = en.plans || [];
     config.en = en;
 
@@ -805,6 +854,25 @@
     });
     html += '</div>';
 
+    html += '<div class="card"><div class="card-title">Tutorials</div>';
+    (config.tutorials || []).forEach(function(t, i) {
+      en.tutorials[i] = en.tutorials[i] || { os:'', app:'', steps:[] };
+      var et = en.tutorials[i];
+      html += '<div class="field-row"><div class="field"><label>OS '+(i+1)+'</label><input type="text" onchange="config.en.tutorials['+i+'].os=this.value" value="' + escHtml(et.os||'') + '"></div>';
+      html += '<div class="field"><label>App '+(i+1)+'</label><input type="text" onchange="config.en.tutorials['+i+'].app=this.value" value="' + escHtml(et.app||'') + '"></div></div>';
+      html += '<div class="field-row full"><div class="field"><label>Steps (one per line)</label><textarea onchange="config.en.tutorials['+i+'].steps=this.value.split(\'\\n\')">' + escHtml((et.steps||[]).join('\n')) + '</textarea></div></div>';
+    });
+    html += '</div>';
+
+    html += '<div class="card"><div class="card-title">Reviews</div>';
+    (config.reviews || []).forEach(function(r, i) {
+      en.reviews[i] = en.reviews[i] || { name:'', text:'' };
+      var er = en.reviews[i];
+      html += '<div class="field-row"><div class="field"><label>Name '+(i+1)+'</label><input type="text" onchange="config.en.reviews['+i+'].name=this.value" value="' + escHtml(er.name||'') + '"></div></div>';
+      html += '<div class="field-row full"><div class="field"><label>Text '+(i+1)+'</label><textarea onchange="config.en.reviews['+i+'].text=this.value">' + escHtml(er.text||'') + '</textarea></div></div>';
+    });
+    html += '</div>';
+
     document.getElementById('en-editor-container').innerHTML = html;
   }
 
@@ -835,6 +903,73 @@
   function removeFaqItem(idx) {
     config.faq.splice(idx, 1);
     renderFaq();
+  }
+
+  // ============================================================
+  // TUTORIALS EDITOR
+  // ============================================================
+  function renderTutorials() {
+    var el = document.getElementById('tutorials-editor');
+    if (!el) return;
+    el.innerHTML = '';
+    var tutorialsData = config.tutorials || [];
+    tutorialsData.forEach(function(item, i) {
+      var card = document.createElement('div');
+      card.className = 'feature-card';
+      card.innerHTML =
+        '<div class="feature-card-header"><span>راهنما ' + (i+1) + '</span>' +
+        '<button class="del-btn" onclick="removeTutorial(' + i + ')"><i class="fas fa-trash"></i></button></div>' +
+        '<div class="field-row">' +
+          '<div class="field"><label>نام OS/پلتفرم</label><input type="text" onchange="config.tutorials[' + i + '].os=this.value" value="' + escHtml(item.os) + '"></div>' +
+          '<div class="field"><label>نام اپلیکیشن</label><input type="text" onchange="config.tutorials[' + i + '].app=this.value" value="' + escHtml(item.app) + '"></div>' +
+        '</div>' +
+        '<div class="field-row full">' +
+          '<div class="field"><label>آیکون FontAwesome (مثل fab fa-android)</label><input type="text" onchange="config.tutorials[' + i + '].icon=this.value" value="' + escHtml(item.icon) + '"></div>' +
+        '</div>' +
+        '<div class="field-row full"><div class="field"><label>مراحل (هر خط یک مرحله)</label><textarea onchange="config.tutorials[' + i + '].steps=this.value.split(\'\\n\')">' + escHtml((item.steps||[]).join('\n')) + '</textarea></div></div>';
+      el.appendChild(card);
+    });
+  }
+  function addTutorial() {
+    config.tutorials = config.tutorials || [];
+    config.tutorials.push({ os: 'ویندوز', app: 'v2rayN', icon: 'fab fa-windows', steps: ['مرحله ۱', 'مرحله ۲'] });
+    renderTutorials();
+  }
+  function removeTutorial(idx) {
+    config.tutorials.splice(idx, 1);
+    renderTutorials();
+  }
+
+  // ============================================================
+  // REVIEWS EDITOR
+  // ============================================================
+  function renderReviews() {
+    var el = document.getElementById('reviews-editor');
+    if (!el) return;
+    el.innerHTML = '';
+    var reviewsData = config.reviews || [];
+    reviewsData.forEach(function(item, i) {
+      var card = document.createElement('div');
+      card.className = 'feature-card';
+      card.innerHTML =
+        '<div class="feature-card-header"><span>نظر ' + (i+1) + '</span>' +
+        '<button class="del-btn" onclick="removeReview(' + i + ')"><i class="fas fa-trash"></i></button></div>' +
+        '<div class="field-row">' +
+          '<div class="field"><label>نام کاربر</label><input type="text" onchange="config.reviews[' + i + '].name=this.value" value="' + escHtml(item.name) + '"></div>' +
+          '<div class="field"><label>امتیاز (1 تا 5)</label><input type="number" min="1" max="5" onchange="config.reviews[' + i + '].rating=parseInt(this.value)" value="' + item.rating + '"></div>' +
+        '</div>' +
+        '<div class="field-row full"><div class="field"><label>متن نظر</label><textarea onchange="config.reviews[' + i + '].text=this.value">' + escHtml(item.text) + '</textarea></div></div>';
+      el.appendChild(card);
+    });
+  }
+  function addReview() {
+    config.reviews = config.reviews || [];
+    config.reviews.push({ name: 'کاربر جدید', rating: 5, text: 'عالی بود!' });
+    renderReviews();
+  }
+  function removeReview(idx) {
+    config.reviews.splice(idx, 1);
+    renderReviews();
   }
 
   // ============================================================
@@ -1194,6 +1329,29 @@
   // ============================================================
   function escHtml(str) {
     return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // Logo handlers
+  function handleLogoUpload(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var b64 = e.target.result;
+      config.site = config.site || {};
+      config.site.logoBase64 = b64;
+      document.getElementById('logo-preview').src = b64;
+      document.getElementById('logo-preview').style.display = 'block';
+      showAdminToast('لوگو انتخاب شد');
+    };
+    reader.readAsDataURL(file);
+  }
+  function clearLogo() {
+    if (config.site) delete config.site.logoBase64;
+    document.getElementById('logo-preview').style.display = 'none';
+    document.getElementById('logo-preview').src = '';
+    document.getElementById('logo-upload').value = '';
+    showAdminToast('لوگو حذف شد');
   }
 </script>
 </body>
