@@ -57,8 +57,10 @@
     min-height: 100vh;
   }
 
-  #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; transition: opacity 0.5s; }
+  .light-theme #bg-canvas { opacity: 0; }
 
+  /* Utilities */
   .banner-wrapper { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: 30px 40px 40px; min-height: 100vh; }
   .top-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
   .brand-logo { display: flex; align-items: center; gap: 14px; }
@@ -447,7 +449,7 @@
     document.getElementById('lang-text').textContent = currentLang === 'fa' ? 'EN' : 'FA';
     document.getElementById('main-lang-text').textContent = currentLang === 'fa' ? 'EN' : 'FA';
     document.body.style.direction = currentLang === 'fa' ? 'rtl' : 'ltr';
-    if (cfg) renderPage(cfg);
+    if (typeof siteConfig !== 'undefined' && siteConfig && Object.keys(siteConfig).length > 0) renderPage(siteConfig);
   }
 
   // =========================================================
@@ -455,8 +457,8 @@
   // =========================================================
   window.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'previewConfig') {
-      cfg = event.data.config;
-      renderPage(cfg);
+      siteConfig = event.data.config;
+      renderPage(siteConfig);
     }
   });
   initTheme();
@@ -561,6 +563,8 @@
           '<div class="faq-a">' + item.a + '</div>' +
           '</div>';
       }).join('');
+    } else {
+      document.getElementById('faq-section').style.display = 'none';
     }
 
     var delays = ['delay-1', 'delay-2', 'delay-3', 'delay-4'];
