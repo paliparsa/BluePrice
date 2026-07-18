@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlueGate - دروازه‌ای به اینترنت آزاد</title>
 <meta name="description" content="BlueGate - سرویس VPN با کیفیت، امنیت و قیمت مناسب. سرعت بالا، پشتیبانی ۲۴/۷ و ضمانت بازگشت وجه.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00b4ff">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -66,6 +69,10 @@
   .light-theme .discount-inner { background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
   .light-theme .faq-item { background: #fff; border-color: rgba(0,0,0,0.1); }
   .light-theme .feature-box { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .light-theme .tutorial-card { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .light-theme .review-card { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .light-theme .contact-form { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .light-theme .contact-form input, .light-theme .contact-form textarea { background: #f0f4f8; color: #333; border-color: rgba(0,0,0,0.1); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -300,6 +307,32 @@
   .price-display .unit { font-size: 12px; color: var(--text-muted); margin-right: 4px; font-weight: 600; }
   .savings-label { font-size: 11px; color: var(--neon-green); font-weight: 700; display: none; background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); border-radius: 6px; padding: 3px 8px; margin-top: 4px; }
 
+  /* === TUTORIALS === */
+  .tutorials-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; }
+  .tutorials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+  .tutorial-card { background: linear-gradient(180deg, rgba(0,60,140,0.08), rgba(0,30,80,0.04)); border: 1px solid rgba(0,180,255,0.12); border-radius: 14px; padding: 20px; text-align: right; }
+  .tutorial-card.en-mode { text-align: left; }
+  .tutorial-card h4 { display: flex; align-items: center; gap: 8px; color: var(--text-white); margin-bottom: 12px; font-size: 18px; }
+  .tutorial-card h4 i { font-size: 24px; color: var(--neon-blue); }
+  .tutorial-card ol { margin: 0; padding-right: 20px; color: var(--text-muted); font-size: 14px; line-height: 1.8; }
+  .tutorial-card.en-mode ol { padding-right: 0; padding-left: 20px; }
+  .tutorial-card ol li { margin-bottom: 6px; }
+
+  /* === REVIEWS === */
+  .reviews-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .review-card { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 20px; position: relative; }
+  .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .review-name { font-weight: bold; color: var(--text-white); font-size: 15px; }
+  .review-stars { color: #ffaa00; font-size: 13px; letter-spacing: 2px; }
+  .review-text { color: var(--text-muted); font-size: 14px; line-height: 1.6; font-style: italic; }
+
+  /* === CONTACT FORM === */
+  .contact-section { max-width: 800px; margin: 0 auto 40px; padding: 0 40px; position: relative; z-index: 1; }
+  .contact-form { display: flex; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.2); padding: 24px; border-radius: 16px; border: 1px solid rgba(0,180,255,0.1); }
+  .contact-form input, .contact-form textarea { width: 100%; padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: var(--text-white); font-family: inherit; font-size: 14px; transition: border-color 0.3s; }
+  .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--neon-blue); }
+
   /* === FAQ === */
   .faq-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; }
   .faq-title { font-size: 22px; font-weight: 800; color: var(--text-white); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,180,255,0.15); display: flex; align-items: center; gap: 10px; }
@@ -426,10 +459,32 @@
 
 </main>
 
+<!-- Tutorials Section -->
+<section class="tutorials-section" id="tutorials-section" style="display:none">
+  <div class="faq-title" id="tut-title"><i class="fas fa-book-open"></i> راهنمای اتصال</div>
+  <div class="tutorials-grid" id="tutorials-list"></div>
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews-section" id="reviews-section" style="display:none">
+  <div class="faq-title" id="rev-title"><i class="fas fa-star"></i> نظرات کاربران</div>
+  <div class="reviews-grid" id="reviews-list"></div>
+</section>
+
 <!-- FAQ Section (outside main for full-width) -->
 <section class="faq-section" id="faq-section" style="display:none">
-  <div class="faq-title"><i class="fas fa-circle-question"></i> سوالات متداول</div>
+  <div class="faq-title" id="faq-section-title"><i class="fas fa-circle-question"></i> سوالات متداول</div>
   <div id="faq-list"></div>
+</section>
+
+<!-- Contact Form Section -->
+<section class="contact-section" id="contact-section" style="display:none">
+  <div class="faq-title" id="contact-title"><i class="fas fa-envelope"></i> تماس با ما</div>
+  <form class="contact-form" id="contact-form" action="" method="POST">
+    <input type="email" name="email" id="contact-email" placeholder="ایمیل شما (اختیاری)" required>
+    <textarea name="message" id="contact-message" rows="4" placeholder="پیام خود را بنویسید..." required></textarea>
+    <button type="submit" class="discount-btn" id="contact-submit">ارسال پیام</button>
+  </form>
 </section>
 
 <script>
@@ -515,6 +570,12 @@
       if (cfg.en.faq) {
         cfg.en.faq.forEach((f, i) => { if (cfg.faq[i]) Object.assign(cfg.faq[i], f); });
       }
+      if (cfg.en.tutorials) {
+        cfg.en.tutorials.forEach((t, i) => { if (cfg.tutorials[i]) Object.assign(cfg.tutorials[i], t); });
+      }
+      if (cfg.en.reviews) {
+        cfg.en.reviews.forEach((r, i) => { if (cfg.reviews[i]) Object.assign(cfg.reviews[i], r); });
+      }
       if (cfg.en.plans) {
         cfg.en.plans.forEach((p, i) => {
           if (cfg.plans[i]) {
@@ -553,7 +614,14 @@
     document.querySelector('.discount-label').innerHTML = currentLang === 'en' ? '<i class="fas fa-tag"></i> Have a code?' : '<i class="fas fa-tag"></i> کد تخفیف دارید؟';
     document.getElementById('discount-input').placeholder = currentLang === 'en' ? 'Example: BLUEGATE30' : 'مثال: BLUEGATE30';
     document.getElementById('discount-btn').textContent = currentLang === 'en' ? 'Apply' : 'اعمال کد';
-    document.querySelector('.faq-title').innerHTML = currentLang === 'en' ? '<i class="fas fa-circle-question"></i> Frequently Asked Questions' : '<i class="fas fa-circle-question"></i> سوالات متداول';
+    
+    document.getElementById('faq-section-title').innerHTML = currentLang === 'en' ? '<i class="fas fa-circle-question"></i> Frequently Asked Questions' : '<i class="fas fa-circle-question"></i> سوالات متداول';
+    document.getElementById('tut-title').innerHTML = currentLang === 'en' ? '<i class="fas fa-book-open"></i> Connection Guide' : '<i class="fas fa-book-open"></i> راهنمای اتصال';
+    document.getElementById('rev-title').innerHTML = currentLang === 'en' ? '<i class="fas fa-star"></i> User Reviews' : '<i class="fas fa-star"></i> نظرات کاربران';
+    document.getElementById('contact-title').innerHTML = currentLang === 'en' ? '<i class="fas fa-envelope"></i> Contact Us' : '<i class="fas fa-envelope"></i> تماس با ما';
+    document.getElementById('contact-email').placeholder = currentLang === 'en' ? 'Your Email (optional)' : 'ایمیل شما (اختیاری)';
+    document.getElementById('contact-message').placeholder = currentLang === 'en' ? 'Write your message...' : 'پیام خود را بنویسید...';
+    document.getElementById('contact-submit').textContent = currentLang === 'en' ? 'Send Message' : 'ارسال پیام';
 
     document.getElementById('contact-handles').innerHTML =
       '<a href="' + cfg.telegram.channelUrl + '" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> ' + cfg.telegram.channelHandle + '</a>' +
@@ -582,6 +650,42 @@
     document.getElementById('features-row').innerHTML = cfg.features.map(function(f) {
       return '<div class="feature-box"><div class="feat-icon"><i class="fas ' + f.icon + '"></i></div><h4>' + f.title + '</h4><p>' + f.text + '</p></div>';
     }).join('');
+
+    // Tutorials section
+    var tutData = cfg.tutorials || [];
+    if (tutData.length > 0) {
+      document.getElementById('tutorials-section').style.display = 'block';
+      var modeClass = currentLang === 'en' ? ' en-mode' : '';
+      document.getElementById('tutorials-list').innerHTML = tutData.map(function(item) {
+        var iconStr = item.icon ? '<i class="' + item.icon + '"></i> ' : '';
+        var stepsStr = item.steps.map(function(s) { return '<li>' + s + '</li>'; }).join('');
+        return '<div class="tutorial-card' + modeClass + '"><h4>' + iconStr + item.os + ' - ' + item.app + '</h4><ol>' + stepsStr + '</ol></div>';
+      }).join('');
+    } else {
+      document.getElementById('tutorials-section').style.display = 'none';
+    }
+
+    // Reviews section
+    var revData = cfg.reviews || [];
+    if (revData.length > 0) {
+      document.getElementById('reviews-section').style.display = 'block';
+      document.getElementById('reviews-list').innerHTML = revData.map(function(item) {
+        var stars = '';
+        var rating = item.rating || 5;
+        for(var i=0; i<5; i++) { stars += (i < rating) ? '★' : '☆'; }
+        return '<div class="review-card"><div class="review-header"><span class="review-name">' + item.name + '</span><span class="review-stars">' + stars + '</span></div><div class="review-text">"' + item.text + '"</div></div>';
+      }).join('');
+    } else {
+      document.getElementById('reviews-section').style.display = 'none';
+    }
+
+    // Contact Form
+    if (cfg.contactForm && cfg.contactForm.enabled && cfg.contactForm.endpoint) {
+      document.getElementById('contact-section').style.display = 'block';
+      document.getElementById('contact-form').action = cfg.contactForm.endpoint;
+    } else {
+      document.getElementById('contact-section').style.display = 'none';
+    }
 
     // FAQ section
     var faqData = cfg.faq || [];
@@ -840,6 +944,18 @@
   resize(); createParticles(); drawFrame();
 
   loadConfig();
+  initTheme();
+  
+  // Register Service Worker for PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js').then(function(registration) {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }, function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+    });
+  }
 </script>
 </body>
 </html>

@@ -1,0 +1,21 @@
+{
+  "name": "BlueGate VPN",
+  "short_name": "BlueGate",
+  "description": "دروازه‌ای به اینترنت آزاد - خرید سرویس‌های باکیفیت و بدون قطعی.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050a1a",
+  "theme_color": "#00b4ff",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
