@@ -467,7 +467,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$szY7cx03Hs0dvQk4Zhj/cOayN.eKQw9mcvynqyuMjH3CVPBdXvyMG';
+  var ADMIN_HASH = '$2b$12$W.vG.MnTrL10O25Jxl8Oi.LYc7rL6GSAeQ1LyJcCkzhIfavcYF2Cm';
   var config = {};
   var githubCfg = {};
 
@@ -892,9 +892,9 @@
         'Accept': 'application/vnd.github.v3+json'
       };
 
-      // Get current file SHA (needed for update)
+      // Get current file SHA (needed for update) - using timestamp to bust GitHub API cache
       var sha = null;
-      var getRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + path + '?ref=' + branch, { headers: headers });
+      var getRes = await fetch(apiBase + '/repos/' + owner + '/' + repo + '/contents/' + path + '?ref=' + branch + '&t=' + Date.now(), { headers: headers });
       if (getRes.ok) {
         var fileData = await getRes.json();
         sha = fileData.sha;
