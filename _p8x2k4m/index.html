@@ -378,6 +378,24 @@
             </div>
           </div>
         </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><i class="fas fa-envelope"></i> فرم تماس (Formspree)</div>
+          <div class="info-box">برای فعال‌سازی فرم تماس در پایین سایت، آدرس Endpoint فرم خود را که از سایت Formspree.io گرفته‌اید اینجا وارد کنید.</div>
+          <div class="field-row">
+            <div class="field">
+              <label>وضعیت فرم تماس</label>
+              <select id="contactForm-enabled">
+                <option value="true">فعال</option>
+                <option value="false">غیرفعال</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>آدرس (Endpoint) فرم</label>
+              <input type="url" id="contactForm-endpoint" placeholder="https://formspree.io/f/XXXXXX">
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ANNOUNCEMENT -->
@@ -515,7 +533,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$VVcmJu/n61nENDtMH2qRcOS0N00NlSVBXBzgo1niPkRlXnhwDCeBe';
+  var ADMIN_HASH = '$2b$12$8irQqmG97VQf3DDhCwO6qeIP.vZAzgHHr1CCnl29bEYW60JUu4Mti';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -692,6 +710,13 @@
     document.getElementById('tg-supportUrl').value = tg.supportUrl || '';
     document.getElementById('tg-supportHandle').value = tg.supportHandle || '';
     document.getElementById('tg-joinBtnText').value = tg.joinBtnText || '';
+
+    // Contact Form
+    var cf = config.contactForm || {};
+    var cfEnabledEl = document.getElementById('contactForm-enabled');
+    if (cfEnabledEl) cfEnabledEl.value = cf.enabled ? 'true' : 'false';
+    var cfEndpointEl = document.getElementById('contactForm-endpoint');
+    if (cfEndpointEl) cfEndpointEl.value = cf.endpoint || '';
 
     // Announcement
     var ann = config.announcement || {};
@@ -995,6 +1020,12 @@
     config.telegram.supportUrl = document.getElementById('tg-supportUrl').value;
     config.telegram.supportHandle = document.getElementById('tg-supportHandle').value;
     config.telegram.joinBtnText = document.getElementById('tg-joinBtnText').value;
+
+    config.contactForm = config.contactForm || {};
+    var cfEnabledEl = document.getElementById('contactForm-enabled');
+    if (cfEnabledEl) config.contactForm.enabled = (cfEnabledEl.value === 'true');
+    var cfEndpointEl = document.getElementById('contactForm-endpoint');
+    if (cfEndpointEl) config.contactForm.endpoint = cfEndpointEl.value.trim();
 
     // Announcement
     config.announcement = config.announcement || {};
