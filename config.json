@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "BlueGate - دروازه‌ای به اینترنت آزاد",
-    "brandName": "BlueGate",
+    "brandName": "BlueGateee",
     "subtitle": "دروازه‌ای به اینترنت آزاد",
     "capsuleText": "لیست سرویس‌های ما",
     "giftBadgeText": "کیفیت، امنیت\nو قیمت مناسب\nدر یکجا!"
@@ -11,15 +11,14 @@
     "text": "🔥 تخفیف ویژه ۳۰٪ با کد BLUEGATE30 — فقط تا آخر هفته!"
   },
   "analytics": {
-    "gaId": ""
+    "gaId": "G-9C2JRXRCXZ"
   },
   "popularPlan": "tunnel",
   "countdown": {
     "title": "پیشنهاد ویژه: ۳۰٪ تخفیف تا پایان هفته",
-    "endDate": "2026-07-25T23:59:59"
+    "endDate": "2026-07-25T20:59:00.000Z"
   },
   "discountCodes": {
-    "BLUEGATE30": 30,
     "WELCOME10": 10
   },
   "telegram": {
@@ -31,10 +30,26 @@
   },
   "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
   "features": [
-    { "icon": "fa-rocket", "title": "سرعت بالا", "text": "اتصال پایدار و پرسرعت" },
-    { "icon": "fa-lock", "title": "امنیت کامل", "text": "حریم خصوصی شما در اولویت ماست" },
-    { "icon": "fa-headset", "title": "پشتیبانی ۲۴/۷", "text": "همیشه همراه شما" },
-    { "icon": "fa-star", "title": "کیفیت تضمینی", "text": "تجربه‌ای متفاوت" }
+    {
+      "icon": "fa-rocket",
+      "title": "سرعت بالا",
+      "text": "اتصال پایدار و پرسرعت"
+    },
+    {
+      "icon": "fa-lock",
+      "title": "امنیت کامل",
+      "text": "حریم خصوصی شما در اولویت ماست"
+    },
+    {
+      "icon": "fa-headset",
+      "title": "پشتیبانی ۲۴/۷",
+      "text": "همیشه همراه شما"
+    },
+    {
+      "icon": "fa-star",
+      "title": "کیفیت تضمینی",
+      "text": "تجربه‌ای متفاوت"
+    }
   ],
   "plans": [
     {
@@ -50,10 +65,26 @@
       ],
       "note": "",
       "options": [
-        { "label": "5GB", "volume": "5 گیگ", "price": 195 },
-        { "label": "10GB", "volume": "10 گیگ", "price": 390 },
-        { "label": "15GB", "volume": "15 گیگ", "price": 585 },
-        { "label": "20GB", "volume": "20 گیگ", "price": 780 }
+        {
+          "label": "5GB",
+          "volume": "5 گیگ",
+          "price": 195
+        },
+        {
+          "label": "10GB",
+          "volume": "10 گیگ",
+          "price": 390
+        },
+        {
+          "label": "15GB",
+          "volume": "15 گیگ",
+          "price": 585
+        },
+        {
+          "label": "20GB",
+          "volume": "20 گیگ",
+          "price": 780
+        }
       ]
     },
     {
@@ -69,11 +100,31 @@
       ],
       "note": "حجم‌های بیشتر از ۲۵ گیگ: هر گیگ فقط 11 تومان",
       "options": [
-        { "label": "5GB", "volume": "5 گیگ", "price": 75 },
-        { "label": "10GB", "volume": "10 گیگ", "price": 139 },
-        { "label": "15GB", "volume": "15 گیگ", "price": 195 },
-        { "label": "20GB", "volume": "20 گیگ", "price": 259 },
-        { "label": "25GB", "volume": "25 گیگ", "price": 299 }
+        {
+          "label": "5GB",
+          "volume": "5 گیگ",
+          "price": 75
+        },
+        {
+          "label": "10GB",
+          "volume": "10 گیگ",
+          "price": 139
+        },
+        {
+          "label": "15GB",
+          "volume": "15 گیگ",
+          "price": 195
+        },
+        {
+          "label": "20GB",
+          "volume": "20 گیگ",
+          "price": 259
+        },
+        {
+          "label": "25GB",
+          "volume": "25 گیگ",
+          "price": 299
+        }
       ]
     },
     {
@@ -89,10 +140,26 @@
       ],
       "note": "هر گیگ فقط ۵ تومان",
       "options": [
-        { "label": "20GB", "volume": "20 گیگ", "price": 99 },
-        { "label": "25GB", "volume": "25 گیگ", "price": 125 },
-        { "label": "30GB", "volume": "30 گیگ", "price": 149 },
-        { "label": "35GB", "volume": "35 گیگ", "price": 175 }
+        {
+          "label": "20GB",
+          "volume": "20 گیگ",
+          "price": 99
+        },
+        {
+          "label": "25GB",
+          "volume": "25 گیگ",
+          "price": 125
+        },
+        {
+          "label": "30GB",
+          "volume": "30 گیگ",
+          "price": 149
+        },
+        {
+          "label": "35GB",
+          "volume": "35 گیگ",
+          "price": 175
+        }
       ]
     },
     {
@@ -105,17 +172,40 @@
       "note": "مصرف منصفانه برای هر کاربر",
       "isUnlimited": true,
       "options": [
-        { "label": "تک کاربره", "volume": "تک کاربره", "price": 249 },
-        { "label": "دو کاربره", "volume": "دو کاربره", "price": 399 }
+        {
+          "label": "تک کاربره",
+          "volume": "تک کاربره",
+          "price": 249
+        },
+        {
+          "label": "دو کاربره",
+          "volume": "دو کاربره",
+          "price": 399
+        }
       ]
     }
   ],
   "faq": [
-    { "q": "چطور بعد از خرید سرویس را دریافت کنم؟", "a": "بعد از خرید، اطلاعات اتصال از طریق ادمین تلگرام برای شما ارسال می‌شود. معمولاً در کمتر از ۱۵ دقیقه سرویس فعال می‌شود." },
-    { "q": "آیا در همه دستگاه‌ها کار می‌کند؟", "a": "بله! سرویس‌های BlueGate روی موبایل (اندروید و iOS)، کامپیوتر (ویندوز و مک) و تبلت قابل استفاده هستند." },
-    { "q": "ضمانت بازگشت وجه چطور کار می‌کند؟", "a": "اگر در ۷۲ ساعت اول از کیفیت سرویس راضی نبودید، کافیه به پشتیبانی اعلام کنید. وجه شما بدون هیچ سوالی برگردانده می‌شود." },
-    { "q": "آیا لاگ فعالیت من ذخیره می‌شود؟", "a": "خیر. BlueGate هیچ لاگی از فعالیت کاربران ذخیره نمی‌کند. حریم خصوصی شما کاملاً محفوظ است." },
-    { "q": "تفاوت سرویس ملی و سرویس تانل چیست؟", "a": "سرویس ملی مخصوص زمان قطعی اینترنت است و در شرایط اضطراری عملکرد بهتری دارد. سرویس تانل برای استفاده روزمره بهینه شده و سرعت بالاتری دارد." }
+    {
+      "q": "چطور بعد از خرید سرویس را دریافت کنم؟",
+      "a": "بعد از خرید، اطلاعات اتصال از طریق ادمین تلگرام برای شما ارسال می‌شود. معمولاً در کمتر از ۱۵ دقیقه سرویس فعال می‌شود."
+    },
+    {
+      "q": "آیا در همه دستگاه‌ها کار می‌کند؟",
+      "a": "بله! سرویس‌های BlueGate روی موبایل (اندروید و iOS)، کامپیوتر (ویندوز و مک) و تبلت قابل استفاده هستند."
+    },
+    {
+      "q": "ضمانت بازگشت وجه چطور کار می‌کند؟",
+      "a": "اگر در ۷۲ ساعت اول از کیفیت سرویس راضی نبودید، کافیه به پشتیبانی اعلام کنید. وجه شما بدون هیچ سوالی برگردانده می‌شود."
+    },
+    {
+      "q": "آیا لاگ فعالیت من ذخیره می‌شود؟",
+      "a": "خیر. BlueGate هیچ لاگی از فعالیت کاربران ذخیره نمی‌کند. حریم خصوصی شما کاملاً محفوظ است."
+    },
+    {
+      "q": "تفاوت سرویس ملی و سرویس تانل چیست؟",
+      "a": "سرویس ملی مخصوص زمان قطعی اینترنت است و در شرایط اضطراری عملکرد بهتری دارد. سرویس تانل برای استفاده روزمره بهینه شده و سرعت بالاتری دارد."
+    }
   ],
   "en": {
     "site": {
@@ -136,47 +226,110 @@
     },
     "refundBanner": "If you are not satisfied, we offer a money-back guarantee.",
     "features": [
-      { "title": "High Speed", "text": "Stable and fast connection" },
-      { "title": "Complete Security", "text": "Your privacy is our priority" },
-      { "title": "24/7 Support", "text": "Always with you" },
-      { "title": "Guaranteed Quality", "text": "A different experience" }
+      {
+        "title": "High Speed",
+        "text": "Stable and fast connection"
+      },
+      {
+        "title": "Complete Security",
+        "text": "Your privacy is our priority"
+      },
+      {
+        "title": "24/7 Support",
+        "text": "Always with you"
+      },
+      {
+        "title": "Guaranteed Quality",
+        "text": "A different experience"
+      }
     ],
     "plans": [
       {
         "title": "National Service",
         "subtitle": "Best during internet outages",
-        "features": [ "High stability and speed", "No time limit", "No emergency conditions" ],
+        "features": [
+          "High stability and speed",
+          "No time limit",
+          "No emergency conditions"
+        ],
         "note": "",
         "options": [
-          { "label": "5GB", "volume": "5 GB" },
-          { "label": "10GB", "volume": "10 GB" },
-          { "label": "15GB", "volume": "15 GB" },
-          { "label": "20GB", "volume": "20 GB" }
+          {
+            "label": "5GB",
+            "volume": "5 GB"
+          },
+          {
+            "label": "10GB",
+            "volume": "10 GB"
+          },
+          {
+            "label": "15GB",
+            "volume": "15 GB"
+          },
+          {
+            "label": "20GB",
+            "volume": "20 GB"
+          }
         ]
       },
       {
         "title": "Tunnel Service",
         "subtitle": "Best for daily use",
-        "features": [ "Excellent speed", "Normal conditions", "High value" ],
+        "features": [
+          "Excellent speed",
+          "Normal conditions",
+          "High value"
+        ],
         "note": "Volumes over 25GB: 11 Tomans/GB",
         "options": [
-          { "label": "5GB", "volume": "5 GB" },
-          { "label": "10GB", "volume": "10 GB" },
-          { "label": "15GB", "volume": "15 GB" },
-          { "label": "20GB", "volume": "20 GB" },
-          { "label": "25GB", "volume": "25 GB" }
+          {
+            "label": "5GB",
+            "volume": "5 GB"
+          },
+          {
+            "label": "10GB",
+            "volume": "10 GB"
+          },
+          {
+            "label": "15GB",
+            "volume": "15 GB"
+          },
+          {
+            "label": "20GB",
+            "volume": "20 GB"
+          },
+          {
+            "label": "25GB",
+            "volume": "25 GB"
+          }
         ]
       },
       {
         "title": "Economy Service",
         "subtitle": "Most affordable option",
-        "features": [ "Great price", "Daily use", "Reliable quality" ],
+        "features": [
+          "Great price",
+          "Daily use",
+          "Reliable quality"
+        ],
         "note": "Only 5 Tomans per GB",
         "options": [
-          { "label": "20GB", "volume": "20 GB" },
-          { "label": "25GB", "volume": "25 GB" },
-          { "label": "30GB", "volume": "30 GB" },
-          { "label": "35GB", "volume": "35 GB" }
+          {
+            "label": "20GB",
+            "volume": "20 GB"
+          },
+          {
+            "label": "25GB",
+            "volume": "25 GB"
+          },
+          {
+            "label": "30GB",
+            "volume": "30 GB"
+          },
+          {
+            "label": "35GB",
+            "volume": "35 GB"
+          }
         ]
       },
       {
@@ -185,17 +338,38 @@
         "features": [],
         "note": "Fair Use Policy applies",
         "options": [
-          { "label": "Single User", "volume": "Single User" },
-          { "label": "Two Users", "volume": "Two Users" }
+          {
+            "label": "Single User",
+            "volume": "Single User"
+          },
+          {
+            "label": "Two Users",
+            "volume": "Two Users"
+          }
         ]
       }
     ],
     "faq": [
-      { "q": "How do I get the service after purchase?", "a": "Connection details will be sent via Telegram. Usually active in under 15 mins." },
-      { "q": "Does it work on all devices?", "a": "Yes! BlueGate works on mobile (Android/iOS), PC (Windows/Mac) and tablets." },
-      { "q": "How does the refund guarantee work?", "a": "If you are not satisfied in the first 72 hours, just tell support. Full refund, no questions asked." },
-      { "q": "Are my activity logs saved?", "a": "No. BlueGate keeps zero logs. Your privacy is protected." },
-      { "q": "What's the difference between National and Tunnel?", "a": "National is for severe outages. Tunnel is optimized for daily use and higher speeds." }
+      {
+        "q": "How do I get the service after purchase?",
+        "a": "Connection details will be sent via Telegram. Usually active in under 15 mins."
+      },
+      {
+        "q": "Does it work on all devices?",
+        "a": "Yes! BlueGate works on mobile (Android/iOS), PC (Windows/Mac) and tablets."
+      },
+      {
+        "q": "How does the refund guarantee work?",
+        "a": "If you are not satisfied in the first 72 hours, just tell support. Full refund, no questions asked."
+      },
+      {
+        "q": "Are my activity logs saved?",
+        "a": "No. BlueGate keeps zero logs. Your privacy is protected."
+      },
+      {
+        "q": "What's the difference between National and Tunnel?",
+        "a": "National is for severe outages. Tunnel is optimized for daily use and higher speeds."
+      }
     ]
   }
 }
