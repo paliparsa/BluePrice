@@ -75,6 +75,7 @@
   .light-theme .contact-form input, .light-theme .contact-form textarea { background: #f0f4f8; color: #333; border-color: rgba(0,0,0,0.1); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Vazirmatn', sans-serif;
@@ -277,6 +278,10 @@
   }
 
   /* === ANNOUNCEMENT BANNER === */
+  .interactive-hub { margin-bottom: 50px; }
+  .interactive-grid { display: flex; flex-direction: column; gap: 30px; }
+  @media (min-width: 900px) { .interactive-grid { flex-direction: row; align-items: stretch; } .interactive-card { flex: 1; margin-bottom: 0 !important; } }
+
   .announcement-banner { position: relative; z-index: 10; background: linear-gradient(90deg, rgba(168,85,247,0.15), rgba(0,180,255,0.15), rgba(168,85,247,0.15)); border-bottom: 1px solid rgba(0,180,255,0.2); padding: 10px 48px 10px 20px; text-align: center; font-size: 14px; font-weight: 600; color: #c0d8ff; display: flex; align-items: center; justify-content: center; gap: 10px; animation: bannerShimmer 4s linear infinite; background-size: 200% 100%; }
   @keyframes bannerShimmer { 0%{background-position:0% 50%} 100%{background-position:200% 50%} }
   .announcement-banner .close-btn { position: absolute; left: 14px; background: none; border: none; color: rgba(255,255,255,0.4); font-size: 18px; cursor: pointer; line-height: 1; transition: color 0.2s; padding: 4px; }
@@ -290,6 +295,13 @@
   .sticky-logo { display: flex; align-items: center; gap: 10px; }
   .sticky-logo .s-icon { color: var(--neon-blue); font-size: 20px; filter: drop-shadow(0 0 6px rgba(0,180,255,0.5)); }
   .sticky-logo span { font-size: 16px; font-weight: 800; background: linear-gradient(135deg, #fff, var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  
+  .sticky-nav { display: none; gap: 25px; align-items: center; font-size: 14px; font-weight: 600; }
+  @media (min-width: 768px) { .sticky-nav { display: flex; } }
+  .sticky-nav a { color: #ccc; text-decoration: none; transition: color 0.2s, text-shadow 0.2s; }
+  .sticky-nav a:hover { color: #fff; text-shadow: 0 0 10px rgba(0,180,255,0.5); }
+  .light-theme .sticky-nav a { color: #666; }
+  .light-theme .sticky-nav a:hover { color: var(--neon-blue); text-shadow: none; }
   .sticky-cta { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); border: none; border-radius: 10px; padding: 8px 20px; color: #fff; font-family: 'Vazirmatn', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 16px rgba(0,180,255,0.3); }
   .sticky-cta:hover { filter: brightness(1.15); transform: translateY(-1px); }
 
@@ -309,8 +321,9 @@
 
   /* === TUTORIALS === */
   .tutorials-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; }
-  .tutorials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-  .tutorial-card { background: linear-gradient(180deg, rgba(0,60,140,0.08), rgba(0,30,80,0.04)); border: 1px solid rgba(0,180,255,0.12); border-radius: 14px; padding: 20px; text-align: right; }
+  .tutorials-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding-bottom: 15px; -ms-overflow-style: none; scrollbar-width: none; }
+  .tutorials-grid::-webkit-scrollbar { display: none; }
+  .tutorial-card { min-width: 300px; flex-shrink: 0; scroll-snap-align: start; background: linear-gradient(180deg, rgba(0,60,140,0.08), rgba(0,30,80,0.04)); border: 1px solid rgba(0,180,255,0.12); border-radius: 14px; padding: 20px; text-align: right; }
   .tutorial-card.en-mode { text-align: left; }
   .tutorial-card h4 { display: flex; align-items: center; gap: 8px; color: var(--text-white); margin-bottom: 12px; font-size: 18px; }
   .tutorial-card h4 i { font-size: 24px; color: var(--neon-blue); }
@@ -320,8 +333,9 @@
 
   /* === REVIEWS === */
   .reviews-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; }
-  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .review-card { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 20px; position: relative; }
+  .reviews-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding-bottom: 15px; -ms-overflow-style: none; scrollbar-width: none; }
+  .reviews-grid::-webkit-scrollbar { display: none; }
+  .review-card { min-width: 300px; flex-shrink: 0; scroll-snap-align: start; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 20px; position: relative; }
   .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .review-name { font-weight: bold; color: var(--text-white); font-size: 15px; }
   .review-stars { color: #ffaa00; font-size: 13px; letter-spacing: 2px; }
@@ -344,6 +358,61 @@
   .faq-item.open .faq-chevron { transform: rotate(180deg); }
   .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 14px; color: var(--text-muted); line-height: 1.8; padding: 0 20px; }
   .faq-item.open .faq-a { max-height: 300px; padding: 0 20px 16px; }
+
+  /* === INTERACTIVE FEATURES === */
+  .scanner-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; display: none; }
+  .scanner-inner { background: rgba(20,0,0,0.4); border: 2px solid var(--neon-red); border-radius: 16px; padding: 30px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 0 30px rgba(255,45,85,0.2); transition: all 0.5s ease; }
+  .scanner-inner.protected { background: rgba(0,20,0,0.4); border-color: var(--neon-green); box-shadow: 0 0 30px rgba(0,255,136,0.2); }
+  .scanner-title { font-size: 24px; font-weight: 800; color: var(--neon-red); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+  .scanner-inner.protected .scanner-title { color: var(--neon-green); }
+  .scanner-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 24px; }
+  .scanner-item { background: rgba(0,0,0,0.5); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,45,85,0.3); font-family: monospace; color: #ff88aa; font-size: 14px; text-align: center; transition: all 0.5s ease; }
+  .scanner-inner.protected .scanner-item { border-color: rgba(0,255,136,0.3); color: #88ffbb; }
+  .scanner-item span { display: block; font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 4px; font-family: 'Vazirmatn', sans-serif; }
+  .scanner-toggle-wrap { display: flex; justify-content: center; align-items: center; gap: 15px; }
+  .scanner-toggle-wrap label { font-size: 16px; font-weight: bold; color: #fff; cursor: pointer; }
+  .matrix-bg { position: absolute; top:0; left:0; right:0; bottom:0; opacity: 0; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="10" y="20" fill="%2300ff88" font-family="monospace" font-size="12">1010110</text><text x="40" y="50" fill="%2300ff88" font-family="monospace" font-size="12">0101001</text></svg>'); z-index: -1; transition: opacity 0.5s; pointer-events: none; }
+  .scanner-inner.protected .matrix-bg { opacity: 0.15; animation: scrollBg 2s linear infinite; }
+  @keyframes scrollBg { from { background-position: 0 0; } to { background-position: 0 100px; } }
+  @media (max-width: 700px) { .scanner-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .speedtest-section { max-width: 800px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; display: none; text-align: center; }
+  .speedtest-inner { background: linear-gradient(180deg, rgba(0,60,140,0.08), rgba(0,30,80,0.04)); border: 1px solid rgba(0,180,255,0.12); border-radius: 16px; padding: 40px 20px; box-shadow: 0 0 20px rgba(0,180,255,0.05); }
+  .speed-meter-wrap { position: relative; width: 200px; height: 100px; margin: 0 auto 20px; overflow: hidden; }
+  .speed-meter-bg { width: 200px; height: 200px; border-radius: 50%; border: 10px solid rgba(255,255,255,0.05); border-bottom-color: transparent; border-left-color: transparent; transform: rotate(-45deg); position: absolute; top: 0; left: 0; }
+  .speed-meter-fill { width: 200px; height: 200px; border-radius: 50%; border: 10px solid var(--neon-cyan); border-bottom-color: transparent; border-left-color: transparent; transform: rotate(-45deg); position: absolute; top: 0; left: 0; transition: transform 2s cubic-bezier(0.2, 1, 0.3, 1); filter: drop-shadow(0 0 10px rgba(0,229,255,0.5)); }
+  .speed-value-wrap { font-size: 36px; font-weight: 900; color: #fff; margin-bottom: 5px; }
+  .speed-value-wrap span { font-size: 14px; color: var(--text-muted); font-weight: 600; }
+  .speed-btn { background: var(--neon-blue); color: #fff; border: none; padding: 12px 30px; border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; font-family: 'Vazirmatn'; box-shadow: 0 0 15px rgba(0,180,255,0.4); transition: transform 0.2s; }
+  .speed-btn:active { transform: scale(0.95); }
+
+  .bird-mini { position: fixed; top: 20%; left: -100px; width: 40px; height: 40px; z-index: 100; cursor: crosshair; filter: drop-shadow(0 0 10px var(--neon-blue)); transition: transform 0.1s; display: none; }
+  .bird-mini svg { width: 100%; height: 100%; animation: flap 0.3s infinite alternate; }
+  @keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(0.7); } }
+  .bird-modal, .wheel-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; }
+  .modal-content { background: var(--bg-deep); border: 2px solid var(--neon-blue); border-radius: 20px; padding: 40px; text-align: center; max-width: 400px; box-shadow: 0 0 40px rgba(0,180,255,0.3); animation: scaleIn 0.3s ease-out; position: relative; }
+  @keyframes scaleIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-close { position: absolute; top: 15px; left: 15px; background: none; border: none; color: #fff; font-size: 20px; cursor: pointer; }
+  
+  .wheel-wrap { width: 250px; height: 250px; border-radius: 50%; margin: 0 auto 20px; position: relative; border: 5px solid #fff; box-shadow: 0 0 20px var(--neon-purple); overflow: hidden; transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); direction: ltr; }
+  .wheel-slice { position: absolute; top: 0; right: 0; width: 50%; height: 50%; transform-origin: 0% 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; color: #fff; box-sizing: border-box; }
+  .wheel-slice:nth-child(1) { background: #ff2d55; transform: rotate(0deg) skewY(-30deg); }
+  .wheel-slice:nth-child(2) { background: #a855f7; transform: rotate(60deg) skewY(-30deg); }
+  .wheel-slice:nth-child(3) { background: #00b4ff; transform: rotate(120deg) skewY(-30deg); }
+  .wheel-slice:nth-child(4) { background: #00ff88; transform: rotate(180deg) skewY(-30deg); }
+  .wheel-slice:nth-child(5) { background: #ffaa00; transform: rotate(240deg) skewY(-30deg); }
+  .wheel-slice:nth-child(6) { background: #1a202c; transform: rotate(300deg) skewY(-30deg); }
+  .wheel-slice span { transform: skewY(30deg) rotate(30deg); position: absolute; top: 40px; right: 20px; white-space: nowrap; font-size: 13px; }
+  .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 25px solid #fff; z-index: 2; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
+  .boss-btn { position: fixed; bottom: 20px; left: 20px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; z-index: 900; backdrop-filter: blur(5px); display: none; }
+  .boss-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #fff; z-index: 999999; display: none; }
+  .boss-google { width: 100%; height: 100%; background: #fff; display: none; flex-direction: column; align-items: center; justify-content: center; font-family: arial, sans-serif; }
+  .boss-google-logo { font-size: 80px; font-weight: bold; margin-bottom: 30px; letter-spacing: -2px; }
+  .boss-google-logo span:nth-child(1){color:#4285F4;} .boss-google-logo span:nth-child(2){color:#EA4335;} .boss-google-logo span:nth-child(3){color:#FBBC05;} .boss-google-logo span:nth-child(4){color:#4285F4;} .boss-google-logo span:nth-child(5){color:#34A853;} .boss-google-logo span:nth-child(6){color:#EA4335;}
+  .boss-google-input { width: 500px; max-width: 90%; padding: 12px 20px; border: 1px solid #dfe1e5; border-radius: 24px; font-size: 16px; margin-bottom: 30px; box-shadow: 0 1px 6px rgba(32,33,36,0.28); }
+  .boss-google-btns button { background: #f8f9fa; border: 1px solid #f8f9fa; border-radius: 4px; color: #3c4043; padding: 10px 20px; font-size: 14px; margin: 0 5px; cursor: pointer; }
+  .boss-excel { width: 100%; height: 100%; background: #f3f2f1; display: none; font-family: sans-serif; color: #333; }
 </style>
 </head>
 <body>
@@ -369,6 +438,13 @@
       <i class="fas fa-shield-halved s-icon"></i>
       <span id="sticky-brand">BlueGate</span>
     </div>
+    <nav class="sticky-nav" id="main-nav">
+      <a href="#pricing-grid">تعرفه‌ها</a>
+      <a href="#tools">ابزارها</a>
+      <a href="#reviews-section">نظرات</a>
+      <a href="#faq-section">سوالات</a>
+      <a href="#" id="nav-contact-link" onclick="openContactModal(event)">پشتیبانی</a>
+    </nav>
     <div class="top-actions">
       <button class="theme-toggle-btn" onclick="toggleLang()" title="تغییر زبان / Language">
         <span id="lang-text" style="font-size:14px; font-weight:bold;">EN</span>
@@ -430,6 +506,8 @@
     </div>
   </div>
 
+
+
   <section class="pricing-grid" id="pricing-grid"></section>
 
   <section class="discount-section">
@@ -448,6 +526,45 @@
   </section>
 
   <section class="features-row" id="features-row"></section>
+
+  <section class="interactive-hub" id="tools">
+    <div class="interactive-grid">
+      <div class="interactive-card scanner-card" id="scanner-section" style="display:none">
+        <div class="scanner-inner" id="scanner-box">
+          <div class="matrix-bg"></div>
+          <div class="scanner-title" id="scanner-title">What your ISP sees</div>
+          <div class="scanner-grid">
+            <div class="scanner-item"><span>IP Address</span><div id="scan-ip">Scanning...</div></div>
+            <div class="scanner-item"><span>Operating System</span><div id="scan-os">Loading...</div></div>
+            <div class="scanner-item"><span>Browser</span><div id="scan-browser">Loading...</div></div>
+            <div class="scanner-item"><span>Timezone</span><div id="scan-tz">Loading...</div></div>
+          </div>
+          <div class="scanner-toggle-wrap">
+            <label for="scanner-toggle" id="scanner-label">Simulate BlueGate</label>
+            <div class="toggle-container" style="margin-bottom:0; width:120px; border-radius:50px;" onclick="toggleScanner()">
+              <div class="toggle-slider" id="scanner-slider" style="width: 50%; left: 0; background: var(--neon-red);"></div>
+              <div class="toggle-btn" style="color:#fff">OFF</div>
+              <div class="toggle-btn" style="color:rgba(255,255,255,0.5)">ON</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="interactive-card speedtest-card" id="speedtest-section" style="display:none">
+        <div class="speedtest-inner">
+          <div class="faq-title" style="justify-content:center; border:none; margin-bottom:30px;" id="speed-title"><i class="fas fa-tachometer-alt"></i> Speed Test Simulator</div>
+          <div class="speed-meter-wrap">
+            <div class="speed-meter-bg"></div>
+            <div class="speed-meter-fill" id="speed-fill"></div>
+          </div>
+          <div class="speed-value-wrap"><span id="speed-val">0.00</span> <span>Mbps</span></div>
+          <div style="color:var(--neon-green); font-size:14px; font-weight:bold; margin-bottom:20px; opacity:0; transition:opacity 0.3s;" id="speed-ping">Ping: 32ms</div>
+          <button class="speed-btn" id="speed-btn" onclick="runSpeedTest()">Run Speed Test</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
 
   <footer class="footer-section">
     <button class="telegram-btn" id="tgBtn">
@@ -477,15 +594,78 @@
   <div id="faq-list"></div>
 </section>
 
-<!-- Contact Form Section -->
-<section class="contact-section" id="contact-section" style="display:none">
-  <div class="faq-title" id="contact-title"><i class="fas fa-envelope"></i> تماس با ما</div>
-  <form class="contact-form" id="contact-form" action="" method="POST">
-    <input type="email" name="email" id="contact-email" placeholder="ایمیل شما (اختیاری)" required>
-    <textarea name="message" id="contact-message" rows="4" placeholder="پیام خود را بنویسید..." required></textarea>
-    <button type="submit" class="discount-btn" id="contact-submit">ارسال پیام</button>
-  </form>
-</section>
+<!-- Contact Form Modal -->
+<div class="wheel-modal" id="contact-modal" style="display:none; align-items:center;">
+  <div class="modal-content" style="max-width: 500px; width: 90%; background: linear-gradient(135deg, #0a1128, #111a3a); border: 1px solid rgba(0,180,255,0.2); border-radius: 20px;">
+    <button class="modal-close" onclick="closeContactModal()">&#x2715;</button>
+    <div class="faq-title" id="contact-title" style="margin-top:20px; border-bottom: none;"><i class="fas fa-envelope"></i> تماس با ما</div>
+    <form class="contact-form" id="contact-form" action="" method="POST" style="margin-bottom: 0;">
+      <input type="email" name="email" id="contact-email" placeholder="ایمیل شما (اختیاری)" required>
+      <textarea name="message" id="contact-message" rows="4" placeholder="پیام خود را بنویسید..." required></textarea>
+      <button type="submit" class="discount-btn" id="contact-submit">ارسال پیام</button>
+    </form>
+  </div>
+</div>
+
+<!-- Interactive Elements -->
+<div id="bird-mini" class="bird-mini" onclick="catchBird()">
+  <svg viewBox="0 0 100 100" fill="none"><defs><linearGradient id="birdGradMini" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ffffff"/><stop offset="50%" style="stop-color:#00ff88"/><stop offset="100%" style="stop-color:#0088dd"/></linearGradient></defs><path d="M50 25 C55 20, 70 15, 80 20 C85 22, 88 28, 82 32 C78 35, 65 33, 58 30 C55 34, 52 40, 50 48 C48 40, 45 34, 42 30 C35 33, 22 35, 18 32 C12 28, 15 22, 20 20 C30 15, 45 20, 50 25Z" fill="url(#birdGradMini)" opacity="0.9"/></svg>
+</div>
+
+<div id="bird-modal" class="bird-modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="document.getElementById('bird-modal').style.display='none'">&#x2715;</button>
+    <i class="fas fa-dove" style="font-size:48px; color:var(--neon-cyan); margin-bottom:15px;"></i>
+    <h3 style="margin-bottom:10px; color:var(--text-white);" id="bird-modal-title">You caught the BlueBird!</h3>
+    <p style="color:var(--text-muted); margin-bottom:20px;" id="bird-modal-desc">Here is your secret discount code:</p>
+    <div style="background:rgba(0,180,255,0.1); border:1px dashed var(--neon-blue); padding:10px; font-size:24px; font-weight:900; letter-spacing:2px; color:var(--neon-green); border-radius:10px;" id="bird-code-display"></div>
+  </div>
+</div>
+
+<div id="wheel-modal" class="wheel-modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeWheel()">&#x2715;</button>
+    <h3 style="margin-bottom:20px; color:var(--text-white);" id="wheel-title">Spin & Win!</h3>
+    <div class="wheel-pointer"></div>
+    <div class="wheel-wrap" id="wheel-wrap">
+      <div class="wheel-slice"><span>10% OFF</span></div>
+      <div class="wheel-slice"><span>Try Again</span></div>
+      <div class="wheel-slice"><span>20% OFF</span></div>
+      <div class="wheel-slice"><span>Free Month</span></div>
+      <div class="wheel-slice"><span>Oops</span></div>
+      <div class="wheel-slice"><span id="wheel-win-slice">WINNER</span></div>
+    </div>
+    <button class="speed-btn" id="spin-btn" onclick="spinWheel()">SPIN NOW</button>
+  </div>
+</div>
+
+<button id="boss-btn" class="boss-btn" onclick="activateBossKey()">Hide (ESC)</button>
+<div id="boss-overlay" class="boss-overlay">
+  <div id="boss-google" class="boss-google">
+    <div class="boss-google-logo"><span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span></div>
+    <input type="text" class="boss-google-input" placeholder="Search Google or type a URL">
+    <div class="boss-google-btns">
+      <button>Google Search</button>
+      <button>I'm Feeling Lucky</button>
+    </div>
+  </div>
+  <div id="boss-excel" class="boss-excel">
+    <div style="background:#217346; color:#fff; padding:10px 15px; font-size:14px; display:flex; align-items:center; gap:10px;">
+      <i class="fas fa-file-excel" style="font-size:18px;"></i> Book1 - Excel
+    </div>
+    <div style="padding:10px; background:#f3f2f1; border-bottom:1px solid #e1dfdd; display:flex; gap:20px; font-size:13px;">
+      <span>File</span><span style="font-weight:bold; border-bottom:2px solid #217346; padding-bottom:10px; margin-bottom:-11px;">Home</span><span>Insert</span><span>Page Layout</span><span>Formulas</span><span>Data</span>
+    </div>
+    <table style="width:100%; border-collapse:collapse; background:#fff; font-size:12px;">
+      <tr style="background:#f3f2f1; text-align:center; color:#605e5c;">
+        <th style="border:1px solid #e1dfdd; width:40px; height:20px;"></th><th style="border:1px solid #e1dfdd;">A</th><th style="border:1px solid #e1dfdd;">B</th><th style="border:1px solid #e1dfdd;">C</th>
+      </tr>
+      <tr><td style="background:#f3f2f1; text-align:center; border:1px solid #e1dfdd; height:22px;">1</td><td style="border:1px solid #e1dfdd; padding:0 5px;">Q1 Revenue</td><td style="border:1px solid #e1dfdd; padding:0 5px;">$45,000</td><td style="border:1px solid #e1dfdd;"></td></tr>
+      <tr><td style="background:#f3f2f1; text-align:center; border:1px solid #e1dfdd; height:22px;">2</td><td style="border:1px solid #e1dfdd; padding:0 5px;">Q2 Projected</td><td style="border:1px solid #e1dfdd; padding:0 5px;">$52,000</td><td style="border:1px solid #e1dfdd;"></td></tr>
+      <tr><td style="background:#f3f2f1; text-align:center; border:1px solid #e1dfdd; height:22px;">3</td><td style="border:1px solid #e1dfdd;"></td><td style="border:1px solid #e1dfdd;"></td><td style="border:1px solid #e1dfdd;"></td></tr>
+    </table>
+  </div>
+</div>
 
 <script>
   let siteConfig = {};
@@ -698,10 +878,10 @@
 
     // Contact Form
     if (cfg.contactForm && cfg.contactForm.enabled && cfg.contactForm.endpoint) {
-      document.getElementById('contact-section').style.display = 'block';
+      document.getElementById('nav-contact-link').style.display = 'inline';
       document.getElementById('contact-form').action = cfg.contactForm.endpoint;
     } else {
-      document.getElementById('contact-section').style.display = 'none';
+      document.getElementById('nav-contact-link').style.display = 'none';
     }
 
     // FAQ section
@@ -764,6 +944,66 @@
     initCardGlow();
     initStickyHeader();
 
+    // INTERACTIVE TRANSLATIONS
+    var navLinks = document.querySelectorAll('#main-nav a');
+    if (currentLang === 'en') {
+      if(navLinks.length >= 5) {
+        navLinks[0].textContent = 'Pricing';
+        navLinks[1].textContent = 'Tools';
+        navLinks[2].textContent = 'Reviews';
+        navLinks[3].textContent = 'FAQ';
+        navLinks[4].textContent = 'Support';
+      }
+      document.getElementById('scanner-title').textContent = (cfg.interactive && cfg.interactive.scanner && cfg.interactive.scanner.title) ? cfg.interactive.scanner.title : 'What your ISP sees';
+      document.querySelectorAll('.scanner-item span')[0].textContent = 'IP Address';
+      document.querySelectorAll('.scanner-item span')[1].textContent = 'Operating System';
+      document.querySelectorAll('.scanner-item span')[2].textContent = 'Browser';
+      document.querySelectorAll('.scanner-item span')[3].textContent = 'Timezone';
+      document.getElementById('scanner-label').textContent = 'Simulate BlueGate';
+      
+      document.getElementById('speed-title').innerHTML = '<i class="fas fa-tachometer-alt"></i> Speed Test Simulator';
+      document.getElementById('speed-btn').textContent = 'Run Speed Test';
+      
+      document.getElementById('bird-modal-title').textContent = 'You caught the BlueBird!';
+      document.getElementById('bird-modal-desc').textContent = 'Here is your secret discount code:';
+      
+      document.getElementById('wheel-title').textContent = 'Spin & Win!';
+      document.getElementById('spin-btn').textContent = 'SPIN NOW';
+      var ws = document.querySelectorAll('.wheel-slice span');
+      ws[0].textContent = '10% OFF'; ws[1].textContent = 'Try Again'; ws[2].textContent = '20% OFF';
+      ws[3].textContent = 'Free Month'; ws[4].textContent = 'Oops'; ws[5].textContent = 'WINNER';
+      document.getElementById('boss-btn').textContent = 'Hide (ESC)';
+    } else {
+      if(navLinks.length >= 5) {
+        navLinks[0].textContent = 'تعرفه‌ها';
+        navLinks[1].textContent = 'ابزارها';
+        navLinks[2].textContent = 'نظرات';
+        navLinks[3].textContent = 'سوالات';
+        navLinks[4].textContent = 'پشتیبانی';
+      }
+      document.getElementById('scanner-title').textContent = 'آنچه ارائه‌دهنده اینترنت شما می‌بیند';
+      document.querySelectorAll('.scanner-item span')[0].textContent = 'آدرس IP';
+      document.querySelectorAll('.scanner-item span')[1].textContent = 'سیستم عامل';
+      document.querySelectorAll('.scanner-item span')[2].textContent = 'مرورگر';
+      document.querySelectorAll('.scanner-item span')[3].textContent = 'منطقه زمانی';
+      document.getElementById('scanner-label').textContent = 'شبیه‌سازی BlueGate';
+      
+      document.getElementById('speed-title').innerHTML = '<i class="fas fa-tachometer-alt"></i> شبیه‌ساز تست سرعت';
+      document.getElementById('speed-btn').textContent = 'شروع تست سرعت';
+      
+      document.getElementById('bird-modal-title').textContent = 'شما پرنده آبی را گرفتید!';
+      document.getElementById('bird-modal-desc').textContent = 'این هم کد تخفیف مخفی شما:';
+      
+      document.getElementById('wheel-title').textContent = 'بچرخان و برنده شو!';
+      document.getElementById('spin-btn').textContent = 'بچرخان';
+      var ws = document.querySelectorAll('.wheel-slice span');
+      ws[0].textContent = '۱۰٪ تخفیف'; ws[1].textContent = 'دوباره تلاش کن'; ws[2].textContent = '۲۰٪ تخفیف';
+      ws[3].textContent = 'یک ماه رایگان'; ws[4].textContent = 'پوچ'; ws[5].textContent = 'برنده';
+      document.getElementById('boss-btn').textContent = 'مخفی کردن (ESC)';
+    }
+
+    initInteractive(cfg.interactive);
+
     var subtitleEl = document.getElementById('subtitle-el');
     subtitleEl.textContent = '';
     var originalText = cfg.site.subtitle;
@@ -796,9 +1036,10 @@
 
   function initToggles() {
     document.querySelectorAll('.toggle-container').forEach(function(container) {
+      var card = container.closest('.price-card');
+      if (!card) return; // Skip non-pricing toggles (e.g. scanner)
       var btns = container.querySelectorAll('.toggle-btn');
       var slider = container.querySelector('.toggle-slider');
-      var card = container.closest('.price-card');
       var priceValueEl = card.querySelector('.price-value');
       var priceOrigEl = card.querySelector('.price-original');
       var savingsEl = card.querySelector('.savings-label');
@@ -960,6 +1201,175 @@
   window.addEventListener('resize', function() { resize(); createParticles(); });
   resize(); createParticles(); drawFrame();
 
+  // =========================================================
+  // INTERACTIVE FEATURES
+  // =========================================================
+  let interactiveConfig = {};
+  
+  function initInteractive(cfg) {
+    interactiveConfig = cfg || {};
+    
+    // Scanner
+    if (interactiveConfig.scanner && interactiveConfig.scanner.enabled) {
+      document.getElementById('scanner-section').style.display = 'block';
+      if (interactiveConfig.scanner.title) document.getElementById('scanner-title').textContent = interactiveConfig.scanner.title;
+      // Get fake data
+      fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>document.getElementById('scan-ip').textContent=d.ip).catch(()=>document.getElementById('scan-ip').textContent='Unknown');
+      document.getElementById('scan-browser').textContent = (navigator.userAgent.match(/(chrome|safari|firefox|edge)\/?\s*(\d+)/i) || ['','Unknown'])[1];
+      document.getElementById('scan-os').textContent = navigator.platform;
+      try { document.getElementById('scan-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch(e){ document.getElementById('scan-tz').textContent = 'Unknown';}
+    }
+
+    // Speed Test
+    if (interactiveConfig.speed && interactiveConfig.speed.enabled) {
+      document.getElementById('speedtest-section').style.display = 'block';
+    }
+
+    // Bird
+    if (interactiveConfig.bird && interactiveConfig.bird.enabled) {
+      setInterval(spawnBird, Math.random() * 20000 + 10000); // 10-30s
+    }
+
+    // Wheel
+    if (interactiveConfig.wheel && interactiveConfig.wheel.enabled) {
+      if (!localStorage.getItem('wheel_spun')) {
+        setTimeout(function() { document.getElementById('wheel-modal').style.display = 'flex'; }, 3000);
+      }
+    }
+
+    // Boss Key
+    if (interactiveConfig.boss && interactiveConfig.boss.enabled) {
+      document.getElementById('boss-btn').style.display = 'block';
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') activateBossKey();
+      });
+    }
+  }
+
+  // Scanner Logic
+  function toggleScanner() {
+    var box = document.getElementById('scanner-box');
+    var isProtected = box.classList.toggle('protected');
+    var slider = document.getElementById('scanner-slider');
+    if (isProtected) {
+      slider.style.left = '50%';
+      slider.style.background = 'var(--neon-green)';
+      document.getElementById('scan-ip').textContent = '198.51.100.' + Math.floor(Math.random()*255);
+      document.getElementById('scan-browser').textContent = 'ENCRYPTED';
+      document.getElementById('scan-os').textContent = 'SECURE_NODE';
+      document.getElementById('scan-tz').textContent = 'Hidden';
+    } else {
+      slider.style.left = '0';
+      slider.style.background = 'var(--neon-red)';
+      initInteractive(interactiveConfig); // reload real data
+    }
+  }
+
+  // Speed Test Logic
+  let isSpeedTestRunning = false;
+  function runSpeedTest() {
+    if (isSpeedTestRunning) return;
+    isSpeedTestRunning = true;
+    var maxSpeed = interactiveConfig.speed ? interactiveConfig.speed.max : 850;
+    var fill = document.getElementById('speed-fill');
+    var val = document.getElementById('speed-val');
+    var ping = document.getElementById('speed-ping');
+    var btn = document.getElementById('speed-btn');
+    btn.textContent = 'Testing...';
+    btn.style.opacity = '0.5';
+    ping.style.opacity = '0';
+    
+    fill.style.transition = 'transform 3s cubic-bezier(0.2, 1, 0.3, 1)';
+    var targetRot = -45 + (180 * (0.8 + Math.random()*0.2)); // 80-100% of max
+    fill.style.transform = 'rotate(' + targetRot + 'deg)';
+    
+    var startTime = Date.now();
+    var duration = 3000;
+    function updateNum() {
+      var elapsed = Date.now() - startTime;
+      var p = elapsed / duration;
+      if (p >= 1) {
+        val.textContent = Math.floor(maxSpeed * (0.8 + Math.random()*0.15));
+        ping.style.opacity = '1';
+        btn.textContent = 'Run Again';
+        btn.style.opacity = '1';
+        isSpeedTestRunning = false;
+      } else {
+        var easeOut = 1 - Math.pow(1 - p, 3);
+        val.textContent = Math.floor(maxSpeed * easeOut);
+        requestAnimationFrame(updateNum);
+      }
+    }
+    requestAnimationFrame(updateNum);
+  }
+
+  // Bird Logic
+  function spawnBird() {
+    var bird = document.getElementById('bird-mini');
+    bird.style.top = (10 + Math.random() * 70) + '%';
+    bird.style.display = 'block';
+    bird.style.transition = 'none';
+    bird.style.transform = 'translateX(-100px)';
+    
+    setTimeout(function() {
+      bird.style.transition = 'transform 5s linear';
+      bird.style.transform = 'translateX(' + (window.innerWidth + 100) + 'px)';
+    }, 100);
+
+    setTimeout(function() { bird.style.display = 'none'; }, 5100);
+  }
+  function catchBird() {
+    var bird = document.getElementById('bird-mini');
+    bird.style.display = 'none';
+    document.getElementById('bird-code-display').textContent = (interactiveConfig.bird && interactiveConfig.bird.code) ? interactiveConfig.bird.code : 'BLUEBIRD';
+    document.getElementById('bird-modal').style.display = 'flex';
+  }
+
+  // Wheel Logic
+  function closeWheel() {
+    document.getElementById('wheel-modal').style.display = 'none';
+    localStorage.setItem('wheel_spun', '1');
+  }
+  function spinWheel() {
+    var wrap = document.getElementById('wheel-wrap');
+    var btn = document.getElementById('spin-btn');
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    // The WINNER slice is slice index 5 (6th slice)
+    // 360 / 6 = 60 degrees per slice. Winner is at 300deg. We want it at top (0deg).
+    // Rotate extra 5 full circles + offset
+    var offset = 360 - 300; 
+    var targetDeg = 360 * 5 + offset + (Math.random()*20 - 10);
+    wrap.style.transform = 'rotate(' + targetDeg + 'deg)';
+    
+    setTimeout(function() {
+      var code = (interactiveConfig.wheel && interactiveConfig.wheel.code) ? interactiveConfig.wheel.code : 'WHEELWIN';
+      document.getElementById('wheel-title').textContent = 'You Won!';
+      btn.textContent = 'Copy Code: ' + code;
+      btn.style.opacity = '1';
+      btn.onclick = function() {
+        navigator.clipboard.writeText(code);
+        closeWheel();
+      };
+    }, 4100);
+  }
+
+  // Boss Key Logic
+  function activateBossKey() {
+    var overlay = document.getElementById('boss-overlay');
+    var theme = (interactiveConfig.boss && interactiveConfig.boss.theme) || 'google';
+    document.getElementById('boss-google').style.display = 'none';
+    document.getElementById('boss-excel').style.display = 'none';
+    
+    if (overlay.style.display === 'block') {
+      overlay.style.display = 'none'; // toggle off
+    } else {
+      overlay.style.display = 'block';
+      if (theme === 'google') document.getElementById('boss-google').style.display = 'block';
+      else document.getElementById('boss-excel').style.display = 'block';
+    }
+  }
+
   loadConfig();
   initTheme();
   
@@ -972,6 +1382,14 @@
         console.log('ServiceWorker registration failed: ', err);
       });
     });
+  }
+
+  function openContactModal(e) {
+    if(e) e.preventDefault();
+    document.getElementById('contact-modal').style.display = 'flex';
+  }
+  function closeContactModal() {
+    document.getElementById('contact-modal').style.display = 'none';
   }
 </script>
 </body>
