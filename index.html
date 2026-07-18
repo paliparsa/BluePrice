@@ -18,7 +18,33 @@
     --neon-red: #ff2d55;
     --text-white: #f0f4ff;
     --text-muted: #9aafcc;
+    --card-bg: rgba(10, 18, 40, 0.7);
+    --card-border: rgba(0, 180, 255, 0.15);
   }
+
+  .light-theme {
+    --bg-deep: #f4f7f6;
+    --neon-blue: #0066ff;
+    --neon-purple: #8b2fc9;
+    --neon-cyan: #0088aa;
+    --neon-green: #00a040;
+    --neon-gold: #e67300;
+    --neon-red: #e60026;
+    --text-white: #1a202c;
+    --text-muted: #4a5568;
+    --card-bg: rgba(255, 255, 255, 0.9);
+    --card-border: rgba(0, 0, 0, 0.1);
+  }
+
+  .light-theme .timer-box { background: rgba(255, 255, 255, 0.8); color: var(--neon-red); }
+  .light-theme .sticky-inner { background: rgba(255, 255, 255, 0.95); }
+  .light-theme .price-card { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .light-theme .toggle-btn { border-color: rgba(0,0,0,0.15); color: var(--text-muted); }
+  .light-theme .toggle-btn.active { color: #fff; }
+  .light-theme .discount-inner { background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
+  .light-theme .discount-input { background: #f0f4f8; border-color: rgba(0,0,0,0.1); color: var(--text-white); }
+  .light-theme .faq-item { background: #fff; border-color: rgba(0,0,0,0.1); }
+  .light-theme .feature-box { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -201,6 +227,10 @@
   @keyframes streakMove { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
   .lens-flare { position: fixed; width: 200px; height: 200px; border-radius: 50%; background: radial-gradient(circle, rgba(0,180,255,0.06) 0%, transparent 70%); pointer-events: none; z-index: 0; }
 
+  .theme-toggle-btn { background: none; border: none; color: var(--text-white); font-size: 20px; cursor: pointer; transition: transform 0.3s; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .theme-toggle-btn:hover { background: rgba(128,128,128,0.1); transform: rotate(15deg); }
+  .top-actions { display: flex; align-items: center; gap: 12px; }
+
   @media (max-width: 1100px) { .pricing-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 700px) {
     .pricing-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; gap: 16px; padding-bottom: 20px; scrollbar-width: none; }
@@ -230,7 +260,7 @@
   .sticky-logo { display: flex; align-items: center; gap: 10px; }
   .sticky-logo .s-icon { color: var(--neon-blue); font-size: 20px; filter: drop-shadow(0 0 6px rgba(0,180,255,0.5)); }
   .sticky-logo span { font-size: 16px; font-weight: 800; background: linear-gradient(135deg, #fff, var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .sticky-cta { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); border: none; border-radius: 10px; padding: 8px 20px; color: #000; font-family: 'Vazirmatn', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 16px rgba(0,180,255,0.3); }
+  .sticky-cta { background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple)); border: none; border-radius: 10px; padding: 8px 20px; color: #fff; font-family: 'Vazirmatn', sans-serif; font-weight: 800; font-size: 14px; cursor: pointer; transition: all 0.3s; box-shadow: 0 0 16px rgba(0,180,255,0.3); }
   .sticky-cta:hover { filter: brightness(1.15); transform: translateY(-1px); }
 
   /* === POPULAR BADGE === */
@@ -283,24 +313,40 @@
       <i class="fas fa-shield-halved s-icon"></i>
       <span id="sticky-brand">BlueGate</span>
     </div>
-    <button class="sticky-cta" onclick="document.getElementById('pricing-grid').scrollIntoView({behavior:'smooth'})">خرید پلن &#x2193;</button>
+    <div class="top-actions">
+      <button class="theme-toggle-btn" onclick="toggleLang()" title="تغییر زبان / Language">
+        <span id="lang-text" style="font-size:14px; font-weight:bold;">EN</span>
+      </button>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" title="تغییر پوسته">
+        <i class="fas fa-moon" id="sticky-theme-icon"></i>
+      </button>
+      <button class="sticky-cta" onclick="document.getElementById('pricing-grid').scrollIntoView({behavior:'smooth'})">خرید پلن &#x2193;</button>
+    </div>
   </div>
 </div>
 
 <div id="toast" class="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg"></span></div>
 
 <main class="banner-wrapper">
-
   <header class="top-row">
     <div class="brand-logo">
       <div class="bird-logo"><svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="birdGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ffffff"/><stop offset="50%" style="stop-color:#60c8ff"/><stop offset="100%" style="stop-color:#0088dd"/></linearGradient></defs><path d="M50 25 C55 20, 70 15, 80 20 C85 22, 88 28, 82 32 C78 35, 65 33, 58 30 C55 34, 52 40, 50 48 C48 40, 45 34, 42 30 C35 33, 22 35, 18 32 C12 28, 15 22, 20 20 C30 15, 45 20, 50 25Z" fill="url(#birdGrad)" opacity="0.9"/><path d="M42 30 C35 38, 18 45, 10 55 C15 50, 25 44, 38 38Z" fill="url(#birdGrad)" opacity="0.7"/><path d="M58 30 C65 38, 82 45, 90 55 C85 50, 75 44, 62 38Z" fill="url(#birdGrad)" opacity="0.7"/><path d="M50 48 C48 55, 44 62, 40 68 C45 63, 50 58, 50 58 C50 58, 55 63, 60 68 C56 62, 52 55, 50 48Z" fill="url(#birdGrad)" opacity="0.6"/></svg></div>
       <span class="brand-name" id="brand-name">BlueGate</span>
     </div>
-    <aside class="gift-badge">
-      <div class="gift-icon"><i class="fas fa-gift"></i></div>
-      <p id="gift-badge-text">کیفیت، امنیت<br>و قیمت مناسب<br>در یکجا!</p>
-      <div class="heart-icon"><i class="fas fa-heart"></i></div>
-    </aside>
+    
+    <div class="top-actions">
+      <button class="theme-toggle-btn" onclick="toggleLang()" title="تغییر زبان / Language">
+        <span id="main-lang-text" style="font-size:14px; font-weight:bold;">EN</span>
+      </button>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" title="تغییر پوسته">
+        <i class="fas fa-moon" id="main-theme-icon"></i>
+      </button>
+      <aside class="gift-badge">
+        <div class="gift-icon"><i class="fas fa-gift"></i></div>
+        <p id="gift-badge-text">کیفیت، امنیت<br>و قیمت مناسب<br>در یکجا!</p>
+        <div class="heart-icon"><i class="fas fa-heart"></i></div>
+      </aside>
+    </div>
   </header>
 
   <section class="main-logo-section">
@@ -368,6 +414,56 @@
   let discountCodes = {};
   let activeDiscount = 0; // current discount percentage applied
 
+  // =========================================================
+  // THEME TOGGLE
+  // =========================================================
+  function toggleTheme() {
+    var isLight = document.body.classList.toggle('light-theme');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    updateThemeIcons(isLight);
+  }
+  function updateThemeIcons(isLight) {
+    var iconClass = isLight ? 'fa-sun' : 'fa-moon';
+    document.getElementById('main-theme-icon').className = 'fas ' + iconClass;
+    document.getElementById('sticky-theme-icon').className = 'fas ' + iconClass;
+  }
+  function initTheme() {
+    var savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light' || (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+      document.body.classList.add('light-theme');
+      updateThemeIcons(true);
+    } else {
+      updateThemeIcons(false);
+    }
+  }
+
+  // =========================================================
+  // LANGUAGE TOGGLE
+  // =========================================================
+  let currentLang = localStorage.getItem('lang') || 'fa';
+  function toggleLang() {
+    currentLang = currentLang === 'fa' ? 'en' : 'fa';
+    localStorage.setItem('lang', currentLang);
+    document.getElementById('lang-text').textContent = currentLang === 'fa' ? 'EN' : 'FA';
+    document.getElementById('main-lang-text').textContent = currentLang === 'fa' ? 'EN' : 'FA';
+    document.body.style.direction = currentLang === 'fa' ? 'rtl' : 'ltr';
+    if (cfg) renderPage(cfg);
+  }
+
+  // =========================================================
+  // INITIALIZATION & PREVIEW
+  // =========================================================
+  window.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'previewConfig') {
+      cfg = event.data.config;
+      renderPage(cfg);
+    }
+  });
+  initTheme();
+  document.getElementById('lang-text').textContent = currentLang === 'fa' ? 'EN' : 'FA';
+  document.getElementById('main-lang-text').textContent = currentLang === 'fa' ? 'EN' : 'FA';
+  document.body.style.direction = currentLang === 'fa' ? 'rtl' : 'ltr';
+
   async function loadConfig() {
     try {
       const res = await fetch('./config.json?v=' + Date.now());
@@ -379,7 +475,40 @@
     }
   }
 
-  function renderPage(cfg) {
+  function renderPage(baseCfg) {
+    // Clone config to avoid modifying original when applying overrides
+    var cfg = JSON.parse(JSON.stringify(baseCfg));
+    
+    // Apply EN overrides if language is English
+    if (currentLang === 'en' && cfg.en) {
+      if (cfg.en.site) Object.assign(cfg.site, cfg.en.site);
+      if (cfg.en.announcement) Object.assign(cfg.announcement, cfg.en.announcement);
+      if (cfg.en.countdown) Object.assign(cfg.countdown, cfg.en.countdown);
+      if (cfg.en.telegram) Object.assign(cfg.telegram, cfg.en.telegram);
+      if (cfg.en.refundBanner) cfg.refundBanner = cfg.en.refundBanner;
+      if (cfg.en.features) {
+        cfg.en.features.forEach((f, i) => { if (cfg.features[i]) Object.assign(cfg.features[i], f); });
+      }
+      if (cfg.en.faq) {
+        cfg.en.faq.forEach((f, i) => { if (cfg.faq[i]) Object.assign(cfg.faq[i], f); });
+      }
+      if (cfg.en.plans) {
+        cfg.en.plans.forEach((p, i) => {
+          if (cfg.plans[i]) {
+            cfg.plans[i].title = p.title || cfg.plans[i].title;
+            cfg.plans[i].subtitle = p.subtitle || cfg.plans[i].subtitle;
+            cfg.plans[i].note = p.note || cfg.plans[i].note;
+            if (p.features) cfg.plans[i].features = p.features;
+            if (p.options) {
+              p.options.forEach((opt, j) => {
+                if (cfg.plans[i].options[j]) Object.assign(cfg.plans[i].options[j], opt);
+              });
+            }
+          }
+        });
+      }
+    }
+
     document.title = cfg.site.title;
     document.getElementById('brand-name').textContent = cfg.site.brandName;
     document.getElementById('main-title').textContent = cfg.site.brandName;
@@ -401,6 +530,18 @@
       var bannerEl = document.getElementById('announcement-banner');
       document.getElementById('announcement-text').textContent = ann.text;
       bannerEl.classList.remove('hidden');
+    }
+
+    // Analytics
+    if (cfg.analytics && cfg.analytics.gaId && !window.gaLoaded) {
+      window.gaLoaded = true;
+      var s1 = document.createElement('script');
+      s1.async = true;
+      s1.src = 'https://www.googletagmanager.com/gtag/js?id=' + cfg.analytics.gaId;
+      document.head.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.innerHTML = "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '" + cfg.analytics.gaId + "');";
+      document.head.appendChild(s2);
     }
 
     document.getElementById('features-row').innerHTML = cfg.features.map(function(f) {
