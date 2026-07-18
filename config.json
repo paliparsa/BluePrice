@@ -7,7 +7,7 @@
     "giftBadgeText": "کیفیت، امنیت\nو قیمت مناسب\nدر یکجا!"
   },
   "announcement": {
-    "enabled": true,
+    "enabled": false,
     "text": "🔥 تخفیف ویژه ۳۰٪ با کد BLUEGATE30 — فقط تا آخر هفته!"
   },
   "analytics": {
@@ -41,7 +41,6 @@
     "endDate": "2026-07-25T20:59:00.000Z"
   },
   "discountCodes": {
-    "BLUEGATE30": 30,
     "WELCOME10": 10
   },
   "telegram": {
