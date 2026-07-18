@@ -6,7 +6,8 @@
 <title>BlueGate Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+<script src="https://unpkg.com/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+<script src="https://unpkg.com/otplib@12.0.1/otplib-browser/index.js"></script>
 <style>
   :root {
     --bg: #07101f;
@@ -84,7 +85,10 @@
   .sidebar-item.active { color: var(--blue); background: rgba(0,180,255,0.08); border-right-color: var(--blue); }
   .sidebar-item i { width: 18px; text-align: center; }
 
-  .admin-content { flex: 1; padding: 32px; max-width: 900px; }
+  .admin-content { flex: 1; padding: 32px; max-width: 800px; border-left: 1px solid var(--border); overflow-y: auto; height: calc(100vh - 64px); }
+  .preview-panel { flex: 1; display: flex; flex-direction: column; background: #fff; height: calc(100vh - 64px); position: sticky; top: 64px; }
+  .preview-panel iframe { flex: 1; width: 100%; border: none; }
+  
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
@@ -147,9 +151,13 @@
   .info-box { background: rgba(0,180,255,0.05); border: 1px solid rgba(0,180,255,0.15); border-radius: 12px; padding: 16px; margin-bottom: 16px; font-size: 13px; color: #a0c4e8; line-height: 1.8; }
   .info-box strong { color: var(--blue); }
 
+  @media (max-width: 1200px) {
+    .preview-panel { display: none; }
+    .admin-content { max-width: none; border-left: none; }
+  }
   @media (max-width: 768px) {
     .sidebar { display: none; }
-    .admin-content { padding: 20px 16px; }
+    .admin-content { padding: 20px 16px; height: auto; overflow: visible; }
     .field-row { grid-template-columns: 1fr; }
   }
 </style>
@@ -166,6 +174,11 @@
     <div class="login-field">
       <label>رمز عبور ادمین</label>
       <input type="password" id="login-password" placeholder="رمز عبور را وارد کنید" autocomplete="current-password">
+    </div>
+    
+    <div class="login-field" id="login-2fa-group" style="display: none;">
+      <label>کد 2FA (Google Authenticator)</label>
+      <input type="text" id="login-2fa" placeholder="کد 6 رقمی" autocomplete="off" maxlength="6" style="text-align: center; letter-spacing: 5px; font-weight: bold; font-family: monospace; font-size: 18px;">
     </div>
 
     <button class="login-btn" id="login-btn" onclick="doLogin()">
@@ -187,7 +200,8 @@
       <span>BlueGate Admin</span>
     </div>
     <div class="topbar-actions">
-      <a href="../index.html" target="_blank" class="btn-preview"><i class="fas fa-eye"></i> مشاهده سایت</a>
+      <button class="btn-preview" onclick="updateLivePreview()" title="بروزرسانی پیش‌نمایش در همین صفحه"><i class="fas fa-sync-alt"></i></button>
+      <a href="../index.html" target="_blank" class="btn-preview"><i class="fas fa-external-link-alt"></i> سایت</a>
       <button class="btn-save" id="save-btn" onclick="saveConfig()"><i class="fas fa-cloud-upload-alt"></i> ذخیره و انتشار</button>
       <button class="btn-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
     </div>
@@ -218,6 +232,12 @@
       </div>
       <div class="sidebar-item" onclick="switchTab('tab-faq')" data-tab="tab-faq">
         <i class="fas fa-circle-question"></i> سوالات متداول
+      </div>
+      <div class="sidebar-item" onclick="switchTab('tab-en')" data-tab="tab-en">
+        <i class="fas fa-language"></i> ترجمه‌های انگلیسی
+      </div>
+      <div class="sidebar-item" onclick="switchTab('tab-advanced')" data-tab="tab-advanced">
+        <i class="fas fa-cogs"></i> تنظیمات پیشرفته
       </div>
       <div class="sidebar-item" onclick="switchTab('tab-github')" data-tab="tab-github">
         <i class="fab fa-github"></i> انتشار GitHub
@@ -392,6 +412,29 @@
         </button>
       </div>
 
+      <!-- ENGLISH TRANSLATIONS -->
+      <div class="tab-panel" id="tab-en">
+        <div class="section-title"><i class="fas fa-language"></i> ترجمه‌های انگلیسی (English)</div>
+        <div class="info-box">دراین بخش می‌توانید ترجمه انگلیسی تمامی متون سایت را وارد کنید. اگر کاربری سایت را به انگلیسی تغییر دهد، این متون جایگزین می‌شوند.</div>
+        <div id="en-editor-container" dir="ltr" style="text-align: left;"></div>
+      </div>
+
+      <!-- ADVANCED SETTINGS -->
+      <div class="tab-panel" id="tab-advanced">
+        <div class="section-title"><i class="fas fa-cogs"></i> تنظیمات پیشرفته</div>
+        
+        <div class="card">
+          <div class="card-title"><i class="fas fa-chart-line"></i> آمارگیر وب‌سایت (Google Analytics)</div>
+          <div class="info-box">برای ردیابی بازدیدکنندگان، شناسه Measurement ID گوگل آنالیتیکس 4 (شروع با -G) را در اینجا وارد کنید. در صورت خالی بودن غیرفعال می‌شود.</div>
+          <div class="field-row full">
+            <div class="field">
+              <label>شناسه GA4</label>
+              <input type="text" id="adv-gaid" placeholder="G-XXXXXXXXXX">
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- GITHUB PUBLISH -->
       <div class="tab-panel" id="tab-github">
         <div class="section-title"><i class="fab fa-github"></i> انتشار روی GitHub Pages</div>
@@ -446,9 +489,13 @@
         </div>
       </div>
 
-    </div><!-- /admin-content -->
-  </div><!-- /admin-body -->
-</div><!-- /admin-screen -->
+    </div> <!-- end admin-content -->
+    
+    <div class="preview-panel">
+      <iframe id="live-preview" src="../index.html?preview=1"></iframe>
+    </div>
+  </div> <!-- end admin-body -->
+</div> <!-- end admin-screen -->
 
 <div class="admin-toast" id="admin-toast">
   <i class="fas fa-check-circle" id="toast-icon"></i>
@@ -467,17 +514,26 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$AD6uQkJof/wtdp8TK2qS.OvmRTOFC5n7ADQQofwgUm8C4q/8kneTC';
+  var ADMIN_HASH = '$2b$12$VJhPvskB/w7GCirMXWq7S.uv/EAWOFrJ9bk0DlSwhV9.hrfhsp0Zq';
+  var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
 
   var loginAttempts = 0;
   var loginLocked = false;
+  
+  // Show 2FA input if secret is configured
+  if (ADMIN_2FA_SECRET !== '__ADMIN_2FA_SECRET_PLACEHOLDER__') {
+    document.getElementById('login-2fa-group').style.display = 'block';
+  }
 
   // ============================================================
   // LOGIN
   // ============================================================
   document.getElementById('login-password').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') doLogin();
+  });
+  document.getElementById('login-2fa').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') doLogin();
   });
 
@@ -531,6 +587,28 @@
             setTimeout(function() { errEl.textContent = ''; }, 4000);
           }
         } else {
+          // Check 2FA if configured
+          if (ADMIN_2FA_SECRET !== '__ADMIN_2FA_SECRET_PLACEHOLDER__') {
+            var code = document.getElementById('login-2fa').value.trim();
+            if (!code) {
+              errEl.textContent = 'لطفاً کد 2FA را وارد کنید.';
+              return;
+            }
+            if (!window.otplib || !window.otplib.authenticator) {
+              errEl.textContent = 'خطا در بارگذاری otplib. لطفاً اتصال اینترنت را بررسی کنید.';
+              return;
+            }
+            var isValid = false;
+            try {
+              isValid = window.otplib.authenticator.check(code, ADMIN_2FA_SECRET);
+            } catch(e) { console.error('TOTP Error:', e); }
+            
+            if (!isValid) {
+              errEl.textContent = 'کد 2FA نامعتبر است.';
+              return;
+            }
+          }
+
           loginAttempts = 0;
           sessionStorage.setItem('admin_auth', '1');
           document.getElementById('login-screen').style.display = 'none';
@@ -624,10 +702,84 @@
     var popPlanEl = document.getElementById('popular-plan');
     if (popPlanEl) popPlanEl.value = config.popularPlan || '';
 
+    // Advanced
+    var advGaId = document.getElementById('adv-gaid');
+    if (advGaId) advGaId.value = (config.analytics && config.analytics.gaId) ? config.analytics.gaId : '';
+
     renderDiscountCodes();
     renderFeatures();
     renderPlans();
     renderFaq();
+    renderEnglishEditor();
+  }
+
+  // ============================================================
+  // ENGLISH EDITOR
+  // ============================================================
+  function renderEnglishEditor() {
+    var en = config.en || {};
+    en.site = en.site || {};
+    en.announcement = en.announcement || {};
+    en.countdown = en.countdown || {};
+    en.telegram = en.telegram || {};
+    en.features = en.features || [];
+    en.faq = en.faq || [];
+    en.plans = en.plans || [];
+    config.en = en;
+
+    var html = '<div class="card"><div class="card-title">Site Information</div>';
+    html += '<div class="field-row"><div class="field"><label>Brand Name</label><input type="text" onchange="config.en.site.brandName=this.value" value="' + escHtml(en.site.brandName||'') + '"></div>';
+    html += '<div class="field"><label>Browser Title</label><input type="text" onchange="config.en.site.title=this.value" value="' + escHtml(en.site.title||'') + '"></div></div>';
+    html += '<div class="field-row full"><div class="field"><label>Subtitle</label><input type="text" onchange="config.en.site.subtitle=this.value" value="' + escHtml(en.site.subtitle||'') + '"></div></div>';
+    html += '<div class="field-row full"><div class="field"><label>Capsule Text</label><input type="text" onchange="config.en.site.capsuleText=this.value" value="' + escHtml(en.site.capsuleText||'') + '"></div></div>';
+    html += '<div class="field-row full"><div class="field"><label>Gift Badge Text</label><textarea onchange="config.en.site.giftBadgeText=this.value">' + escHtml(en.site.giftBadgeText||'') + '</textarea></div></div>';
+    html += '<div class="field-row full"><div class="field"><label>Refund Banner</label><input type="text" onchange="config.en.refundBanner=this.value" value="' + escHtml(en.refundBanner||'') + '"></div></div>';
+    html += '</div>';
+
+    html += '<div class="card"><div class="card-title">Announcement & Countdown</div>';
+    html += '<div class="field-row full"><div class="field"><label>Announcement Text</label><input type="text" onchange="config.en.announcement.text=this.value" value="' + escHtml(en.announcement.text||'') + '"></div></div>';
+    html += '<div class="field-row full"><div class="field"><label>Countdown Title</label><input type="text" onchange="config.en.countdown.title=this.value" value="' + escHtml(en.countdown.title||'') + '"></div></div>';
+    html += '</div>';
+
+    html += '<div class="card"><div class="card-title">Plans</div>';
+    (config.plans || []).forEach(function(p, i) {
+      en.plans[i] = en.plans[i] || { title:'', subtitle:'', note:'', options:[] };
+      var ep = en.plans[i];
+      html += '<div style="margin-top:16px; border-left:3px solid var(--neon-blue); padding-left:10px;">';
+      html += '<strong>Plan: ' + p.title + '</strong>';
+      html += '<div class="field-row"><div class="field"><label>Title</label><input type="text" onchange="config.en.plans['+i+'].title=this.value" value="' + escHtml(ep.title||'') + '"></div>';
+      html += '<div class="field"><label>Subtitle</label><input type="text" onchange="config.en.plans['+i+'].subtitle=this.value" value="' + escHtml(ep.subtitle||'') + '"></div></div>';
+      html += '<div class="field-row full"><div class="field"><label>Note</label><input type="text" onchange="config.en.plans['+i+'].note=this.value" value="' + escHtml(ep.note||'') + '"></div></div>';
+      
+      html += '<div style="margin-left: 20px; margin-top: 10px;"><em>Options Volumes</em><br>';
+      (p.options || []).forEach(function(opt, j) {
+        ep.options[j] = ep.options[j] || { label:'', volume:'' };
+        html += '<input type="text" style="width:48%; display:inline-block; margin-right:2%; margin-bottom:5px;" placeholder="Label" onchange="config.en.plans['+i+'].options['+j+'].label=this.value" value="' + escHtml(ep.options[j].label||'') + '">';
+        html += '<input type="text" style="width:48%; display:inline-block; margin-bottom:5px;" placeholder="Volume" onchange="config.en.plans['+i+'].options['+j+'].volume=this.value" value="' + escHtml(ep.options[j].volume||'') + '"><br>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+
+    html += '<div class="card"><div class="card-title">Features</div>';
+    (config.features || []).forEach(function(f, i) {
+      en.features[i] = en.features[i] || { title:'', text:'' };
+      var ef = en.features[i];
+      html += '<div class="field-row"><div class="field"><label>Feature '+(i+1)+' Title</label><input type="text" onchange="config.features['+i+'].title=this.value" value="' + escHtml(ef.title||'') + '"></div>';
+      html += '<div class="field"><label>Feature '+(i+1)+' Text</label><input type="text" onchange="config.features['+i+'].text=this.value" value="' + escHtml(ef.text||'') + '"></div></div>';
+    });
+    html += '</div>';
+
+    html += '<div class="card"><div class="card-title">FAQ</div>';
+    (config.faq || []).forEach(function(q, i) {
+      en.faq[i] = en.faq[i] || { q:'', a:'' };
+      var ef = en.faq[i];
+      html += '<div class="field-row full"><div class="field"><label>Q '+(i+1)+'</label><textarea onchange="config.en.faq['+i+'].q=this.value">' + escHtml(ef.q||'') + '</textarea></div></div>';
+      html += '<div class="field-row full"><div class="field"><label>A '+(i+1)+'</label><textarea onchange="config.en.faq['+i+'].a=this.value">' + escHtml(ef.a||'') + '</textarea></div></div>';
+    });
+    html += '</div>';
+
+    document.getElementById('en-editor-container').innerHTML = html;
   }
 
   // ============================================================
@@ -854,6 +1006,11 @@
     var popPlanEl = document.getElementById('popular-plan');
     if (popPlanEl) config.popularPlan = popPlanEl.value;
 
+    // Advanced
+    config.analytics = config.analytics || {};
+    var advGaId = document.getElementById('adv-gaid');
+    if (advGaId) config.analytics.gaId = advGaId.value.trim();
+
     // FAQ is already updated by its onchange handlers directly in config.faq
     
     collectDiscountCodes();
@@ -866,6 +1023,12 @@
     collectForm();
     var json = JSON.stringify(config, null, 2);
 
+    // Update live preview via postMessage
+    var iframe = document.getElementById('live-preview');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'previewConfig', config: config }, '*');
+    }
+
     var ghToken = githubCfg.token;
     var ghOwner = githubCfg.owner;
     var ghRepo = githubCfg.repo;
@@ -876,6 +1039,15 @@
     } else {
       downloadConfig(json);
     }
+  }
+
+  function updateLivePreview() {
+    collectForm();
+    var iframe = document.getElementById('live-preview');
+    if (iframe && iframe.contentWindow) {
+      iframe.contentWindow.postMessage({ type: 'previewConfig', config: config }, '*');
+    }
+    showAdminToast('پیش‌نمایش بروزرسانی شد.');
   }
 
   async function publishToGithub(json, token, owner, repo, branch) {
