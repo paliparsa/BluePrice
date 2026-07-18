@@ -36,13 +36,34 @@
     --card-border: rgba(0, 0, 0, 0.1);
   }
 
-  .light-theme .timer-box { background: rgba(255, 255, 255, 0.8); color: var(--neon-red); }
+  .light-theme .main-title { background: linear-gradient(180deg, #111 0%, #0066ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+  .light-theme .subtitle { color: #334155; text-shadow: none; }
+  .light-theme .gift-badge p { color: #4a5568; }
+  .light-theme .feature-list li { color: #4a5568; }
+  .light-theme .timer-label { color: #e60026; }
+  .light-theme .card-note { color: #333 !important; border-color: rgba(0,0,0,0.1) !important; background: rgba(0,0,0,0.02) !important; }
+  .light-theme .refund-inner p { color: #334155; }
+  .light-theme .feature-box h4 { color: #1a202c; }
+  .light-theme .toggle-btn { color: #718096; border: none; }
+  .light-theme .price-divider { background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent); }
+  .light-theme .card-bg { background: rgba(255,255,255,0.9) !important; }
+  .light-theme .price-card { border-color: rgba(0,0,0,0.1) !important; }
+  .light-theme .buy-btn { color: #fff !important; background: var(--neon-blue) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; border: none !important; }
+  .light-theme .card-purple .buy-btn { background: var(--neon-purple) !important; }
+  .light-theme .card-green .buy-btn { background: var(--neon-green) !important; }
+  .light-theme .card-gold .buy-btn { background: var(--neon-gold) !important; }
+  .light-theme .toggle-container { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
+  .light-theme .timer-box { text-shadow: none; background: rgba(255, 255, 255, 0.8); color: var(--neon-red); }
+  .light-theme .capsule-inner { background: #fff; }
+  .light-theme .capsule-inner::after { background: #fff; }
+  .light-theme .discount-input { background: #fff; color: #333; border-color: rgba(0,0,0,0.1); }
+  .light-theme .faq-title { color: #1a202c; }
+  .light-theme .faq-q { color: #1a202c; border-color: rgba(0,0,0,0.1); }
+  .light-theme .faq-a { color: #4a5568; }
   .light-theme .sticky-inner { background: rgba(255, 255, 255, 0.95); }
   .light-theme .price-card { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-  .light-theme .toggle-btn { border-color: rgba(0,0,0,0.15); color: var(--text-muted); }
   .light-theme .toggle-btn.active { color: #fff; }
   .light-theme .discount-inner { background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
-  .light-theme .discount-input { background: #f0f4f8; border-color: rgba(0,0,0,0.1); color: var(--text-white); }
   .light-theme .faq-item { background: #fff; border-color: rgba(0,0,0,0.1); }
   .light-theme .feature-box { background: #fff; border-color: rgba(0,0,0,0.08); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
 
@@ -522,6 +543,18 @@
     document.getElementById('tg-join-text').textContent = cfg.telegram.joinBtnText;
     document.getElementById('tgBtn').onclick = function() { window.open(cfg.telegram.channelUrl, '_blank', 'noopener,noreferrer'); };
 
+    // Dynamic Translations for hardcoded UI elements
+    document.getElementById('days').nextElementSibling.textContent = currentLang === 'en' ? 'Days' : 'روز';
+    document.getElementById('hours').nextElementSibling.textContent = currentLang === 'en' ? 'Hours' : 'ساعت';
+    document.getElementById('minutes').nextElementSibling.textContent = currentLang === 'en' ? 'Minutes' : 'دقیقه';
+    document.getElementById('seconds').nextElementSibling.textContent = currentLang === 'en' ? 'Seconds' : 'ثانیه';
+    
+    document.querySelector('.sticky-cta').textContent = currentLang === 'en' ? 'Buy Plan ↓' : 'خرید پلن ↓';
+    document.querySelector('.discount-label').innerHTML = currentLang === 'en' ? '<i class="fas fa-tag"></i> Have a code?' : '<i class="fas fa-tag"></i> کد تخفیف دارید؟';
+    document.getElementById('discount-input').placeholder = currentLang === 'en' ? 'Example: BLUEGATE30' : 'مثال: BLUEGATE30';
+    document.getElementById('discount-btn').textContent = currentLang === 'en' ? 'Apply' : 'اعمال کد';
+    document.querySelector('.faq-title').innerHTML = currentLang === 'en' ? '<i class="fas fa-circle-question"></i> Frequently Asked Questions' : '<i class="fas fa-circle-question"></i> سوالات متداول';
+
     document.getElementById('contact-handles').innerHTML =
       '<a href="' + cfg.telegram.channelUrl + '" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> ' + cfg.telegram.channelHandle + '</a>' +
       '<a href="' + cfg.telegram.supportUrl + '" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram"></i> ' + cfg.telegram.supportHandle + '</a>';
@@ -572,7 +605,8 @@
     document.getElementById('pricing-grid').innerHTML = cfg.plans.map(function(plan, idx) {
       var delay = delays[idx] || '';
       var isPopular = plan.id === popularPlan || plan.title === popularPlan;
-      var popularHTML = isPopular ? '<div class="popular-badge"><i class="fas fa-fire"></i> محبوب‌ترین</div>' : '';
+      var popularText = currentLang === 'en' ? 'Most Popular' : 'محبوب‌ترین';
+      var popularHTML = isPopular ? '<div class="popular-badge"><i class="fas fa-fire"></i> ' + popularText + '</div>' : '';
       var popularClass = isPopular ? ' is-popular' : '';
       var featuresHTML = plan.features.length
         ? '<ul class="feature-list">' + plan.features.map(function(f) { return '<li><span class="check"><i class="fas fa-check"></i></span> ' + f + '</li>'; }).join('') + '</ul>'
@@ -584,6 +618,9 @@
         return '<div class="toggle-btn' + (i === 0 ? ' active' : '') + '" data-volume="' + opt.volume + '" data-price="' + opt.price + '">' + opt.label + '</div>';
       }).join('');
 
+      var unitText = currentLang === 'en' ? 'Tomans' : 'تومان';
+      var buyText = currentLang === 'en' ? 'Buy Plan' : 'خرید پلن';
+
       return '<article class="price-card card-' + plan.theme + popularClass + ' animate-in ' + delay + '" data-plan="' + plan.title + '">' +
         '<div class="card-bg"></div>' + shimmerHTML + popularHTML +
         '<span class="card-icon"><i class="fas ' + plan.icon + '"></i></span>' +
@@ -594,10 +631,10 @@
         '<div class="toggle-container" data-card="' + plan.id + '"><div class="toggle-slider"></div>' + optionsHTML + '</div>' +
         '<div class="price-display">' +
           '<span class="price-original"></span>' +
-          '<div><span class="price-value">' + plan.options[0].price + '</span> <span class="unit">تومان</span></div>' +
+          '<div><span class="price-value">' + plan.options[0].price + '</span> <span class="unit">' + unitText + '</span></div>' +
           '<span class="savings-label"></span>' +
         '</div>' +
-        '<a href="#" class="buy-btn" target="_blank"><i class="fas fa-bag-shopping"></i> خرید پلن</a>' +
+        '<a href="#" class="buy-btn" target="_blank"><i class="fas fa-bag-shopping"></i> ' + buyText + '</a>' +
         '</article>';
     }).join('');
 
@@ -657,15 +694,18 @@
         priceValueEl.textContent = finalPrice;
         setTimeout(function() { priceValueEl.classList.remove('animate'); }, 200);
         if (activeDiscount > 0 && priceOrigEl) {
-          priceOrigEl.textContent = rawPrice + ' تومان';
+          var unitStr = currentLang === 'en' ? ' Tomans' : ' تومان';
+          var saveStr = currentLang === 'en' ? 'Savings: ' : 'صرفه‌جویی: ';
+          priceOrigEl.textContent = rawPrice + unitStr;
           priceOrigEl.style.display = 'block';
-          if (savingsEl) { savingsEl.textContent = 'صرفه‌جویی: ' + (rawPrice - finalPrice) + ' تومان'; savingsEl.style.display = 'inline-block'; }
+          if (savingsEl) { savingsEl.textContent = saveStr + (rawPrice - finalPrice) + unitStr; savingsEl.style.display = 'inline-block'; }
         } else {
           if (priceOrigEl) priceOrigEl.style.display = 'none';
           if (savingsEl) savingsEl.style.display = 'none';
         }
-        var text = 'سلام، قصد خرید پلن ' + planName + ' با حجم ' + btn.dataset.volume + ' را دارم.';
-        buyBtn.href = supportUrl + '?text=' + encodeURIComponent(text);
+        var textEn = 'Hello, I want to buy the ' + planName + ' plan with ' + btn.dataset.volume + ' volume.';
+        var textFa = 'سلام، قصد خرید پلن ' + planName + ' با حجم ' + btn.dataset.volume + ' را دارم.';
+        buyBtn.href = supportUrl + '?text=' + encodeURIComponent(currentLang === 'en' ? textEn : textFa);
       }
       btns.forEach(function(btn) { btn.addEventListener('click', function() { updateCard(btn); }); });
       var activeBtn = container.querySelector('.toggle-btn.active');
@@ -695,16 +735,18 @@
   function applyDiscount() {
     var input = document.getElementById('discount-input');
     var code = input.value.trim().toUpperCase();
-    if (!code) { showToast('لطفا کد تخفیف را وارد کنید', true); return; }
+    if (!code) { showToast(currentLang === 'en' ? 'Please enter a discount code' : 'لطفا کد تخفیف را وارد کنید', true); return; }
     if (discountCodes[code] !== undefined) {
       activeDiscount = discountCodes[code];
-      showToast('کد تخفیف ' + activeDiscount + '٪ با موفقیت اعمال شد! قیمت‌ها به‌روز شدند.');
+      var msgSuccess = currentLang === 'en' ? 'Code applied! ' + activeDiscount + '% off.' : 'کد تخفیف ' + activeDiscount + '٪ با موفقیت اعمال شد! قیمت‌ها به‌روز شدند.';
+      showToast(msgSuccess);
       input.style.borderColor = 'var(--neon-green)';
       input.style.boxShadow = '0 0 10px rgba(0, 255, 136, 0.4)';
       // Re-run toggles to update all displayed prices
       initToggles();
     } else {
-      showToast('کد تخفیف نامعتبر است', true);
+      var msgErr = currentLang === 'en' ? 'Invalid discount code' : 'کد تخفیف نامعتبر است';
+      showToast(msgErr, true);
       input.style.borderColor = 'var(--neon-red)';
       input.style.boxShadow = '0 0 10px rgba(255, 45, 85, 0.4)';
       setTimeout(function() { input.style.borderColor = 'rgba(255,255,255,0.1)'; input.style.boxShadow = 'none'; }, 2000);
