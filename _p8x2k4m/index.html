@@ -490,6 +490,22 @@
             </div>
           </div>
         </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title"><i class="fas fa-file-export"></i> پشتیبان‌گیری و بازیابی (Backup & Restore)</div>
+          <div class="info-box">می‌توانید تمامی تنظیمات سایت (از جمله لوگو، قیمت‌ها و ترجمه‌ها) را در یک فایل JSON ذخیره کرده و بعداً بازیابی کنید.</div>
+          <div class="field-row">
+            <div class="field" style="display:flex; align-items:flex-end;">
+              <button class="login-btn" onclick="backupConfig()" style="width: 100%; margin-top:0; padding: 12px; font-size: 14px; border-radius:8px;"><i class="fas fa-download"></i> دانلود بکاپ (Backup)</button>
+            </div>
+            <div class="field" style="display:flex; align-items:flex-end;">
+              <label class="login-btn" style="width: 100%; margin-top:0; padding: 12px; font-size: 14px; display: block; cursor: pointer; text-align: center; background: rgba(0,180,255,0.1); color: var(--blue); border: 1px solid var(--blue); border-radius:8px;">
+                <i class="fas fa-upload"></i> بازیابی فایل (Restore)
+                <input type="file" id="restore-upload" accept=".json" onchange="restoreConfig(event)" style="display: none;">
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- GITHUB PUBLISH -->
@@ -1329,6 +1345,44 @@
   // ============================================================
   function escHtml(str) {
     return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ============================================================
+  // BACKUP & RESTORE
+  // ============================================================
+  function backupConfig() {
+    collectForm();
+    var json = JSON.stringify(config, null, 2);
+    var blob = new Blob([json], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'bluegate_backup_' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    showAdminToast('فایل پشتیبان دانلود شد');
+  }
+
+  function restoreConfig(event) {
+    var file = event.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        var newConfig = JSON.parse(e.target.result);
+        if (newConfig && newConfig.site) {
+          config = newConfig;
+          populateForm();
+          showAdminToast('تنظیمات با موفقیت بازیابی شد! جهت اعمال، دکمه ذخیره و انتشار را بزنید.');
+        } else {
+          showAdminToast('فایل نامعتبر است', true);
+        }
+      } catch (err) {
+        showAdminToast('خطا در خواندن فایل JSON', true);
+      }
+      document.getElementById('restore-upload').value = '';
+    };
+    reader.readAsText(file);
   }
 
   // Logo handlers
