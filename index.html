@@ -23,7 +23,7 @@
   }
 
   .light-theme {
-    --bg-deep: #f4f7f6;
+    --bg-deep: #e8ecf1;
     --neon-blue: #0066ff;
     --neon-purple: #8b2fc9;
     --neon-cyan: #0088aa;
@@ -301,7 +301,7 @@
   .savings-label { font-size: 11px; color: var(--neon-green); font-weight: 700; display: none; background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); border-radius: 6px; padding: 3px 8px; margin-top: 4px; }
 
   /* === FAQ === */
-  .faq-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; }
+  .faq-section { max-width: 1440px; margin: 0 auto 32px; padding: 0 40px; position: relative; z-index: 1; }
   .faq-title { font-size: 22px; font-weight: 800; color: var(--text-white); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,180,255,0.15); display: flex; align-items: center; gap: 10px; }
   .faq-title i { color: var(--neon-blue); }
   .faq-item { background: linear-gradient(180deg, rgba(0,60,140,0.08), rgba(0,30,80,0.04)); border: 1px solid rgba(0,180,255,0.12); border-radius: 14px; margin-bottom: 10px; overflow: hidden; transition: border-color 0.3s; }
@@ -644,16 +644,18 @@
     initStickyHeader();
 
     var subtitleEl = document.getElementById('subtitle-el');
+    subtitleEl.textContent = '';
     var originalText = cfg.site.subtitle;
     var charIndex = 0;
+    if (window.typeWriterTimeout) clearTimeout(window.typeWriterTimeout);
     function typeWriter() {
       if (charIndex < originalText.length) {
         subtitleEl.textContent += originalText.charAt(charIndex);
         charIndex++;
-        setTimeout(typeWriter, 50);
+        window.typeWriterTimeout = setTimeout(typeWriter, 50);
       }
     }
-    setTimeout(typeWriter, 800);
+    window.typeWriterTimeout = setTimeout(typeWriter, 800);
   }
 
   var timerInterval = null;
