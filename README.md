@@ -1,72 +1,68 @@
-# BlueGate - Static VPN Landing Page 🚀
+# BlueGate - لندینگ پیج استاتیک برای فروش VPN 🚀
 
-A highly customizable, blazing-fast, and completely static landing page designed for VPN/Proxy sellers. It features a stunning UI, multi-language support, a built-in Admin Panel for live configuration changes, and runs 100% free on GitHub Pages!
+یک لندینگ پیج بسیار سریع، قابل شخصی‌سازی و کاملاً استاتیک برای فروشندگان VPN و پروکسی. این پروژه دارای رابط کاربری جذاب، پشتیبانی از چند زبان، پنل ادمین داخلی برای تغییرات لحظه‌ای و قابلیت اجرای ۱۰۰٪ رایگان روی GitHub Pages است!
 
-## ✨ Features
-
-- **Completely Static:** Built with Vanilla HTML, CSS, and JS. No backend required!
-- **Dynamic Configuration:** Everything (plans, pricing, texts, links, FAQs) is driven by a single `config.json` file.
-- **Built-in Admin Panel:** Edit your site live! The admin panel includes a real-time preview and instantly updates your site's JSON configuration.
-- **High Security:** The Admin Panel is protected by Password + 2FA (TOTP like Google Authenticator). Secrets are securely injected during the build process via GitHub Actions.
-- **Dark / Light Mode:** A beautifully crafted, animated UI that seamlessly transitions between dark and light themes.
-- **Multi-language Support:** Built-in toggle for English (EN) and Persian (FA). 
-- **Discount System:** Built-in promo code logic to apply percentage discounts on the fly.
-- **Free Hosting:** Ready to be deployed on GitHub Pages, Cloudflare Pages, Vercel, or Netlify with zero hosting costs.
-
----
-
-## 🛠 How to Deploy Your Own
-
-Deploying your own instance of BlueGate is easy and entirely free using GitHub Actions and GitHub Pages.
-
-### Step 1: Fork or Clone
-Fork this repository to your own GitHub account.
-
-### Step 2: Configure GitHub Actions Permissions
-Because the Admin Panel automatically commits changes back to your repository when you click "Save Settings", GitHub Actions needs write permissions.
-1. Go to your repository **Settings** -> **Actions** -> **General**.
-2. Scroll down to **Workflow permissions**.
-3. Select **Read and write permissions** and click Save.
-
-### Step 3: Set Up Security Secrets
-To protect the admin panel, you must set up your password and 2FA secrets.
-1. Go to your repository **Settings** -> **Secrets and variables** -> **Actions**.
-2. Click **New repository secret**.
-3. Create a secret named `ADMIN_PASSWORD` and set its value to your desired login password (e.g., `MySuperSecretPassword123`).
-4. Create another secret named `ADMIN_2FA_SECRET` and set its value to a Base32 secret key (e.g., `JBSWY3DPEHPK3PXP`). *You can generate one using any authenticator app or online 2FA secret generator.*
-
-### Step 4: Enable GitHub Pages
-1. Go to your repository **Settings** -> **Pages**.
-2. Under **Build and deployment**, set the Source to **Deploy from a branch**.
-3. Select the `gh-pages` branch (this branch will be created automatically by the Action after your first deployment).
-
-### Step 5: Trigger the Initial Build
-1. Go to the **Actions** tab in your repository.
-2. Select the `Deploy to GitHub Pages` workflow.
-3. Click **Run workflow**.
-
-Once the workflow completes, your site will be live at `https://<your-username>.github.io/<repo-name>/`!
+## ✨ ویژگی‌ها
+- **کاملاً استاتیک:** ساخته شده با HTML, CSS و JS خالص. بدون نیاز به سرور (بک‌اند)!
+- **پیکربندی داینامیک:** همه چیز (پلن‌ها، قیمت‌ها، متن‌ها، لینک‌ها، سوالات متداول) فقط از طریق یک فایل `config.json` مدیریت می‌شود.
+- **پنل ادمین داخلی:** سایت خود را به صورت زنده ویرایش کنید! پنل ادمین دارای پیش‌نمایش در لحظه است و تغییرات را مستقیماً روی سایت اعمال می‌کند.
+- **امنیت بالا:** پنل ادمین با رمز عبور و تایید دو مرحله‌ای (2FA مثل Google Authenticator) محافظت می‌شود. اطلاعات امنیتی هنگام بیلد شدن توسط GitHub Actions به صورت امن تزریق می‌شوند.
+- **حالت تاریک و روشن:** یک رابط کاربری انیمیشنی و جذاب با قابلیت تغییر بدون نقص بین تم‌های روشن و تاریک.
+- **پشتیبانی چند زبانه:** دارای دکمه تغییر زبان برای فارسی (FA) و انگلیسی (EN).
+- **سیستم کد تخفیف:** اعمال کد تخفیف به صورت درصدی روی قیمت‌ها با قابلیت محاسبه آنی سمت کاربر.
+- **هاست رایگان:** آماده برای دیپلوی شدن در GitHub Pages، Cloudflare Pages، Vercel یا Netlify با هزینه صفر.
 
 ---
 
-## ⚙️ Accessing the Admin Panel
+## 🛠 نحوه راه‌اندازی برای خودتان
+راه‌اندازی نسخه اختصاصی خودتان از BlueGate بسیار آسان است و به صورت کاملاً رایگان توسط GitHub Actions و GitHub Pages انجام می‌شود.
 
-The Admin Panel allows you to easily edit site content without touching any code.
+### مرحله ۱: فورک کردن مخزن
+این ریپازیتوری را در اکانت گیت‌هاب خودتان Fork کنید.
 
-1. Go to your live site URL and append `/_p8x2k4m/` to the end. Example: `https://your-username.github.io/bluegate/_p8x2k4m/`
-2. You will be prompted to log in.
-3. Enter the `ADMIN_PASSWORD` you set in GitHub Secrets.
-4. Open your Authenticator app (Google Authenticator, Authy, etc.) using the `ADMIN_2FA_SECRET` you created and enter the current 6-digit code.
-5. Make your changes using the graphical editor and hit **Save Settings**.
-6. The panel will trigger a GitHub Action to rebuild your site automatically! (Changes usually take ~1 minute to reflect).
+### مرحله ۲: دسترسی‌های GitHub Actions
+چون پنل ادمین تغییرات شما را با کلیک روی دکمه "ذخیره" مستقیماً کامیت می‌کند، گیت‌هاب اکشنز نیاز به دسترسی نوشتن دارد.
+1. در ریپازیتوری خود به مسیر **Settings** -> **Actions** -> **General** بروید.
+2. اسکرول کنید تا به بخش **Workflow permissions** برسید.
+3. گزینه **Read and write permissions** را انتخاب کنید و Save را بزنید.
 
-> **Tip:** You can rename the `_p8x2k4m` folder to any secret URL path you want to further hide your admin panel from the public!
+### مرحله ۳: تنظیم متغیرهای امنیتی (Secrets)
+برای محافظت از پنل ادمین، باید رمز عبور و کد تایید دو مرحله‌ای خود را به صورت امن در گیت‌هاب ثبت کنید.
+1. به مسیر **Settings** -> **Secrets and variables** -> **Actions** بروید.
+2. روی دکمه **New repository secret** کلیک کنید.
+3. یک سکرت با نام `ADMIN_PASSWORD` بسازید و رمز عبور دلخواه خود را وارد کنید (مثلا `MySuperSecret123`).
+4. یک سکرت دیگر با نام `ADMIN_2FA_SECRET` بسازید و یک کلید Base32 برای آن وارد کنید (مثلا `JBSWY3DPEHPK3PXP`). *می‌توانید این کلید را با برنامه‌های Authenticator موبایل یا سایت‌های ساخت کلید 2FA تولید کنید.*
+
+### مرحله ۴: فعال‌سازی GitHub Pages
+1. در تنظیمات مخزن به بخش **Pages** بروید.
+2. در بخش **Build and deployment**، منبع (Source) را روی **Deploy from a branch** قرار دهید.
+3. برنچ `gh-pages` را انتخاب کنید (این برنچ بعد از اولین دیپلوی توسط گیت‌هاب اکشنز به صورت خودکار ساخته می‌شود).
+
+### مرحله ۵: اجرای اولین بیلد
+1. در مخزن خود به تب **Actions** بروید.
+2. ورک‌فلو `Deploy to GitHub Pages` را انتخاب کنید.
+3. روی **Run workflow** کلیک کنید.
+
+بعد از تمام شدن فرآیند، سایت شما روی آدرس `https://<your-username>.github.io/<repo-name>/` در دسترس خواهد بود!
 
 ---
 
-## 🎨 Modifying the Theme
+## ⚙️ دسترسی به پنل ادمین
+با پنل ادمین می‌توانید به راحتی محتوای سایت را بدون دست زدن به کد تغییر دهید.
 
-The CSS uses standard Variables for easy theme modifications. Open `index.html` and look for the `:root` and `.light-theme` blocks at the top to change the primary neon colors, backgrounds, and text shades.
+1. وارد لینک سایت خود شوید و کلمه `/_p8x2k4m/` را به انتهای آدرس اضافه کنید. مثال: `https://your-username.github.io/bluegate/_p8x2k4m/`
+2. از شما درخواست ورود می‌شود.
+3. رمزی را که در `ADMIN_PASSWORD` تنظیم کرده بودید وارد کنید.
+4. اپلیکیشن Authenticator خود را باز کنید و کد ۶ رقمی مربوط به کلید `ADMIN_2FA_SECRET` را وارد کنید.
+5. تغییرات دلخواه را در پنل گرافیکی اعمال کنید و روی **ذخیره تنظیمات (Save Settings)** کلیک کنید.
+6. پنل به صورت خودکار یک کامیت جدید ثبت کرده و گیت‌هاب سایت شما را آپدیت می‌کند! (اعمال تغییرات حدود ۱ تا ۲ دقیقه زمان می‌برد).
+
+> **نکته:** برای امنیت بیشتر، می‌توانید پوشه `_p8x2k4m` را به هر اسم دلخواه و رمزی تغییر دهید تا آدرس ورود به پنل ادمین شما از دید بقیه کاملاً مخفی بماند!
+
+---
+
+## 🎨 تغییر ظاهر و تم‌ها
+تمام کدهای CSS در این پروژه از متغیرها (Variables) استفاده می‌کنند تا شخصی‌سازی ظاهر سایت بسیار آسان باشد. فایل `index.html` را باز کنید و در بالا کدهای مربوط به `:root` و `.light-theme` را تغییر دهید تا رنگ‌های اصلی (نئون‌ها) و بک‌گراند عوض شوند.
 
 ```css
   :root {
@@ -77,5 +73,5 @@ The CSS uses standard Variables for easy theme modifications. Open `index.html` 
   }
 ```
 
-## 📜 License
-This project is open-source. Feel free to modify, distribute, and use it for your own services!
+## 📜 لایسنس
+این پروژه به صورت اپن‌سورس منتشر شده است. شما آزادید که آن را تغییر دهید، در پروژه‌های دیگر منتشر کنید و برای سرویس‌های تجاری خودتان استفاده نمایید.
