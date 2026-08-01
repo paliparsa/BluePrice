@@ -685,7 +685,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$W.m/8pixT473ePfNHE00k.npVT/unjqukYoxDnes7XlSgMFrFUOm.';
+  var ADMIN_HASH = '$2b$12$/OUH61gzRsVrwfVop9xwW.kSh1gEy4kWZX2E7JMCeH3c9ZKf/y/Nq';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -1369,6 +1369,11 @@
   function saveConfig() {
     collectForm();
     var json = JSON.stringify(config, null, 2);
+
+    // Save to LocalStorage so edits reflect on main site instantly
+    try {
+      localStorage.setItem('bg_app_config', json);
+    } catch(e) {}
 
     // Update live preview via postMessage
     var iframe = document.getElementById('live-preview');
