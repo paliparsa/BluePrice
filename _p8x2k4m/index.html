@@ -685,7 +685,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$bgT0QJYkWreSwWJk4XY3R.COVOnyE7x0qhsCE0Ac/m5P8h7ikDqt2';
+  var ADMIN_HASH = '$2b$12$hSCBnBiHq6lYDi.tCB.sm.ESzzy3DJqcTqiXi0S6ale5BuIB3CSx.';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -1456,7 +1456,7 @@
     var a = document.createElement('a');
     a.href = url; a.download = 'config.json'; a.click();
     URL.revokeObjectURL(url);
-    showAdminToast('config.json دانلود شد — آن را جایگزین فایل موجود کنید');
+    showAdminToast('تغییرات در مرورگر ذخیره و config.json دانلود شد. برای اعمال روی سایت آنلاین، فایل را روی هاست آپلود کنید یا توکن GitHub را تنظیم نمایید.');
   }
 
   // ============================================================
