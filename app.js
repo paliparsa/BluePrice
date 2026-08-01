@@ -27,10 +27,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Calculator Toggle
+    // Language Switcher Logic
+    let currentLang = localStorage.getItem('bg_app_lang') || 'fa';
+    const langToggleBtn = document.getElementById('langToggleBtn');
+
+    function updateLanguageUI(lang) {
+        currentLang = lang;
+        localStorage.setItem('bg_app_lang', lang);
+        const isEn = (lang === 'en');
+        document.documentElement.dir = isEn ? 'ltr' : 'rtl';
+        document.documentElement.lang = isEn ? 'en' : 'fa';
+
+        if (langToggleBtn) {
+            langToggleBtn.innerHTML = isEn ? '<i class="fa-solid fa-globe"></i> فارسی' : '<i class="fa-solid fa-globe"></i> English';
+        }
+
+        if (appConfig) {
+            if (isEn && appConfig.en) {
+                const en = appConfig.en;
+                if (en.site) {
+                    if (en.site.title) document.title = en.site.title;
+                    const brandNameEl = document.querySelector('.brand-name');
+                    if (brandNameEl && en.site.brandName) brandNameEl.innerHTML = escHtml(en.site.brandName).replace('Gate', '<span>Gate</span>');
+                    const taglineEl = document.querySelector('.brand-tagline');
+                    if (taglineEl && en.site.subtitle) taglineEl.innerHTML = `<i class="fa-solid fa-shield-halved text-cyan"></i> ${escHtml(en.site.subtitle)}`;
+                    const capsuleEl = document.querySelector('.services-badge span');
+                    if (capsuleEl && en.site.capsuleText) capsuleEl.textContent = en.site.capsuleText;
+                }
+                if (en.announcement && en.announcement.text) {
+                    const annText = document.getElementById('announcementText');
+                    if (annText) annText.innerHTML = `<i class="fa-solid fa-bullhorn text-cyan"></i> ${escHtml(en.announcement.text)}`;
+                }
+            } else {
+                applyConfigToPlantedLayout(appConfig);
+            }
+        }
+    }
+
+    if (langToggleBtn) {
+        langToggleBtn.addEventListener('click', () => {
+            const nextLang = (currentLang === 'fa') ? 'en' : 'fa';
+            updateLanguageUI(nextLang);
+        });
+    }
+
+    // Calculator Toggle (Default Closed)
     const calcBtn = document.getElementById('calculatorToggleBtn');
     const calcSection = document.getElementById('calculatorSection');
     if (calcBtn && calcSection) {
+        calcSection.classList.add('hidden'); // Closed by default
         calcBtn.addEventListener('click', () => {
             calcSection.classList.toggle('hidden');
             if (!calcSection.classList.contains('hidden')) {
@@ -272,7 +317,7 @@ function applyConfigToPlantedLayout(cfg) {
 
         const calcSec = document.getElementById('calculatorSection');
         const calcBtn = document.getElementById('calculatorToggleBtn');
-        if (calcSec) calcSec.classList.toggle('hidden', cfg.sections.calculator === false);
+        if (calcSec) calcSec.classList.add('hidden');
         if (calcBtn) calcBtn.classList.toggle('hidden', cfg.sections.calculator === false);
     }
 
