@@ -1,6 +1,6 @@
 // ==========================================================================
-   BLUEGATE COMPLETE CONTROLLER (Preserved Redesign & 100% Admin Parity)
-   ==========================================================================
+// BLUEGATE COMPLETE CONTROLLER (Preserved Redesign & 100% Admin Parity)
+// ==========================================================================
 
 let appConfig = null;
 let currentReceiptText = '';
@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const newPrice = Math.round(basePriceValue * (1 - activeDiscountPercent / 100));
                 document.getElementById('receiptTotal').textContent = formatToman(newPrice) + ` (${activeDiscountPercent}٪ تخفیف)`;
                 discountMsg.textContent = `کد تخفیف ${code} (${activeDiscountPercent}٪) اعمال گردید!`;
+                discountMsg.className = 'text-green mt-1';
                 discountMsg.classList.remove('hidden');
                 showToast(`کد تخفیف ${activeDiscountPercent}٪ اعمال شد!`);
             } else {
@@ -122,14 +123,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    attachCardRowListeners();
-    attachFaqListeners();
+    // Initialize Global Event Delegation (Plans & FAQ)
+    initDelegatedListeners();
+
+    // Start Countdown immediately with default end date (2026-08-10) until config loads
+    startCountdownTimer('2026-08-10T23:59:59');
+
+    // Load config (with LocalStorage fallback and network fetch)
     loadConfig();
 
     window.addEventListener('message', (event) => {
         if (event.data && event.data.type === 'previewConfig' && event.data.config) {
             appConfig = event.data.config;
             applyConfigToPlantedLayout(appConfig);
+        }
+    });
+
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'bg_app_config' && event.newValue) {
+            try {
+                appConfig = JSON.parse(event.newValue);
+                applyConfigToPlantedLayout(appConfig);
+            } catch(e) {}
         }
     });
 
@@ -142,12 +157,93 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Event Delegation for Pricing Card Selections, Buy Buttons & FAQ Items
+function initDelegatedListeners() {
+    document.addEventListener('click', (e) => {
+        // 1. Handle Selection of Plan Rows (.selectable)
+        const selectableRow = e.target.closest('.selectable');
+        if (selectableRow) {
+            const card = selectableRow.closest('.pricing-card');
+            if (card) {
+                const allSelectables = card.querySelectorAll('.selectable');
+                allSelectables.forEach(r => {
+                    r.classList.remove('active');
+                    const indicator = r.querySelector('.select-indicator i');
+                    if (indicator) indicator.className = 'fa-solid fa-circle';
+                });
+
+                selectableRow.classList.add('active');
+                const indicator = selectableRow.querySelector('.select-indicator i');
+                if (indicator) indicator.className = 'fa-solid fa-circle-check';
+                return;
+            }
+        }
+
+        // 2. Handle Buy Buttons (.buy-btn-action)
+        const buyBtn = e.target.closest('.buy-btn-action');
+        if (buyBtn) {
+            const plan = buyBtn.getAttribute('data-plan') || 'BlueGate';
+            const card = buyBtn.closest('.pricing-card');
+            const activeRow = card ? card.querySelector('.selectable.active') : null;
+
+            let gb = '۲۰ گیگ';
+            let price = '۲۴۹,۰۰۰ تومان';
+            let priceNum = 249000;
+            let type = 'سرویس اختصاصی';
+
+            if (activeRow) {
+                gb = activeRow.getAttribute('data-gb') || gb;
+                price = activeRow.getAttribute('data-price') || price;
+                const rawPriceNum = activeRow.getAttribute('data-price-num');
+                if (rawPriceNum) {
+                    priceNum = parseInt(rawPriceNum) || priceNum;
+                } else if (price) {
+                    priceNum = parseInt(price.replace(/[^0-9]/g, '')) || priceNum;
+                }
+                type = activeRow.getAttribute('data-type') || type;
+            }
+
+            openReceiptModal(plan, type, gb, price, priceNum);
+            return;
+        }
+
+        // 3. Handle FAQ Toggle (.faq-q)
+        const faqQ = e.target.closest('.faq-q');
+        if (faqQ) {
+            const item = faqQ.parentElement;
+            if (item) {
+                const ans = item.querySelector('.faq-a');
+                if (ans) ans.classList.toggle('hidden');
+                const arrow = item.querySelector('.faq-arrow');
+                if (arrow) arrow.classList.toggle('rotate');
+            }
+            return;
+        }
+    });
+}
+
 function loadConfig() {
+    // Check LocalStorage override first for instant local testing/admin edits
+    const localCfgStr = localStorage.getItem('bg_app_config');
+    if (localCfgStr) {
+        try {
+            const localCfg = JSON.parse(localCfgStr);
+            if (localCfg && localCfg.site) {
+                appConfig = localCfg;
+                applyConfigToPlantedLayout(localCfg);
+            }
+        } catch(e) {}
+    }
+
+    // Fetch config.json from network
     fetch('config.json?v=' + Date.now())
         .then(res => res.json())
         .then(data => {
             appConfig = data;
-            applyConfigToPlantedLayout(data);
+            // Apply network config if no local override is present
+            if (!localStorage.getItem('bg_app_config')) {
+                applyConfigToPlantedLayout(data);
+            }
         })
         .catch(err => {
             console.log('Config load note:', err);
@@ -294,8 +390,6 @@ function applyConfigToPlantedLayout(cfg) {
                 }
             }
         });
-
-        attachCardRowListeners();
     }
 
     // Tutorials Render
@@ -347,99 +441,58 @@ function applyConfigToPlantedLayout(cfg) {
                     </div>
                 </div>
             `).join('');
-            attachFaqListeners();
         }
     }
 }
 
-function attachFaqListeners() {
-    const faqQueries = document.querySelectorAll('.faq-q');
-    faqQueries.forEach(q => {
-        // Avoid duplicate listeners
-        if (!q.dataset.bound) {
-            q.dataset.bound = 'true';
-            q.addEventListener('click', () => {
-                const item = q.parentElement;
-                const ans = item.querySelector('.faq-a');
-                if (ans) ans.classList.toggle('hidden');
-                const arrow = item.querySelector('.faq-arrow');
-                if (arrow) arrow.classList.toggle('rotate');
-            });
-        }
-    });
+// Browser-agnostic Target Date Parsing
+function parseTargetDate(dateStr) {
+    if (!dateStr) return null;
+    let d = new Date(dateStr);
+    if (isNaN(d.getTime())) {
+        const formatted = String(dateStr).replace(/-/g, '/').replace('T', ' ');
+        d = new Date(formatted);
+    }
+    return isNaN(d.getTime()) ? null : d;
 }
 
 // Live Countdown Timer
 function startCountdownTimer(endDateStr) {
     if (countdownInterval) clearInterval(countdownInterval);
 
+    const endDate = parseTargetDate(endDateStr);
+    if (!endDate) return;
+
     function updateTimer() {
-        const end = new Date(endDateStr).getTime();
+        const end = endDate.getTime();
         const now = new Date().getTime();
         const diff = end - now;
 
+        const cdWidget = document.getElementById('countdownWidget');
+
         if (diff <= 0) {
             clearInterval(countdownInterval);
-            document.getElementById('countdownWidget').classList.add('hidden');
+            if (cdWidget) cdWidget.classList.add('hidden');
             return;
         }
+
+        if (cdWidget) cdWidget.classList.remove('hidden');
 
         const hours = Math.floor(diff / (1000 * 60 * 60));
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('cdMinutes').textContent = String(minutes).padStart(2, '0');
-        document.getElementById('cdSeconds').textContent = String(seconds).padStart(2, '0');
+        const cdHours = document.getElementById('cdHours');
+        const cdMinutes = document.getElementById('cdMinutes');
+        const cdSeconds = document.getElementById('cdSeconds');
+
+        if (cdHours) cdHours.textContent = String(hours).padStart(2, '0');
+        if (cdMinutes) cdMinutes.textContent = String(minutes).padStart(2, '0');
+        if (cdSeconds) cdSeconds.textContent = String(seconds).padStart(2, '0');
     }
 
     updateTimer();
     countdownInterval = setInterval(updateTimer, 1000);
-}
-
-// Attach Event Listeners to Selectable Rows and Buy Buttons
-function attachCardRowListeners() {
-    const pricingCards = document.querySelectorAll('.pricing-card');
-    
-    pricingCards.forEach(card => {
-        const selectableRows = card.querySelectorAll('.selectable');
-        selectableRows.forEach(row => {
-            row.addEventListener('click', () => {
-                selectableRows.forEach(r => {
-                    r.classList.remove('active');
-                    const indicator = r.querySelector('.select-indicator i');
-                    if (indicator) indicator.className = 'fa-solid fa-circle';
-                });
-
-                row.classList.add('active');
-                const indicator = row.querySelector('.select-indicator i');
-                if (indicator) indicator.className = 'fa-solid fa-circle-check';
-            });
-        });
-    });
-
-    const buyBtns = document.querySelectorAll('.buy-btn-action');
-    buyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const plan = btn.getAttribute('data-plan');
-            const card = btn.closest('.pricing-card');
-            const activeRow = card.querySelector('.selectable.active');
-
-            let gb = '۲۰ گیگ';
-            let price = '۲۴۹,۰۰۰ تومان';
-            let priceNum = 249000;
-            let type = 'سرویس اختصاصی';
-
-            if (activeRow) {
-                gb = activeRow.getAttribute('data-gb');
-                price = activeRow.getAttribute('data-price');
-                priceNum = parseInt(activeRow.getAttribute('data-price-num')) || 249000;
-                type = activeRow.getAttribute('data-type') || 'سرویس اختصاصی';
-            }
-
-            openReceiptModal(plan, type, gb, price, priceNum);
-        });
-    });
 }
 
 // Buy Custom Plan from Calculator
@@ -454,7 +507,7 @@ function openReceiptModal(plan, type, gb, price, priceNum = 249000) {
     const sendTelegramBtn = document.getElementById('sendTelegramBtn');
     const trackingId = '#BG-' + Math.floor(10000 + Math.random() * 90000);
     
-    basePriceValue = priceNum;
+    basePriceValue = typeof priceNum === 'number' ? priceNum : (parseInt(String(priceNum).replace(/[^0-9]/g, '')) || 249000);
     activeDiscountPercent = 0;
     
     const receiptDiscountInput = document.getElementById('receiptDiscountInput');
@@ -463,17 +516,29 @@ function openReceiptModal(plan, type, gb, price, priceNum = 249000) {
     if (discountMsg) discountMsg.classList.add('hidden');
 
     const now = new Date();
-    const timeStr = new Intl.DateTimeFormat('fa-IR', {
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit'
-    }).format(now);
+    let timeStr = '';
+    try {
+        timeStr = new Intl.DateTimeFormat('fa-IR', {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit'
+        }).format(now);
+    } catch(e) {
+        timeStr = now.toLocaleString();
+    }
 
-    document.getElementById('receiptId').textContent = `کد پیگیری: ${trackingId}`;
-    document.getElementById('receiptPlan').textContent = plan;
-    document.getElementById('receiptType').textContent = type;
-    document.getElementById('receiptVolume').textContent = gb;
-    document.getElementById('receiptTotal').textContent = price;
-    document.getElementById('receiptTime').textContent = timeStr;
+    const rId = document.getElementById('receiptId');
+    const rPlan = document.getElementById('receiptPlan');
+    const rType = document.getElementById('receiptType');
+    const rVol = document.getElementById('receiptVolume');
+    const rTot = document.getElementById('receiptTotal');
+    const rTime = document.getElementById('receiptTime');
+
+    if (rId) rId.textContent = `کد پیگیری: ${trackingId}`;
+    if (rPlan) rPlan.textContent = plan;
+    if (rType) rType.textContent = type;
+    if (rVol) rVol.textContent = gb;
+    if (rTot) rTot.textContent = price;
+    if (rTime) rTime.textContent = timeStr;
 
     currentReceiptText = `🧾 *فاکتور رسمی سفارش ${appConfig?.site?.brandName || 'BlueGate'}*\n\n` +
         `🆔 *کد پیگیری:* \`${trackingId}\`\n` +
@@ -495,7 +560,11 @@ function openReceiptModal(plan, type, gb, price, priceNum = 249000) {
 // Utilities
 function formatToman(num) {
     if (typeof num === 'string') return num;
-    return new Intl.NumberFormat('fa-IR').format(num) + ' تومان';
+    try {
+        return new Intl.NumberFormat('fa-IR').format(num) + ' تومان';
+    } catch(e) {
+        return num + ' تومان';
+    }
 }
 
 function escHtml(str) {
