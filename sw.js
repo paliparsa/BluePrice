@@ -1,8 +1,7 @@
-const CACHE_NAME = 'bluegate-cache-v1';
+const CACHE_NAME = 'bluegate-cache-v2';
 const urlsToCache = [
   './',
   './index.html',
-  './config.json',
   './manifest.json',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.0.0/Vazirmatn-font-face.css'
@@ -10,6 +9,7 @@ const urlsToCache = [
 
 // Install Event
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
@@ -20,35 +20,33 @@ self.addEventListener('install', (event) => {
 
 // Fetch Event
 self.addEventListener('fetch', (event) => {
-  // Only cache GET requests
+  // Only handle GET requests
   if (event.request.method !== 'GET') return;
+
+  const requestUrl = event.request.url;
+
+  // Never cache config.json or admin panel API calls - always fetch from network
+  if (requestUrl.includes('config.json') || requestUrl.includes('_p8x2k4m')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // Return cached version or fetch from network
         return response || fetch(event.request).then(
-          (response) => {
-            // Check if we received a valid response
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
+          (networkResponse) => {
+            if(!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+              return networkResponse;
             }
             
-            // IMPORTANT: Clone the response. A response is a stream
-            // and because we want the browser to consume the response
-            // as well as the cache consuming the response, we need
-            // to clone it so we have two streams.
-            var responseToCache = response.clone();
-            
+            var responseToCache = networkResponse.clone();
             caches.open(CACHE_NAME)
               .then((cache) => {
-                // Don't cache config.json so it always stays fresh
-                if(!event.request.url.includes('config.json') && !event.request.url.includes('_p8x2k4m')) {
-                  cache.put(event.request, responseToCache);
-                }
+                cache.put(event.request, responseToCache);
               });
               
-            return response;
+            return networkResponse;
           }
         );
       })
@@ -67,6 +65,6 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
