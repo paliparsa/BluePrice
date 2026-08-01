@@ -1370,6 +1370,11 @@
     collectForm();
     var json = JSON.stringify(config, null, 2);
 
+    // Save to LocalStorage so edits reflect on main site instantly
+    try {
+      localStorage.setItem('bg_app_config', json);
+    } catch(e) {}
+
     // Update live preview via postMessage
     var iframe = document.getElementById('live-preview');
     if (iframe && iframe.contentWindow) {
