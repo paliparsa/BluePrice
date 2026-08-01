@@ -256,6 +256,26 @@ function loadConfig() {
 function applyConfigToPlantedLayout(cfg) {
     if (!cfg) return;
 
+    // Section Visibility Toggles
+    if (cfg.sections) {
+        const tutSec = document.getElementById('tutorialsSection');
+        if (tutSec) tutSec.classList.toggle('hidden', cfg.sections.tutorials === false);
+
+        const revSec = document.getElementById('reviewsSection');
+        if (revSec) revSec.classList.toggle('hidden', cfg.sections.reviews === false);
+
+        const faqSec = document.getElementById('faqSection');
+        if (faqSec) faqSec.classList.toggle('hidden', cfg.sections.faq === false);
+
+        const compSec = document.querySelector('.comparison-section');
+        if (compSec) compSec.classList.toggle('hidden', cfg.sections.comparison === false);
+
+        const calcSec = document.getElementById('calculatorSection');
+        const calcBtn = document.getElementById('calculatorToggleBtn');
+        if (calcSec) calcSec.classList.toggle('hidden', cfg.sections.calculator === false);
+        if (calcBtn) calcBtn.classList.toggle('hidden', cfg.sections.calculator === false);
+    }
+
     // Site Info
     if (cfg.site) {
         if (cfg.site.title) document.title = cfg.site.title;
@@ -385,6 +405,22 @@ function applyConfigToPlantedLayout(cfg) {
                     noteEl.textContent = plan.note;
                 }
 
+                // Feature Pills Update
+                if (plan.pills && Array.isArray(plan.pills) && plan.pills.length > 0) {
+                    const featGrid = card.querySelector('.pro-features-grid');
+                    if (featGrid) {
+                        featGrid.innerHTML = plan.pills.map(p => `
+                            <div class="feat-pill">
+                                <i class="${escHtml(p.icon || 'fa-solid fa-star text-cyan')}"></i>
+                                <div class="fp-text">
+                                    <strong>${escHtml(p.title || '')}</strong>
+                                    <small>${escHtml(p.subtitle || '')}</small>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+
                 if (plan.options && Array.isArray(plan.options)) {
                     const priceList = card.querySelector('.price-list');
                     if (priceList) {
@@ -399,6 +435,24 @@ function applyConfigToPlantedLayout(cfg) {
                                     <div class="gb-badge ${iconClass}"><i class="fa-solid fa-cube"></i> ${escHtml(volStr)}</div>
                                     <div class="price-val">${escHtml(priceStr)}</div>
                                     <div class="select-indicator"><i class="fa-solid ${idx === 0 ? 'fa-circle-check' : 'fa-circle'}"></i></div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                }
+
+                if (plan.unlimitedOptions && Array.isArray(plan.unlimitedOptions)) {
+                    const unlimitedGrid = card.querySelector('.unlimited-grid');
+                    if (unlimitedGrid) {
+                        unlimitedGrid.innerHTML = plan.unlimitedOptions.map((opt) => {
+                            const volStr = opt.volume || opt.label || 'نامحدود';
+                            const numPrice = typeof opt.price === 'number' ? opt.price : (parseInt(String(opt.price || '').replace(/[^0-9]/g, '')) || 0);
+                            const priceStr = formatToman(numPrice);
+                            const userIcon = volStr.includes('دو') ? '<i class="fa-solid fa-users"></i>' : '<i class="fa-solid fa-user"></i>';
+                            return `
+                                <div class="unlimited-box selectable" data-gb="${escHtml(volStr)}" data-price="${escHtml(priceStr)}" data-price-num="${numPrice}" data-type="نامحدود">
+                                    <div class="u-user">${userIcon} ${escHtml(volStr)}</div>
+                                    <div class="u-price">${escHtml(priceStr)}</div>
                                 </div>
                             `;
                         }).join('');
@@ -456,6 +510,21 @@ function applyConfigToPlantedLayout(cfg) {
                         <p>${escHtml(f.a)}</p>
                     </div>
                 </div>
+            `).join('');
+        }
+    }
+
+    // Comparison Table Render
+    if (cfg.comparison && Array.isArray(cfg.comparison) && cfg.comparison.length > 0) {
+        const compTbody = document.querySelector('.comp-table tbody');
+        if (compTbody) {
+            compTbody.innerHTML = cfg.comparison.map(c => `
+                <tr>
+                    <td><strong>${escHtml(c.feature)}</strong></td>
+                    <td>${escHtml(c.standard)}</td>
+                    <td>${escHtml(c.pro)}</td>
+                    <td>${escHtml(c.emergency)}</td>
+                </tr>
             `).join('');
         }
     }

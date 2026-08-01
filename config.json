@@ -8,21 +8,31 @@
   },
   "announcement": {
     "enabled": true,
-    "text": "⚡ کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
+    "text": "⚡ تخفیف ویژه محدود! کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
   },
   "countdown": {
     "title": "فرصت باقی‌مانده تخفیف ویژه:",
-    "endDate": "2026-07-01T18:01:00.000Z"
+    "endDate": "2026-08-10T23:59:59"
   },
-  "refundBanner": "ضمانت بازگشت وجه، درصورت عدم رضایت از کیفیت!",
+  "sections": {
+    "tutorials": true,
+    "reviews": true,
+    "faq": true,
+    "comparison": true,
+    "calculator": true
+  },
+  "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
   "telegram": {
-    "channelUrl": "https://t.me/BllueGate",
-    "channelHandle": "@BllueGate",
+    "channelUrl": "https://t.me/BlueGate",
+    "channelHandle": "@BlueGate",
     "supportUrl": "https://t.me/BlueGateSupport",
     "supportHandle": "@BlueGateSupport",
     "joinBtnText": "همین حالا به جمع کاربران BlueGate بپیوندید!"
   },
-  "discountCodes": {},
+  "discountCodes": {
+    "BLUE20": 20,
+    "VIP10": 10
+  },
   "features": [
     {
       "icon": "fa-rocket",
@@ -52,31 +62,19 @@
       "icon": "fa-shield",
       "title": "BlueGate Standard",
       "subtitle": "مولتی لوکیشن • سرعت قابل قبول • مناسب استفاده روزمره",
-      "note": "هر گیگ اضافه، فقط ۵,۰۰۰ تومان",
+      "note": "هر گیگ اضافه فقط ۵,۰۰۰ تومان",
+      "pills": [
+        { "title": "مولتی لوکیشن", "subtitle": "۳ کشور برتر اروپایی", "icon": "fa-solid fa-globe text-green" },
+        { "title": "استفاده روزمره", "subtitle": "مناسب وبگردی و ویدیو", "icon": "fa-solid fa-bolt text-green" }
+      ],
       "options": [
-        {
-          "volume": "۲۰ گیگ",
-          "price": 99000,
-          "label": ""
-        },
-        {
-          "volume": "۳۰ گیگ",
-          "price": 149000
-        },
-        {
-          "volume": "۵۰ گیگ",
-          "price": 199000
-        }
+        { "volume": "۲۰ گیگ", "price": 99000 },
+        { "volume": "۳۰ گیگ", "price": 149000 },
+        { "volume": "۵۰ گیگ", "price": 199000 }
       ],
       "unlimitedOptions": [
-        {
-          "volume": "نامحدود (تک کاربر)",
-          "price": 249000
-        },
-        {
-          "volume": "نامحدود (دو کاربره)",
-          "price": 399000
-        }
+        { "volume": "نامحدود (تک کاربر)", "price": 249000 },
+        { "volume": "نامحدود (دو کاربره)", "price": 399000 }
       ]
     },
     {
@@ -86,27 +84,18 @@
       "title": "BlueGate Pro",
       "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص ترید و فعالیت‌های حرفه‌ای",
       "note": "هر گیگ اضافه ۱۰,۰۰۰ تومان",
+      "pills": [
+        { "title": "آی‌پی ثابت", "subtitle": "Static IP اختصاصی", "icon": "fa-solid fa-lock text-purple" },
+        { "title": "سرعت بالا", "subtitle": "پایداری بیشتر", "icon": "fa-solid fa-gauge-high text-purple" },
+        { "title": "امنیت بالا", "subtitle": "مناسب ترید آنلاین", "icon": "fa-solid fa-user-shield text-purple" },
+        { "title": "پایداری عالی", "subtitle": "در تمامی ساعات", "icon": "fa-solid fa-chart-line text-purple" }
+      ],
       "options": [
-        {
-          "volume": "۵ گیگ",
-          "price": 69000
-        },
-        {
-          "volume": "۱۰ گیگ",
-          "price": 139000
-        },
-        {
-          "volume": "۱۵ گیگ",
-          "price": 195000
-        },
-        {
-          "volume": "۲۰ گیگ",
-          "price": 249000
-        },
-        {
-          "volume": "۲۵ گیگ",
-          "price": 289000
-        }
+        { "volume": "۵ گیگ", "price": 69000 },
+        { "volume": "۱۰ گیگ", "price": 139000 },
+        { "volume": "۱۵ گیگ", "price": 195000 },
+        { "volume": "۲۰ گیگ", "price": 249000 },
+        { "volume": "۲۵ گیگ", "price": 289000 }
       ]
     },
     {
@@ -114,26 +103,19 @@
       "theme": "blue",
       "icon": "fa-bolt",
       "title": "BlueGate Emergency",
-      "subtitle": "مخصوص زمان قطعی اینترنت",
-      "options": [
-        {
-          "volume": "۵ گیگ",
-          "price": 195000
-        },
-        {
-          "volume": "۱۰ گیگ",
-          "price": 390000
-        },
-        {
-          "volume": "۱۵ گیگ",
-          "price": 585000
-        },
-        {
-          "volume": "۲۰ گیگ",
-          "price": 780000
-        }
+      "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص زمان قطعی اینترنت",
+      "pills": [
+        { "title": "مقاومت بالا", "subtitle": "فعال حتی در قطع کامل", "icon": "fa-solid fa-bolt-lightning text-cyan" },
+        { "title": "آی‌پی ثابت", "subtitle": "تک لوکیشن VIP", "icon": "fa-solid fa-shield-halved text-cyan" },
+        { "title": "پایداری بالا", "subtitle": "در شرایط بحرانی", "icon": "fa-solid fa-network-wired text-cyan" },
+        { "title": "مناسب ترید", "subtitle": "و کارهای ضروری", "icon": "fa-solid fa-briefcase text-cyan" }
       ],
-      "note": ""
+      "options": [
+        { "volume": "۵ گیگ", "price": 195000 },
+        { "volume": "۱۰ گیگ", "price": 390000 },
+        { "volume": "۱۵ گیگ", "price": 585000 },
+        { "volume": "۲۰ گیگ", "price": 780000 }
+      ]
     }
   ],
   "faq": [
@@ -153,9 +135,9 @@
   "tutorials": [
     {
       "os": "اندروید",
-      "app": "V2RayTun",
+      "app": "v2rayNG",
       "steps": [
-        "برنامه V2RayTun را از گوگل پلی دانلود کنید",
+        "برنامه v2rayNG را از گوگل پلی دانلود کنید",
         "لینک اختصاصی دریافت شده از پشتیبانی را کپی کنید",
         "در برنامه روی علامت + کلیک کرده و Import from Clipboard را بزنید",
         "روی دکمه اتصال کلیک کنید"
@@ -163,19 +145,19 @@
     },
     {
       "os": "آیفون (iOS)",
-      "app": "Streisand / Happ",
+      "app": "Streisand / V2Box",
       "steps": [
-        "برنامه Streisand یا Happ را از اپ استور دانلود کنید",
+        "برنامه Streisand یا V2Box را از اپ استور دانلود کنید",
         "لینک کانفیگ را کپی کرده و وارد برنامه کنید",
         "دکمه Connect را جهت برقراری اتصال فشار دهید"
       ]
     },
     {
       "os": "ویندوز",
-      "app": "v2rayN / Happ / Hiddify",
+      "app": "v2rayN",
       "steps": [
-        "برنامه را اجرا کنید و لینک خود را کپی کنید",
-        "کلیدهای Ctrl + V را جهت ورود ساب اسکریپشن بزنید",
+        "برنامه v2rayN را اجرا کنید",
+        "کلیدهای Ctrl + V را جهت ورود کانفیگ بزنید",
         "حالت System Proxy را فعال نمایید"
       ]
     }
@@ -197,177 +179,41 @@
       "text": "سرویس Emergency موقع قطع شدن کل نت تنها چیزی بود که وصل موند."
     }
   ],
-  "interactive": {
-    "speed": {
-      "enabled": true,
-      "max": 850
+  "comparison": [
+    {
+      "feature": "نوع آی‌پی",
+      "standard": "متغیر (Multi-Location)",
+      "pro": "ثابت (Static IP)",
+      "emergency": "ثابت اختصاصی VIP"
     },
-    "scanner": {
-      "enabled": true,
-      "title": "تست پایداری و امنیت آی‌پی"
+    {
+      "feature": "تنوع سرورها",
+      "standard": "انگلستان، سوئد، ترکیه",
+      "pro": "تک لوکیشن اختصاصی",
+      "emergency": "تک لوکیشن اختصاصی ضد تحریم"
     },
-    "discountBox": {
-      "enabled": true
+    {
+      "feature": "مناسب برای ترید / صرافی",
+      "standard": "خیر",
+      "pro": "فوق‌العاده مناسب",
+      "emergency": "عالی و اختصاصی"
     },
-    "bird": {
-      "enabled": false,
-      "code": "SECRET10"
+    {
+      "feature": "پایداری در قطع سراسری",
+      "standard": "عادی",
+      "pro": "بسیار بالا",
+      "emergency": "حداکثر (ضد اختلال)"
     },
-    "wheel": {
-      "enabled": false,
-      "code": "WHEEL20"
-    },
-    "boss": {
-      "enabled": false,
-      "theme": "google"
+    {
+      "feature": "حجم نامحدود",
+      "standard": "دارد",
+      "pro": "پلن‌های حجمی",
+      "emergency": "پلن‌های حجمی اضطراری"
     }
-  },
-  "en": {
-    "site": {},
-    "announcement": {},
-    "countdown": {},
-    "telegram": {},
-    "features": [
-      {
-        "title": "",
-        "text": ""
-      },
-      {
-        "title": "",
-        "text": ""
-      },
-      {
-        "title": "",
-        "text": ""
-      },
-      {
-        "title": "",
-        "text": ""
-      }
-    ],
-    "faq": [
-      {
-        "q": "",
-        "a": ""
-      },
-      {
-        "q": "",
-        "a": ""
-      },
-      {
-        "q": "",
-        "a": ""
-      }
-    ],
-    "tutorials": [
-      {
-        "os": "",
-        "app": "",
-        "steps": []
-      },
-      {
-        "os": "",
-        "app": "",
-        "steps": []
-      },
-      {
-        "os": "",
-        "app": "",
-        "steps": []
-      }
-    ],
-    "reviews": [
-      {
-        "name": "",
-        "text": ""
-      },
-      {
-        "name": "",
-        "text": ""
-      },
-      {
-        "name": "",
-        "text": ""
-      }
-    ],
-    "plans": [
-      {
-        "title": "",
-        "subtitle": "",
-        "note": "",
-        "options": [
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          }
-        ]
-      },
-      {
-        "title": "",
-        "subtitle": "",
-        "note": "",
-        "options": [
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          }
-        ]
-      },
-      {
-        "title": "",
-        "subtitle": "",
-        "note": "",
-        "options": [
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          },
-          {
-            "label": "",
-            "volume": ""
-          }
-        ]
-      }
-    ]
-  },
-  "contactForm": {
-    "enabled": false,
-    "endpoint": ""
-  },
-  "popularPlan": "",
-  "analytics": {
-    "gaId": ""
+  ],
+  "interactive": {
+    "speed": { "enabled": true, "max": 850 },
+    "scanner": { "enabled": true, "title": "تست پایداری و امنیت آی‌پی" },
+    "discountBox": { "enabled": true }
   }
 }
