@@ -863,6 +863,15 @@ function applyConfigToPlantedLayout(cfg) {
         const calcBtn = document.getElementById('calculatorToggleBtn');
         if (calcSec) calcSec.classList.add('hidden');
         if (calcBtn) calcBtn.classList.toggle('hidden', cfg.sections.calculator === false);
+
+        const langToggleBtn = document.getElementById('langToggleBtn');
+        if (langToggleBtn) {
+            const isHidden = (cfg.sections.langToggle === false);
+            langToggleBtn.classList.toggle('hidden', isHidden);
+            if (isHidden && typeof currentLang !== 'undefined' && currentLang === 'en') {
+                updateLanguageUI('fa');
+            }
+        }
     }
 
     // Site Info
