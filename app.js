@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start Countdown immediately with default end date (2026-08-10) until config loads
     startCountdownTimer('2026-08-10T23:59:59');
 
-    // Load config (with LocalStorage fallback and network fetch)
+    // Load config (from network and fallback storage)
     loadConfig();
 
     window.addEventListener('message', (event) => {
@@ -184,7 +184,13 @@ function initDelegatedListeners() {
         if (buyBtn) {
             const plan = buyBtn.getAttribute('data-plan') || 'BlueGate';
             const card = buyBtn.closest('.pricing-card');
-            const activeRow = card ? card.querySelector('.selectable.active') : null;
+            
+            // Find active row in card, or fallback to first selectable row
+            let activeRow = card ? card.querySelector('.selectable.active') : null;
+            if (!activeRow && card) {
+                activeRow = card.querySelector('.selectable');
+                if (activeRow) activeRow.classList.add('active');
+            }
 
             let gb = '۲۰ گیگ';
             let price = '۲۴۹,۰۰۰ تومان';
@@ -195,10 +201,10 @@ function initDelegatedListeners() {
                 gb = activeRow.getAttribute('data-gb') || gb;
                 price = activeRow.getAttribute('data-price') || price;
                 const rawPriceNum = activeRow.getAttribute('data-price-num');
-                if (rawPriceNum) {
-                    priceNum = parseInt(rawPriceNum) || priceNum;
+                if (rawPriceNum && !isNaN(parseInt(rawPriceNum))) {
+                    priceNum = parseInt(rawPriceNum);
                 } else if (price) {
-                    priceNum = parseInt(price.replace(/[^0-9]/g, '')) || priceNum;
+                    priceNum = parseInt(String(price).replace(/[^0-9]/g, '')) || priceNum;
                 }
                 type = activeRow.getAttribute('data-type') || type;
             }
@@ -223,7 +229,7 @@ function initDelegatedListeners() {
 }
 
 function loadConfig() {
-    // Check LocalStorage override first for instant local testing/admin edits
+    // 1. Instantly apply LocalStorage config if available (for dev/preview)
     const localCfgStr = localStorage.getItem('bg_app_config');
     if (localCfgStr) {
         try {
@@ -235,15 +241,12 @@ function loadConfig() {
         } catch(e) {}
     }
 
-    // Fetch config.json from network
+    // 2. Fetch fresh network config.json and ALWAYS apply it so live published edits show
     fetch('config.json?v=' + Date.now())
         .then(res => res.json())
         .then(data => {
             appConfig = data;
-            // Apply network config if no local override is present
-            if (!localStorage.getItem('bg_app_config')) {
-                applyConfigToPlantedLayout(data);
-            }
+            applyConfigToPlantedLayout(data);
         })
         .catch(err => {
             console.log('Config load note:', err);
@@ -345,9 +348,11 @@ function applyConfigToPlantedLayout(cfg) {
         });
     }
 
-    // Plans Update
+    // Plans Update with Robust Index Fallback
     if (cfg.plans && Array.isArray(cfg.plans)) {
-        cfg.plans.forEach(plan => {
+        const cards = document.querySelectorAll('.pricing-card');
+
+        cfg.plans.forEach((plan, planIdx) => {
             const planId = (plan.id || plan.title || '').toLowerCase();
             let card = null;
 
@@ -359,10 +364,15 @@ function applyConfigToPlantedLayout(cfg) {
                 card = document.querySelector('.pricing-card.card-emergency');
             }
 
+            // Fallback by index if title/id didn't match English keywords
+            if (!card && cards[planIdx]) {
+                card = cards[planIdx];
+            }
+
             if (card) {
                 const titleEl = card.querySelector('.plan-title');
                 if (titleEl && plan.title) {
-                    titleEl.innerHTML = escHtml(plan.title).replace('Standard', '<span>Standard</span>').replace('Pro', '<span>Pro</span>').replace('Emergency', '<span>Emergency</span>');
+                    titleEl.innerHTML = escHtml(plan.title);
                 }
 
                 const tagsEl = card.querySelector('.plan-tags');
@@ -379,13 +389,19 @@ function applyConfigToPlantedLayout(cfg) {
                     const priceList = card.querySelector('.price-list');
                     if (priceList) {
                         const iconClass = card.classList.contains('card-standard') ? '' : card.classList.contains('card-pro') ? 'purple' : 'blue';
-                        priceList.innerHTML = plan.options.map((opt, idx) => `
-                            <div class="price-row selectable ${idx === 0 ? 'active' : ''}" data-gb="${escHtml(opt.volume)}" data-price="${formatToman(opt.price)}" data-price-num="${opt.price}" data-type="${escHtml(plan.subtitle || plan.title)}">
-                                <div class="gb-badge ${iconClass}"><i class="fa-solid fa-cube"></i> ${escHtml(opt.volume)}</div>
-                                <div class="price-val">${formatToman(opt.price)}</div>
-                                <div class="select-indicator"><i class="fa-solid ${idx === 0 ? 'fa-circle-check' : 'fa-circle'}"></i></div>
-                            </div>
-                        `).join('');
+                        priceList.innerHTML = plan.options.map((opt, idx) => {
+                            const volStr = opt.volume || opt.label || '۲۰ گیگ';
+                            const numPrice = typeof opt.price === 'number' ? opt.price : (parseInt(String(opt.price || '').replace(/[^0-9]/g, '')) || 0);
+                            const priceStr = formatToman(numPrice);
+                            const typeStr = plan.subtitle || plan.title || 'سرویس اختصاصی';
+                            return `
+                                <div class="price-row selectable ${idx === 0 ? 'active' : ''}" data-gb="${escHtml(volStr)}" data-price="${escHtml(priceStr)}" data-price-num="${numPrice}" data-type="${escHtml(typeStr)}">
+                                    <div class="gb-badge ${iconClass}"><i class="fa-solid fa-cube"></i> ${escHtml(volStr)}</div>
+                                    <div class="price-val">${escHtml(priceStr)}</div>
+                                    <div class="select-indicator"><i class="fa-solid ${idx === 0 ? 'fa-circle-check' : 'fa-circle'}"></i></div>
+                                </div>
+                            `;
+                        }).join('');
                     }
                 }
             }
