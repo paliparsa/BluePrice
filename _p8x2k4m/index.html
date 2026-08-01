@@ -343,6 +343,13 @@
                 <option value="false">مخفی (غیرفعال)</option>
               </select>
             </div>
+            <div class="field">
+              <label>دکمه تغییر زبان (Language Switcher)</label>
+              <select id="sec-langToggle">
+                <option value="true">نمایش (فعال)</option>
+                <option value="false">مخفی (غیرفعال)</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -959,6 +966,7 @@
     if (document.getElementById('sec-faq')) document.getElementById('sec-faq').value = (sec.faq !== false) ? 'true' : 'false';
     if (document.getElementById('sec-comparison')) document.getElementById('sec-comparison').value = (sec.comparison !== false) ? 'true' : 'false';
     if (document.getElementById('sec-calculator')) document.getElementById('sec-calculator').value = (sec.calculator !== false) ? 'true' : 'false';
+    if (document.getElementById('sec-langToggle')) document.getElementById('sec-langToggle').value = (sec.langToggle !== false) ? 'true' : 'false';
 
     var logoPreview = document.getElementById('logo-preview');
     if (logoPreview) {
@@ -1516,6 +1524,7 @@
     if (document.getElementById('sec-faq')) config.sections.faq = (document.getElementById('sec-faq').value === 'true');
     if (document.getElementById('sec-comparison')) config.sections.comparison = (document.getElementById('sec-comparison').value === 'true');
     if (document.getElementById('sec-calculator')) config.sections.calculator = (document.getElementById('sec-calculator').value === 'true');
+    if (document.getElementById('sec-langToggle')) config.sections.langToggle = (document.getElementById('sec-langToggle').value === 'true');
 
     config.countdown = config.countdown || {};
     config.countdown.title = document.getElementById('countdown-title').value;
