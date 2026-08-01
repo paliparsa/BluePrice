@@ -1007,7 +1007,454 @@ function applyConfigToPlantedLayout(cfg) {
             `).join('');
         }
     }
+
+    // Interactive Features
+    initInteractiveFeatures(cfg);
 }
+
+// ==========================================================================
+// INTERACTIVE FEATURES ENGINE
+// ==========================================================================
+
+let _interactiveCfg = null;
+
+function initInteractiveFeatures(cfg) {
+    if (!cfg || !cfg.interactive) return;
+    _interactiveCfg = cfg.interactive;
+    const int = _interactiveCfg;
+
+    // 1. Expose Scanner
+    const scannerSec = document.getElementById('scannerSection');
+    if (scannerSec) {
+        if (int.scanner && int.scanner.enabled) {
+            scannerSec.classList.remove('hidden');
+            const titleEl = document.getElementById('scannerTitle');
+            if (titleEl && int.scanner.title) titleEl.textContent = int.scanner.title;
+            initExposedScanner();
+        } else {
+            scannerSec.classList.add('hidden');
+        }
+    }
+
+    // 2. Virtual Speed Test
+    const speedSec = document.getElementById('speedTestSection');
+    if (speedSec) {
+        if (int.speed && int.speed.enabled) {
+            speedSec.classList.remove('hidden');
+        } else {
+            speedSec.classList.add('hidden');
+        }
+    }
+
+    // 3. Catch the Bird
+    const birdEl = document.getElementById('flyingBird');
+    if (birdEl) {
+        if (int.bird && int.bird.enabled) {
+            birdEl.classList.remove('hidden');
+            initCatchTheBird(int.bird.code || 'SECRET10');
+        } else {
+            birdEl.classList.add('hidden');
+        }
+    }
+
+    // 4. Spin the Wheel
+    if (int.wheel && int.wheel.enabled) {
+        initSpinWheel(int.wheel.code || 'WHEEL20');
+    }
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 1. EXPOSE SCANNER
+// ────────────────────────────────────────────────────────────────────────────
+let _scannerLoaded = false;
+
+function initExposedScanner() {
+    if (_scannerLoaded) return;
+    _scannerLoaded = true;
+
+    // Detect OS & Browser from UA immediately
+    const ua = navigator.userAgent;
+    let os = 'Unknown OS';
+    let browser = 'Unknown Browser';
+
+    if (/Windows NT 10/.test(ua)) os = 'Windows 10/11';
+    else if (/Windows NT 6/.test(ua)) os = 'Windows 7/8';
+    else if (/Mac OS X/.test(ua)) os = 'macOS';
+    else if (/Android/.test(ua)) os = 'Android';
+    else if (/iPhone|iPad/.test(ua)) os = 'iOS';
+    else if (/Linux/.test(ua)) os = 'Linux';
+
+    if (/Edg\//.test(ua)) browser = 'Microsoft Edge';
+    else if (/Chrome\//.test(ua) && !/Chromium/.test(ua)) browser = 'Google Chrome';
+    else if (/Firefox\//.test(ua)) browser = 'Mozilla Firefox';
+    else if (/Safari\//.test(ua) && !/Chrome/.test(ua)) browser = 'Apple Safari';
+    else if (/OPR\/|Opera/.test(ua)) browser = 'Opera';
+
+    // Reveal local fields immediately
+    revealScanField('scan-os', os, 300);
+    revealScanField('scan-browser', browser, 600);
+
+    // Fetch IP data (no auth, public CORS)
+    fetch('https://api.ipify.org?format=json')
+        .then(r => r.json())
+        .then(data => {
+            const ip = data.ip || '—';
+            revealScanField('scan-ip', ip, 0);
+            // Get ISP & location
+            return fetch(`https://ipapi.co/${ip}/json/`);
+        })
+        .then(r => r.json())
+        .then(geo => {
+            revealScanField('scan-isp', geo.org || geo.asn || '—', 0);
+            const loc = [geo.city, geo.country_name].filter(Boolean).join(', ') || '—';
+            revealScanField('scan-loc', loc, 0);
+        })
+        .catch(() => {
+            revealScanField('scan-ip', '—', 0);
+            revealScanField('scan-isp', '—', 0);
+            revealScanField('scan-loc', '—', 0);
+        });
+}
+
+function revealScanField(id, value, delayMs) {
+    setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = value;
+        el.classList.add('revealed');
+        const row = el.closest('.scanner-row');
+        if (row) {
+            row.classList.remove('skeleton');
+            row.classList.add('loaded');
+        }
+    }, delayMs);
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 2. VIRTUAL SPEED TEST
+// ────────────────────────────────────────────────────────────────────────────
+let _speedTestRunning = false;
+
+window.startSpeedTest = function() {
+    if (_speedTestRunning) return;
+    _speedTestRunning = true;
+
+    const maxSpeed = (_interactiveCfg && _interactiveCfg.speed && _interactiveCfg.speed.max) || 850;
+    const btn = document.getElementById('speedStartBtn');
+    const gaugeNumber = document.getElementById('gaugeNumber');
+    const gaugeLabel = document.getElementById('gaugeLabel');
+    const gaugeFill = document.getElementById('gaugeFill');
+    const dlSpeed = document.getElementById('dlSpeed');
+    const ulSpeed = document.getElementById('ulSpeed');
+    const pingVal = document.getElementById('pingVal');
+
+    if (btn) btn.disabled = true;
+    if (pingVal) pingVal.textContent = '— ms';
+    if (dlSpeed) dlSpeed.textContent = '— Mbps';
+    if (ulSpeed) ulSpeed.textContent = '— Mbps';
+
+    const totalDasharray = 283;
+
+    function setGauge(speed) {
+        const ratio = Math.min(speed / (maxSpeed * 1.05), 1);
+        const offset = totalDasharray - (totalDasharray * ratio);
+        if (gaugeFill) gaugeFill.style.strokeDashoffset = offset;
+        if (gaugeNumber) gaugeNumber.textContent = Math.round(speed);
+    }
+
+    // Phase 0: Ping
+    if (gaugeLabel) gaugeLabel.textContent = 'در حال اتصال...';
+    setTimeout(() => {
+        const fakePing = Math.floor(15 + Math.random() * 20);
+        if (pingVal) pingVal.textContent = fakePing + ' ms';
+        if (gaugeLabel) gaugeLabel.textContent = 'تست دانلود...';
+
+        // Phase 1: Ramp up download speed
+        let current = 0;
+        const target = maxSpeed * (0.92 + Math.random() * 0.08);
+        const steps = 60;
+        let step = 0;
+        const rampInterval = setInterval(() => {
+            step++;
+            const t = step / steps;
+            // Ease-out cubic
+            const ease = 1 - Math.pow(1 - t, 3);
+            current = target * ease;
+            setGauge(current);
+            if (step >= steps) {
+                clearInterval(rampInterval);
+                if (dlSpeed) dlSpeed.textContent = Math.round(target) + ' Mbps';
+                if (gaugeLabel) gaugeLabel.textContent = 'تست آپلود...';
+
+                // Phase 2: Ramp down for upload
+                const uploadTarget = maxSpeed * (0.55 + Math.random() * 0.1);
+                let upStep = 0;
+                const upInterval = setInterval(() => {
+                    upStep++;
+                    const ut = upStep / 40;
+                    const uease = 1 - Math.pow(1 - ut, 3);
+                    const upCurrent = uploadTarget * uease;
+                    setGauge(upCurrent);
+                    if (upStep >= 40) {
+                        clearInterval(upInterval);
+                        if (ulSpeed) ulSpeed.textContent = Math.round(uploadTarget) + ' Mbps';
+                        if (gaugeLabel) gaugeLabel.textContent = '✅ BlueGate آماده است!';
+                        if (gaugeNumber) gaugeNumber.style.color = 'var(--green-glow)';
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> تست دوباره';
+                        }
+                        _speedTestRunning = false;
+                    }
+                }, 50);
+            }
+        }, 50);
+    }, 800);
+};
+
+// ────────────────────────────────────────────────────────────────────────────
+// 3. CATCH THE BIRD
+// ────────────────────────────────────────────────────────────────────────────
+let _birdMoveTimer = null;
+let _birdCaught = false;
+
+function initCatchTheBird(code) {
+    const bird = document.getElementById('flyingBird');
+    if (!bird) return;
+
+    // Place bird at a random starting position
+    moveBirdRandom();
+
+    // Move every 3-5 seconds
+    _birdMoveTimer = setInterval(moveBirdRandom, 3500 + Math.random() * 1500);
+
+    // Click handler
+    bird.addEventListener('click', () => {
+        if (_birdCaught) return;
+        _birdCaught = true;
+        clearInterval(_birdMoveTimer);
+        bird.classList.add('hidden');
+
+        // Show congrats toast + code
+        showBirdCatchModal(code);
+    });
+}
+
+function moveBirdRandom() {
+    const bird = document.getElementById('flyingBird');
+    if (!bird || _birdCaught) return;
+    const margin = 80;
+    const maxTop = window.innerHeight - margin * 2;
+    const maxLeft = window.innerWidth - margin * 2;
+    const top = margin + Math.random() * maxTop;
+    const left = margin + Math.random() * maxLeft;
+    bird.style.top = top + 'px';
+    bird.style.left = left + 'px';
+}
+
+function showBirdCatchModal(code) {
+    // Create a temporary popup
+    const popup = document.createElement('div');
+    popup.style.cssText = `
+        position:fixed;bottom:2rem;right:50%;transform:translateX(50%);
+        background:linear-gradient(135deg,rgba(14,18,28,0.97),rgba(22,28,44,0.97));
+        border:1px solid rgba(0,229,255,0.3);border-radius:20px;
+        padding:1.5rem 2rem;z-index:9998;text-align:center;
+        box-shadow:0 8px 40px rgba(0,229,255,0.25);
+        backdrop-filter:blur(16px);
+        animation:slideUpCard 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        max-width:320px;width:90%;
+    `;
+    popup.innerHTML = `
+        <div style="font-size:2.5rem;margin-bottom:.5rem">🎉</div>
+        <div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:.25rem">پرنده را گرفتی!</div>
+        <div style="font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1rem">کد تخفیف هدیه‌ات:</div>
+        <div style="font-size:1.6rem;font-weight:900;letter-spacing:4px;color:var(--cyan-glow);font-family:Outfit,monospace;text-shadow:0 0 20px rgba(0,229,255,.5);margin-bottom:1rem">${code}</div>
+        <button onclick="navigator.clipboard.writeText('${code}').then(()=>showToast('کد کپی شد!')).catch(()=>{});this.textContent='✅ کپی شد!'" style="background:var(--cyan-glow);border:none;color:#000;font-weight:700;font-family:Vazirmatn,sans-serif;font-size:.85rem;padding:.5rem 1.25rem;border-radius:20px;cursor:pointer;width:100%">
+            <i class="fa-solid fa-copy"></i> کپی کد
+        </button>
+        <p style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:.6rem">در هنگام ثبت فاکتور وارد کنید</p>
+    `;
+    document.body.appendChild(popup);
+    // Auto-remove after 12 seconds
+    setTimeout(() => popup.remove(), 12000);
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// 4. SPIN THE WHEEL
+// ────────────────────────────────────────────────────────────────────────────
+let _wheelSpinning = false;
+let _wheelCurrentAngle = 0;
+
+function initSpinWheel(code) {
+    // Only show on first visit in this session
+    if (sessionStorage.getItem('bg_wheel_shown')) return;
+
+    const modal = document.getElementById('wheelModal');
+    const spinBtn = document.getElementById('wheelSpinBtn');
+    const closeBtn = document.getElementById('wheelCloseBtn');
+    const copyBtn = document.getElementById('wheelCopyBtn');
+    const wheelCodeEl = document.getElementById('wheelCode');
+    if (!modal) return;
+
+    // Set winning code
+    if (wheelCodeEl) wheelCodeEl.textContent = code;
+
+    // Draw the wheel
+    drawWheel(code);
+
+    // Show modal after 2.5 seconds
+    setTimeout(() => {
+        modal.classList.remove('hidden');
+    }, 2500);
+
+    // Close button
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            sessionStorage.setItem('bg_wheel_shown', '1');
+        });
+    }
+
+    // Click outside to close
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+            sessionStorage.setItem('bg_wheel_shown', '1');
+        }
+    });
+
+    // Copy button
+    if (copyBtn) {
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(code).then(() => {
+                copyBtn.textContent = '✅ کپی شد!';
+                showToast('کد تخفیف کپی شد!');
+            }).catch(() => {});
+        });
+    }
+
+    // Spin button
+    if (spinBtn) {
+        spinBtn.addEventListener('click', () => {
+            if (_wheelSpinning) return;
+            spinWheel(code);
+        });
+    }
+}
+
+function drawWheel(winCode) {
+    const canvas = document.getElementById('wheelCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const r = cx - 6;
+
+    // Segments: 3 winning + 5 "try again" variants
+    const segments = [
+        { label: winCode, color: '#00e5ff', textColor: '#000', win: true },
+        { label: 'دوباره!', color: '#1a1f2e', textColor: '#94a3b8', win: false },
+        { label: winCode, color: '#b537ff', textColor: '#fff', win: true },
+        { label: 'دوباره!', color: '#12172a', textColor: '#64748b', win: false },
+        { label: winCode, color: '#00ff9d', textColor: '#000', win: true },
+        { label: 'دوباره!', color: '#1a1f2e', textColor: '#94a3b8', win: false },
+        { label: 'دوباره!', color: '#0e1220', textColor: '#475569', win: false },
+        { label: 'دوباره!', color: '#12172a', textColor: '#64748b', win: false },
+    ];
+
+    const arc = (2 * Math.PI) / segments.length;
+
+    function drawFrame(offset) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        segments.forEach((seg, i) => {
+            const start = offset + i * arc;
+            const end = start + arc;
+
+            // Slice
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, start, end);
+            ctx.closePath();
+            ctx.fillStyle = seg.color;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Text
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(start + arc / 2);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = seg.textColor;
+            ctx.font = seg.win ? 'bold 11px Outfit' : '10px Outfit';
+            ctx.fillText(seg.label, r - 10, 4);
+            ctx.restore();
+        });
+
+        // Center hub
+        ctx.beginPath();
+        ctx.arc(cx, cy, 18, 0, 2 * Math.PI);
+        ctx.fillStyle = '#07090e';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(0,229,255,0.4)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+
+    // Store drawFrame on canvas for animation
+    canvas._draw = drawFrame;
+    drawFrame(0);
+}
+
+function spinWheel(code) {
+    const canvas = document.getElementById('wheelCanvas');
+    const spinBtn = document.getElementById('wheelSpinBtn');
+    const resultEl = document.getElementById('wheelResult');
+    if (!canvas || !canvas._draw) return;
+
+    _wheelSpinning = true;
+    if (spinBtn) spinBtn.disabled = true;
+
+    // Target: land on a winning segment (index 0 = position 0, we pick index 0)
+    // Full spins + land on segment 0 which is our winning code
+    const numSegments = 8;
+    const arc = (2 * Math.PI) / numSegments;
+    // Winning segment (index 0) center angle: arc/2
+    // We want pointer (top = -π/2) to point at segment center
+    const winSegCenter = arc / 2; // midpoint of first segment from angle=0
+    const extraSpins = 5 * 2 * Math.PI;
+    const targetAngle = extraSpins + (2 * Math.PI - winSegCenter) + Math.PI / 2;
+
+    const duration = 4500;
+    const startTime = performance.now();
+    const startAngle = _wheelCurrentAngle;
+
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
+
+    function animate(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(elapsed / duration, 1);
+        const angle = startAngle + targetAngle * easeOut(t);
+        _wheelCurrentAngle = angle;
+        canvas._draw(angle);
+
+        if (t < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            // Done
+            _wheelSpinning = false;
+            sessionStorage.setItem('bg_wheel_shown', '1');
+            // Show result
+            if (resultEl) resultEl.classList.remove('hidden');
+            if (spinBtn) spinBtn.classList.add('hidden');
+        }
+    }
+
+    requestAnimationFrame(animate);
+}
+
 
 // Browser-agnostic Target Date Parsing
 function parseTargetDate(dateStr) {
