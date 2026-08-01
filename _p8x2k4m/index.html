@@ -345,6 +345,20 @@
             </div>
           </div>
         </div>
+
+        <div class="card" style="margin-top:20px;">
+          <div class="card-title">لوگوی سایت</div>
+          <div class="info-box">یک فایل تصویری با حجم کم (ترجیحا مربع زیر ۱۰۰ کیلوبایت) انتخاب کنید. این لوگو جایگزین آیکون سپر در سایت می‌شود.</div>
+          <div class="field-row">
+            <div class="field">
+              <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+              <button class="del-btn" onclick="clearLogo()" style="margin-top: 10px; width: auto; padding: 5px 15px;"><i class="fas fa-trash"></i> حذف لوگو</button>
+            </div>
+            <div class="field" style="display: flex; align-items: center; justify-content: center;">
+              <img id="logo-preview" src="" style="max-height: 64px; border-radius: 8px; display: none;">
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- COUNTDOWN -->
@@ -946,11 +960,14 @@
     if (document.getElementById('sec-comparison')) document.getElementById('sec-comparison').value = (sec.comparison !== false) ? 'true' : 'false';
     if (document.getElementById('sec-calculator')) document.getElementById('sec-calculator').value = (sec.calculator !== false) ? 'true' : 'false';
 
-    if (s.logoBase64) {
-      document.getElementById('logo-preview').src = s.logoBase64;
-      document.getElementById('logo-preview').style.display = 'block';
-    } else {
-      document.getElementById('logo-preview').style.display = 'none';
+    var logoPreview = document.getElementById('logo-preview');
+    if (logoPreview) {
+      if (s.logoBase64) {
+        logoPreview.src = s.logoBase64;
+        logoPreview.style.display = 'block';
+      } else {
+        logoPreview.style.display = 'none';
+      }
     }
 
     var cd = config.countdown || {};
