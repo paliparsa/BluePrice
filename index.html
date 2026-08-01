@@ -477,7 +477,86 @@
             </div>
         </section>
 
+        <!-- ===================================================== -->
+        <!-- Expose Scanner Section -->
+        <!-- ===================================================== -->
+        <section id="scannerSection" class="scanner-section hidden">
+            <div class="container">
+                <div class="glass-panel scanner-panel">
+                    <div class="scanner-header">
+                        <div class="scanner-icon-wrap">
+                            <i class="fa-solid fa-user-secret"></i>
+                        </div>
+                        <div>
+                            <h2 id="scannerTitle" class="scanner-title">اینترنت شما چه اطلاعاتی درباره‌تان فاش می‌کند؟</h2>
+                            <p class="scanner-subtitle">بدون VPN، هر سایتی این اطلاعات را می‌بیند</p>
+                        </div>
+                    </div>
+                    <div class="scanner-grid" id="scannerGrid">
+                        <div class="scanner-row skeleton"><span class="scan-label"><i class="fa-solid fa-globe"></i> آدرس IP</span><span class="scan-val" id="scan-ip">در حال بارگذاری...</span></div>
+                        <div class="scanner-row skeleton"><span class="scan-label"><i class="fa-solid fa-building"></i> سرویس‌دهنده اینترنت</span><span class="scan-val" id="scan-isp">در حال بارگذاری...</span></div>
+                        <div class="scanner-row skeleton"><span class="scan-label"><i class="fa-solid fa-location-dot"></i> موقعیت مکانی</span><span class="scan-val" id="scan-loc">در حال بارگذاری...</span></div>
+                        <div class="scanner-row skeleton"><span class="scan-label"><i class="fa-solid fa-laptop"></i> سیستم‌عامل</span><span class="scan-val" id="scan-os">در حال بارگذاری...</span></div>
+                        <div class="scanner-row skeleton"><span class="scan-label"><i class="fa-solid fa-window-maximize"></i> مرورگر</span><span class="scan-val" id="scan-browser">در حال بارگذاری...</span></div>
+                        <div class="scanner-row skeleton"><span class="scan-label"><i class="fa-solid fa-shield-halved"></i> وضعیت VPN</span><span class="scan-val" id="scan-vpn"><span class="scan-badge danger">محافظت نشده ⚠️</span></span></div>
+                    </div>
+                    <div class="scanner-cta">
+                        <div class="scanner-cta-text">
+                            <i class="fa-solid fa-circle-exclamation text-purple"></i>
+                            این اطلاعات توسط هر وبسایتی قابل مشاهده است. با BlueGate آن‌ها را پنهان کنید.
+                        </div>
+                        <button class="scanner-buy-btn" onclick="document.querySelector('.pricing-section').scrollIntoView({behavior:'smooth'})">
+                            <i class="fa-solid fa-shield-halved"></i> همین حالا محافظت کنید
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================== -->
+        <!-- Virtual Speed Test Section -->
+        <!-- ===================================================== -->
+        <section id="speedTestSection" class="speed-section hidden">
+            <div class="container">
+                <div class="glass-panel speed-panel">
+                    <h2 class="section-title"><i class="fa-solid fa-gauge-high text-cyan"></i> تست سرعت اتصال</h2>
+                    <p class="speed-subtitle">ببینید BlueGate چه سرعتی به شما می‌دهد</p>
+                    <div class="speed-gauge-wrap">
+                        <div class="speed-gauge">
+                            <svg class="gauge-svg" viewBox="0 0 200 120">
+                                <!-- Track arc -->
+                                <path class="gauge-track" d="M 10 110 A 90 90 0 0 1 190 110" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="16" stroke-linecap="round"/>
+                                <!-- Fill arc - animated by JS -->
+                                <path class="gauge-fill" id="gaugeFill" d="M 10 110 A 90 90 0 0 1 190 110" fill="none" stroke="url(#gaugeGrad)" stroke-width="16" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283"/>
+                                <defs>
+                                    <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#00e5ff"/>
+                                        <stop offset="100%" stop-color="#b537ff"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="gauge-center">
+                                <div class="gauge-number" id="gaugeNumber">0</div>
+                                <div class="gauge-unit">Mbps</div>
+                                <div class="gauge-label" id="gaugeLabel">آماده</div>
+                            </div>
+                        </div>
+                        <div class="speed-stats" id="speedStats">
+                            <div class="speed-stat-item"><i class="fa-solid fa-arrow-down text-cyan"></i><span id="dlSpeed">— Mbps</span><small>دانلود</small></div>
+                            <div class="speed-stat-item"><i class="fa-solid fa-arrow-up text-purple"></i><span id="ulSpeed">— Mbps</span><small>آپلود</small></div>
+                            <div class="speed-stat-item"><i class="fa-solid fa-wave-square text-green"></i><span id="pingVal">— ms</span><small>پینگ</small></div>
+                        </div>
+                    </div>
+                    <button class="speed-start-btn" id="speedStartBtn" onclick="startSpeedTest()">
+                        <i class="fa-solid fa-play"></i> شروع تست سرعت
+                    </button>
+                    <p class="speed-note" id="speedNote">این یک تست سرعت شبیه‌سازی‌شده است که قابلیت BlueGate را نشان می‌دهد</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Tutorials Section -->
+
         <section id="tutorialsSection" class="tutorials-section">
             <div class="container">
                 <div class="glass-panel tutorials-panel">
@@ -737,5 +816,35 @@
 
     <!-- Script -->
     <script src="app.js"></script>
+
+    <!-- Flying Bird (Catch the Bird game) -->
+    <div id="flyingBird" class="flying-bird hidden" title="بزن بگیر! 🎁">🦅</div>
+
+    <!-- Spin the Wheel Modal -->
+    <div id="wheelModal" class="wheel-modal-overlay hidden">
+        <div class="wheel-modal-card glass-panel">
+            <button class="wheel-close-btn" id="wheelCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="wheel-header">
+                <div class="wheel-icon">🎰</div>
+                <h2>گردونه شانس BlueGate</h2>
+                <p>یک بار بچرخان و جایزه‌ات را ببر!</p>
+            </div>
+            <div class="wheel-canvas-wrap">
+                <canvas id="wheelCanvas" width="300" height="300"></canvas>
+                <div class="wheel-pointer">▼</div>
+            </div>
+            <div class="wheel-result hidden" id="wheelResult">
+                <div class="wheel-result-icon">🎉</div>
+                <div class="wheel-code-label">کد تخفیف شما:</div>
+                <div class="wheel-code" id="wheelCode">WHEEL20</div>
+                <button class="wheel-copy-btn" id="wheelCopyBtn"><i class="fa-solid fa-copy"></i> کپی کد</button>
+                <p class="wheel-hint">این کد را در هنگام ثبت فاکتور وارد کنید</p>
+            </div>
+            <button class="wheel-spin-btn" id="wheelSpinBtn">
+                <i class="fa-solid fa-dharmachakra"></i> بچرخان!
+            </button>
+        </div>
+    </div>
 </body>
+
 </html>

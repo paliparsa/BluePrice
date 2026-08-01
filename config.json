@@ -8,10 +8,10 @@
   },
   "announcement": {
     "enabled": true,
-    "text": ""
+    "text": "⚡ تخفیف ویژه محدود! کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
   },
   "countdown": {
-    "title": "",
+    "title": "فرصت باقی‌مانده تخفیف ویژه:",
     "endDate": "2026-08-10T23:59:59"
   },
   "sections": {
@@ -23,13 +23,16 @@
   },
   "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
   "telegram": {
-    "channelUrl": "",
-    "channelHandle": "",
-    "supportUrl": "",
-    "supportHandle": "",
-    "joinBtnText": ""
+    "channelUrl": "https://t.me/BlueGate",
+    "channelHandle": "@BlueGate",
+    "supportUrl": "https://t.me/BlueGateSupport",
+    "supportHandle": "@BlueGateSupport",
+    "joinBtnText": "همین حالا به جمع کاربران BlueGate بپیوندید!"
   },
-  "discountCodes": {},
+  "discountCodes": {
+    "BLUE20": 20,
+    "VIP10": 10
+  },
   "features": [
     {
       "icon": "fa-rocket",
@@ -61,40 +64,17 @@
       "subtitle": "مولتی لوکیشن • سرعت قابل قبول • مناسب استفاده روزمره",
       "note": "هر گیگ اضافه فقط ۵,۰۰۰ تومان",
       "pills": [
-        {
-          "title": "مولتی لوکیشن",
-          "subtitle": "۳ کشور برتر اروپایی",
-          "icon": "fa-solid fa-globe text-green"
-        },
-        {
-          "title": "استفاده روزمره",
-          "subtitle": "مناسب وبگردی و ویدیو",
-          "icon": "fa-solid fa-bolt text-green"
-        }
+        { "title": "مولتی لوکیشن", "subtitle": "۳ کشور برتر اروپایی", "icon": "fa-solid fa-globe text-green" },
+        { "title": "استفاده روزمره", "subtitle": "مناسب وبگردی و ویدیو", "icon": "fa-solid fa-bolt text-green" }
       ],
       "options": [
-        {
-          "volume": "۲۰ گیگ",
-          "price": 99000
-        },
-        {
-          "volume": "۳۰ گیگ",
-          "price": 149000
-        },
-        {
-          "volume": "۵۰ گیگ",
-          "price": 199000
-        }
+        { "volume": "۲۰ گیگ", "price": 99000 },
+        { "volume": "۳۰ گیگ", "price": 149000 },
+        { "volume": "۵۰ گیگ", "price": 199000 }
       ],
       "unlimitedOptions": [
-        {
-          "volume": "نامحدود (تک کاربر)",
-          "price": 249000
-        },
-        {
-          "volume": "نامحدود (دو کاربره)",
-          "price": 399000
-        }
+        { "volume": "نامحدود (تک کاربر)", "price": 249000 },
+        { "volume": "نامحدود (دو کاربره)", "price": 399000 }
       ]
     },
     {
@@ -105,48 +85,17 @@
       "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص ترید و فعالیت‌های حرفه‌ای",
       "note": "هر گیگ اضافه ۱۰,۰۰۰ تومان",
       "pills": [
-        {
-          "title": "آی‌پی ثابت",
-          "subtitle": "Static IP اختصاصی",
-          "icon": "fa-solid fa-lock text-purple"
-        },
-        {
-          "title": "سرعت بالا",
-          "subtitle": "پایداری بیشتر",
-          "icon": "fa-solid fa-gauge-high text-purple"
-        },
-        {
-          "title": "امنیت بالا",
-          "subtitle": "مناسب ترید آنلاین",
-          "icon": "fa-solid fa-user-shield text-purple"
-        },
-        {
-          "title": "پایداری عالی",
-          "subtitle": "در تمامی ساعات",
-          "icon": "fa-solid fa-chart-line text-purple"
-        }
+        { "title": "آی‌پی ثابت", "subtitle": "Static IP اختصاصی", "icon": "fa-solid fa-lock text-purple" },
+        { "title": "سرعت بالا", "subtitle": "پایداری بیشتر", "icon": "fa-solid fa-gauge-high text-purple" },
+        { "title": "امنیت بالا", "subtitle": "مناسب ترید آنلاین", "icon": "fa-solid fa-user-shield text-purple" },
+        { "title": "پایداری عالی", "subtitle": "در تمامی ساعات", "icon": "fa-solid fa-chart-line text-purple" }
       ],
       "options": [
-        {
-          "volume": "۵ گیگ",
-          "price": 69000
-        },
-        {
-          "volume": "۱۰ گیگ",
-          "price": 139000
-        },
-        {
-          "volume": "۱۵ گیگ",
-          "price": 195000
-        },
-        {
-          "volume": "۲۰ گیگ",
-          "price": 249000
-        },
-        {
-          "volume": "۲۵ گیگ",
-          "price": 289000
-        }
+        { "volume": "۵ گیگ", "price": 69000 },
+        { "volume": "۱۰ گیگ", "price": 139000 },
+        { "volume": "۱۵ گیگ", "price": 195000 },
+        { "volume": "۲۰ گیگ", "price": 249000 },
+        { "volume": "۲۵ گیگ", "price": 289000 }
       ]
     },
     {
@@ -156,44 +105,16 @@
       "title": "BlueGate Emergency",
       "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص زمان قطعی اینترنت",
       "pills": [
-        {
-          "title": "مقاومت بالا",
-          "subtitle": "فعال حتی در قطع کامل",
-          "icon": "fa-solid fa-bolt-lightning text-cyan"
-        },
-        {
-          "title": "آی‌پی ثابت",
-          "subtitle": "تک لوکیشن VIP",
-          "icon": "fa-solid fa-shield-halved text-cyan"
-        },
-        {
-          "title": "پایداری بالا",
-          "subtitle": "در شرایط بحرانی",
-          "icon": "fa-solid fa-network-wired text-cyan"
-        },
-        {
-          "title": "مناسب ترید",
-          "subtitle": "و کارهای ضروری",
-          "icon": "fa-solid fa-briefcase text-cyan"
-        }
+        { "title": "مقاومت بالا", "subtitle": "فعال حتی در قطع کامل", "icon": "fa-solid fa-bolt-lightning text-cyan" },
+        { "title": "آی‌پی ثابت", "subtitle": "تک لوکیشن VIP", "icon": "fa-solid fa-shield-halved text-cyan" },
+        { "title": "پایداری بالا", "subtitle": "در شرایط بحرانی", "icon": "fa-solid fa-network-wired text-cyan" },
+        { "title": "مناسب ترید", "subtitle": "و کارهای ضروری", "icon": "fa-solid fa-briefcase text-cyan" }
       ],
       "options": [
-        {
-          "volume": "۵ گیگ",
-          "price": 195000
-        },
-        {
-          "volume": "۱۰ گیگ",
-          "price": 390000
-        },
-        {
-          "volume": "۱۵ گیگ",
-          "price": 585000
-        },
-        {
-          "volume": "۲۰ گیگ",
-          "price": 780000
-        }
+        { "volume": "۵ گیگ", "price": 195000 },
+        { "volume": "۱۰ گیگ", "price": 390000 },
+        { "volume": "۱۵ گیگ", "price": 585000 },
+        { "volume": "۲۰ گیگ", "price": 780000 }
       ]
     }
   ],
@@ -291,36 +212,9 @@
     }
   ],
   "interactive": {
-    "speed": {
-      "enabled": true,
-      "max": 850
-    },
-    "scanner": {
-      "enabled": true,
-      "title": ""
-    },
-    "discountBox": {
-      "enabled": true
-    },
-    "bird": {
-      "enabled": true,
-      "code": ""
-    },
-    "wheel": {
-      "enabled": true,
-      "code": ""
-    },
-    "boss": {
-      "enabled": true,
-      "theme": "google"
-    }
-  },
-  "contactForm": {
-    "enabled": true,
-    "endpoint": ""
-  },
-  "popularPlan": "",
-  "analytics": {
-    "gaId": ""
+    "scanner": { "enabled": true, "title": "اینترنت شما چه اطلاعاتی درباره‌تان فاش می‌کند؟" },
+    "bird":    { "enabled": true, "code": "SECRET10" },
+    "wheel":   { "enabled": true, "code": "WHEEL20" },
+    "speed":   { "enabled": true, "max": 850 }
   }
 }
