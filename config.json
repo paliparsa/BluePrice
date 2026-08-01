@@ -8,15 +8,15 @@
   },
   "announcement": {
     "enabled": true,
-    "text": "⚡ تخفیف ویژه محدود! کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
+    "text": "⚡ کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
   },
   "countdown": {
     "title": "فرصت باقی‌مانده تخفیف ویژه:",
-    "endDate": "2026-08-10T23:59:59"
+    "endDate": "2026-07-31T19:19:00.000Z"
   },
   "sections": {
-    "tutorials": true,
-    "reviews": true,
+    "tutorials": false,
+    "reviews": false,
     "faq": true,
     "comparison": true,
     "calculator": true,
@@ -24,15 +24,14 @@
   },
   "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
   "telegram": {
-    "channelUrl": "https://t.me/BlueGate",
-    "channelHandle": "@BlueGate",
+    "channelUrl": "https://t.me/BllueGate",
+    "channelHandle": "@BllueGate",
     "supportUrl": "https://t.me/BlueGateSupport",
     "supportHandle": "@BlueGateSupport",
     "joinBtnText": "همین حالا به جمع کاربران BlueGate بپیوندید!"
   },
   "discountCodes": {
-    "BLUE20": 20,
-    "VIP10": 10
+    "WHEEL10": 10
   },
   "features": [
     {
@@ -65,17 +64,40 @@
       "subtitle": "مولتی لوکیشن • سرعت قابل قبول • مناسب استفاده روزمره",
       "note": "هر گیگ اضافه فقط ۵,۰۰۰ تومان",
       "pills": [
-        { "title": "مولتی لوکیشن", "subtitle": "۳ کشور برتر اروپایی", "icon": "fa-solid fa-globe text-green" },
-        { "title": "استفاده روزمره", "subtitle": "مناسب وبگردی و ویدیو", "icon": "fa-solid fa-bolt text-green" }
+        {
+          "title": "مولتی لوکیشن",
+          "subtitle": "۳ کشور برتر اروپایی",
+          "icon": "fa-solid fa-globe text-green"
+        },
+        {
+          "title": "استفاده روزمره",
+          "subtitle": "مناسب وبگردی و ویدیو",
+          "icon": "fa-solid fa-bolt text-green"
+        }
       ],
       "options": [
-        { "volume": "۲۰ گیگ", "price": 99000 },
-        { "volume": "۳۰ گیگ", "price": 149000 },
-        { "volume": "۵۰ گیگ", "price": 199000 }
+        {
+          "volume": "۲۰ گیگ",
+          "price": 99000
+        },
+        {
+          "volume": "۳۰ گیگ",
+          "price": 149000
+        },
+        {
+          "volume": "۵۰ گیگ",
+          "price": 199000
+        }
       ],
       "unlimitedOptions": [
-        { "volume": "نامحدود (تک کاربر)", "price": 249000 },
-        { "volume": "نامحدود (دو کاربره)", "price": 399000 }
+        {
+          "volume": "نامحدود (تک کاربر)",
+          "price": 249000
+        },
+        {
+          "volume": "نامحدود (دو کاربره)",
+          "price": 399000
+        }
       ]
     },
     {
@@ -86,17 +108,48 @@
       "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص ترید و فعالیت‌های حرفه‌ای",
       "note": "هر گیگ اضافه ۱۰,۰۰۰ تومان",
       "pills": [
-        { "title": "آی‌پی ثابت", "subtitle": "Static IP اختصاصی", "icon": "fa-solid fa-lock text-purple" },
-        { "title": "سرعت بالا", "subtitle": "پایداری بیشتر", "icon": "fa-solid fa-gauge-high text-purple" },
-        { "title": "امنیت بالا", "subtitle": "مناسب ترید آنلاین", "icon": "fa-solid fa-user-shield text-purple" },
-        { "title": "پایداری عالی", "subtitle": "در تمامی ساعات", "icon": "fa-solid fa-chart-line text-purple" }
+        {
+          "title": "آی‌پی ثابت",
+          "subtitle": "Static IP اختصاصی",
+          "icon": "fa-solid fa-lock text-purple"
+        },
+        {
+          "title": "سرعت بالا",
+          "subtitle": "پایداری بیشتر",
+          "icon": "fa-solid fa-gauge-high text-purple"
+        },
+        {
+          "title": "امنیت بالا",
+          "subtitle": "مناسب ترید آنلاین",
+          "icon": "fa-solid fa-user-shield text-purple"
+        },
+        {
+          "title": "پایداری عالی",
+          "subtitle": "در تمامی ساعات",
+          "icon": "fa-solid fa-chart-line text-purple"
+        }
       ],
       "options": [
-        { "volume": "۵ گیگ", "price": 69000 },
-        { "volume": "۱۰ گیگ", "price": 139000 },
-        { "volume": "۱۵ گیگ", "price": 195000 },
-        { "volume": "۲۰ گیگ", "price": 249000 },
-        { "volume": "۲۵ گیگ", "price": 289000 }
+        {
+          "volume": "۵ گیگ",
+          "price": 69000
+        },
+        {
+          "volume": "۱۰ گیگ",
+          "price": 139000
+        },
+        {
+          "volume": "۱۵ گیگ",
+          "price": 195000
+        },
+        {
+          "volume": "۲۰ گیگ",
+          "price": 249000
+        },
+        {
+          "volume": "۲۵ گیگ",
+          "price": 289000
+        }
       ]
     },
     {
@@ -106,16 +159,44 @@
       "title": "BlueGate Emergency",
       "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص زمان قطعی اینترنت",
       "pills": [
-        { "title": "مقاومت بالا", "subtitle": "فعال حتی در قطع کامل", "icon": "fa-solid fa-bolt-lightning text-cyan" },
-        { "title": "آی‌پی ثابت", "subtitle": "تک لوکیشن VIP", "icon": "fa-solid fa-shield-halved text-cyan" },
-        { "title": "پایداری بالا", "subtitle": "در شرایط بحرانی", "icon": "fa-solid fa-network-wired text-cyan" },
-        { "title": "مناسب ترید", "subtitle": "و کارهای ضروری", "icon": "fa-solid fa-briefcase text-cyan" }
+        {
+          "title": "مقاومت بالا",
+          "subtitle": "فعال حتی در قطع کامل",
+          "icon": "fa-solid fa-bolt-lightning text-cyan"
+        },
+        {
+          "title": "آی‌پی ثابت",
+          "subtitle": "تک لوکیشن VIP",
+          "icon": "fa-solid fa-shield-halved text-cyan"
+        },
+        {
+          "title": "پایداری بالا",
+          "subtitle": "در شرایط بحرانی",
+          "icon": "fa-solid fa-network-wired text-cyan"
+        },
+        {
+          "title": "مناسب ترید",
+          "subtitle": "و کارهای ضروری",
+          "icon": "fa-solid fa-briefcase text-cyan"
+        }
       ],
       "options": [
-        { "volume": "۵ گیگ", "price": 195000 },
-        { "volume": "۱۰ گیگ", "price": 390000 },
-        { "volume": "۱۵ گیگ", "price": 585000 },
-        { "volume": "۲۰ گیگ", "price": 780000 }
+        {
+          "volume": "۵ گیگ",
+          "price": 195000
+        },
+        {
+          "volume": "۱۰ گیگ",
+          "price": 390000
+        },
+        {
+          "volume": "۱۵ گیگ",
+          "price": 585000
+        },
+        {
+          "volume": "۲۰ گیگ",
+          "price": 780000
+        }
       ]
     }
   ],
@@ -183,7 +264,7 @@
   "comparison": [
     {
       "feature": "نوع آی‌پی",
-      "standard": "متغیر (Multi-Location)",
+      "standard": "چند لوکیشن (Multi-Location)",
       "pro": "ثابت (Static IP)",
       "emergency": "ثابت اختصاصی VIP"
     },
@@ -201,21 +282,185 @@
     },
     {
       "feature": "پایداری در قطع سراسری",
-      "standard": "عادی",
-      "pro": "بسیار بالا",
-      "emergency": "حداکثر (ضد اختلال)"
+      "standard": "خیر",
+      "pro": "اعمال ضریب X4",
+      "emergency": "حداکثر و ضد اختلال"
     },
     {
-      "feature": "حجم نامحدود",
-      "standard": "دارد",
+      "feature": "حجم",
+      "standard": "حجمی و نامحدود",
       "pro": "پلن‌های حجمی",
-      "emergency": "پلن‌های حجمی اضطراری"
+      "emergency": "پلن‌های حجمی "
     }
   ],
   "interactive": {
-    "scanner": { "enabled": true, "title": "اینترنت شما چه اطلاعاتی درباره‌تان فاش می‌کند؟" },
-    "bird":    { "enabled": true, "code": "SECRET10" },
-    "wheel":   { "enabled": true, "code": "WHEEL20" },
-    "speed":   { "enabled": true, "max": 850 }
+    "scanner": {
+      "enabled": true,
+      "title": "اینترنت شما چه اطلاعاتی درباره‌تان فاش می‌کند؟"
+    },
+    "bird": {
+      "enabled": false,
+      "code": "SECRET5"
+    },
+    "wheel": {
+      "enabled": true,
+      "code": "WHEEL10"
+    },
+    "speed": {
+      "enabled": false,
+      "max": 850
+    },
+    "boss": {
+      "enabled": false,
+      "theme": "google"
+    }
+  },
+  "en": {
+    "site": {},
+    "announcement": {},
+    "countdown": {},
+    "telegram": {},
+    "features": [
+      {
+        "title": "",
+        "text": ""
+      },
+      {
+        "title": "",
+        "text": ""
+      },
+      {
+        "title": "",
+        "text": ""
+      },
+      {
+        "title": "",
+        "text": ""
+      }
+    ],
+    "faq": [
+      {
+        "q": "",
+        "a": ""
+      },
+      {
+        "q": "",
+        "a": ""
+      },
+      {
+        "q": "",
+        "a": ""
+      }
+    ],
+    "tutorials": [
+      {
+        "os": "",
+        "app": "",
+        "steps": []
+      },
+      {
+        "os": "",
+        "app": "",
+        "steps": []
+      },
+      {
+        "os": "",
+        "app": "",
+        "steps": []
+      }
+    ],
+    "reviews": [
+      {
+        "name": "",
+        "text": ""
+      },
+      {
+        "name": "",
+        "text": ""
+      },
+      {
+        "name": "",
+        "text": ""
+      }
+    ],
+    "plans": [
+      {
+        "title": "",
+        "subtitle": "",
+        "note": "",
+        "options": [
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          }
+        ]
+      },
+      {
+        "title": "",
+        "subtitle": "",
+        "note": "",
+        "options": [
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          }
+        ]
+      },
+      {
+        "title": "",
+        "subtitle": "",
+        "note": "",
+        "options": [
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          },
+          {
+            "label": "",
+            "volume": ""
+          }
+        ]
+      }
+    ]
+  },
+  "contactForm": {
+    "enabled": false,
+    "endpoint": "https://formspree.io/f/xaqrerjb"
+  },
+  "popularPlan": "tunnel",
+  "analytics": {
+    "gaId": ""
   }
 }
