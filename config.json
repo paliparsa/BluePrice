@@ -1,31 +1,28 @@
 {
   "site": {
-    "title": "BlueGate | دروازه‌ی امن شما به اینترنت",
+    "title": "BlueGate | دروازه‌ی امن شما به اینترنت آزاد",
     "brandName": "BlueGate",
     "subtitle": "دروازه‌ی امن شما به اینترنت آزاد",
-    "capsuleText": "۳ سرویس حرفه‌ای، متناسب با نیاز",
+    "capsuleText": "۳ سرویس حرفه‌ای، متناسب با نیاز شما",
     "giftBadgeText": "کیفیت، امنیت و قیمت مناسب در یکجا! 💙"
   },
   "announcement": {
     "enabled": true,
-    "text": "⚡ تخفیف ویژه محدود! کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
+    "text": "⚡ کلیه سرویس‌ها دارای ۷ روز ضمانت بازگشت ۱۰۰٪ وجه می‌باشند."
   },
   "countdown": {
     "title": "فرصت باقی‌مانده تخفیف ویژه:",
-    "endDate": "2026-08-10T20:59:00.000Z"
+    "endDate": "2026-07-01T18:01:00.000Z"
   },
-  "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
+  "refundBanner": "ضمانت بازگشت وجه، درصورت عدم رضایت از کیفیت!",
   "telegram": {
-    "channelUrl": "https://t.me/BlueGate",
-    "channelHandle": "@BlueGate",
+    "channelUrl": "https://t.me/BllueGate",
+    "channelHandle": "@BllueGate",
     "supportUrl": "https://t.me/BlueGateSupport",
     "supportHandle": "@BlueGateSupport",
     "joinBtnText": "همین حالا به جمع کاربران BlueGate بپیوندید!"
   },
-  "discountCodes": {
-    "BLUE20": 20,
-    "VIP10": 10
-  },
+  "discountCodes": {},
   "features": [
     {
       "icon": "fa-rocket",
@@ -55,11 +52,12 @@
       "icon": "fa-shield",
       "title": "BlueGate Standard",
       "subtitle": "مولتی لوکیشن • سرعت قابل قبول • مناسب استفاده روزمره",
-      "note": "هر گیگ اضافه فقط ۵,۰۰۰ تومان",
+      "note": "هر گیگ اضافه، فقط ۵,۰۰۰ تومان",
       "options": [
         {
           "volume": "۲۰ گیگ",
-          "price": 99000
+          "price": 99000,
+          "label": ""
         },
         {
           "volume": "۳۰ گیگ",
@@ -116,7 +114,7 @@
       "theme": "blue",
       "icon": "fa-bolt",
       "title": "BlueGate Emergency",
-      "subtitle": "تک لوکیشن • آی‌پی ثابت • مخصوص زمان قطعی اینترنت",
+      "subtitle": "مخصوص زمان قطعی اینترنت",
       "options": [
         {
           "volume": "۵ گیگ",
@@ -134,7 +132,8 @@
           "volume": "۲۰ گیگ",
           "price": 780000
         }
-      ]
+      ],
+      "note": ""
     }
   ],
   "faq": [
@@ -154,9 +153,9 @@
   "tutorials": [
     {
       "os": "اندروید",
-      "app": "v2rayNG",
+      "app": "V2RayTun",
       "steps": [
-        "برنامه v2rayNG را از گوگل پلی دانلود کنید",
+        "برنامه V2RayTun را از گوگل پلی دانلود کنید",
         "لینک اختصاصی دریافت شده از پشتیبانی را کپی کنید",
         "در برنامه روی علامت + کلیک کرده و Import from Clipboard را بزنید",
         "روی دکمه اتصال کلیک کنید"
@@ -164,19 +163,19 @@
     },
     {
       "os": "آیفون (iOS)",
-      "app": "Streisand / V2Box",
+      "app": "Streisand / Happ",
       "steps": [
-        "برنامه Streisand یا V2Box را از اپ استور دانلود کنید",
+        "برنامه Streisand یا Happ را از اپ استور دانلود کنید",
         "لینک کانفیگ را کپی کرده و وارد برنامه کنید",
         "دکمه Connect را جهت برقراری اتصال فشار دهید"
       ]
     },
     {
       "os": "ویندوز",
-      "app": "v2rayN",
+      "app": "v2rayN / Happ / Hiddify",
       "steps": [
-        "برنامه v2rayN را اجرا کنید",
-        "کلیدهای Ctrl + V را جهت ورود کانفیگ بزنید",
+        "برنامه را اجرا کنید و لینک خود را کپی کنید",
+        "کلیدهای Ctrl + V را جهت ورود ساب اسکریپشن بزنید",
         "حالت System Proxy را فعال نمایید"
       ]
     }
