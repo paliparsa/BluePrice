@@ -27,9 +27,435 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // =========================================================
+    // HARDCODED ENGLISH TRANSLATIONS (full page coverage)
+    // =========================================================
+    const HARDCODED_EN = {
+        pageTitle: 'BlueGate | Your Secure Gateway to Free Internet',
+        metaDesc: 'BlueGate - Premium VPN service with quality, security and fair pricing. High speed, 24/7 support and money-back guarantee.',
+        statusBar: 'Network Online • 99.9% Uptime',
+        calcBtn: 'Price Calculator',
+        annText: '⚡ Limited Special Offer! All services include a 7-day 100% money-back guarantee.',
+        heroTagline: 'Your Secure Gateway to the Free Internet',
+        heroCapsule: '3 Professional Services, Tailored to Your Needs',
+        promoLabel: 'Special Offer',
+        promoTitle: 'Quality, security, and fair pricing — all in one place!',
+        promoSubtitle: 'Choose your preferred package and receive an instant invoice',
+        countdownTitle: 'Time Remaining for Special Offer:',
+        cdHour: 'hr',
+        cdMin: 'min',
+        cdSec: 'sec',
+        calcTitle: 'Smart Price Calculator',
+        calcSubtitle: 'Choose the data volume you need and find your optimal price',
+        calcSliderLabel: 'Data Needed: {gb} GB',
+        calcStdPlan: 'Standard (Volume)',
+        calcStdNote: '5,000 Toman per GB',
+        calcProPlan: 'Pro (Static IP)',
+        calcProNote: 'For trading & high performance',
+        calcEmgPlan: 'Emergency (Critical)',
+        calcEmgNote: 'For extreme disruption conditions',
+        calcBuyBtn: 'Get This Invoice',
+
+        stdPlanTags: 'Multi-Location • Reliable Speed • Perfect for Daily Use',
+        stdLocation: 'Connect to 3 Top Countries:',
+        stdGb_UK: 'United Kingdom',
+        stdGb_SE: 'Sweden',
+        stdGb_TR: 'Turkey',
+        stdVolumeTitle: 'Volume Based',
+        stdVolumeNote: 'Pay per GB (5K/GB)',
+        stdUnlimitedTitle: 'Unlimited',
+        stdUnlimitedNote: 'No data cap',
+        stdSingleUser: 'Single User',
+        stdDualUser: 'Dual User',
+        stdFooterBadge: 'Best value for everyday use',
+        stdExtraGbNote: '5,000 Toman per extra GB',
+        stdBuyBtn: 'Get Invoice & Buy Standard',
+
+        proBadge: 'Most Popular',
+        proPlanTags: 'Single Location • Static IP • For Trading & Professional Use',
+        proExtraGbNote: '10,000 Toman per extra GB',
+        proFooterBadge: 'Best pick for trading & sensitive tasks',
+        proBuyBtn: 'Get Invoice & Buy Pro',
+        proFeats: [
+            { title: 'Static IP', subtitle: 'Dedicated Static IP' },
+            { title: 'High Speed', subtitle: 'Greater Stability' },
+            { title: 'High Security', subtitle: 'Ideal for Online Trading' },
+            { title: 'Excellent Uptime', subtitle: 'Around the clock' }
+        ],
+
+        emgPlanTags: 'Single Location • Static IP • For Internet Outage Periods',
+        emgFooterBadge: 'Your reliable solution in emergency situations',
+        emgBuyBtn: 'Get Invoice & Buy Emergency',
+        emgFeats: [
+            { title: 'High Resistance', subtitle: 'Active even in full blackout' },
+            { title: 'Static IP', subtitle: 'VIP Single Location' },
+            { title: 'High Stability', subtitle: 'In critical conditions' },
+            { title: 'Great for Trading', subtitle: 'And essential tasks' }
+        ],
+
+        guaranteeTitle: '100% Money-Back Guarantee',
+        guaranteeText: 'If you are not satisfied with the service quality, you can request a full refund within 7 days.',
+        guaranteeBadge: 'Quality Assured 💙',
+
+        featuresTitle: '',
+        featuresDefault: [
+            { title: 'High Speed', text: 'Blazing fast, stable connections with no bandwidth throttling' },
+            { title: 'Full Security', text: 'Advanced data encryption with absolute privacy priority' },
+            { title: '24/7 Support', text: 'Quick responses and expert support always by your side' },
+            { title: 'Guaranteed Quality', text: 'Dedicated servers with the highest uptime and a different experience' }
+        ],
+
+        tutSectionTitle: 'Installation & Connection Guide',
+        tutDefaultCard: [
+            { os: 'Android', app: 'v2rayNG', steps: ['Download v2rayNG from Google Play', 'Copy the link received from support', 'In the app, tap + and select "Import from Clipboard"', 'Tap the Connect button'] },
+            { os: 'iPhone (iOS)', app: 'Streisand / V2Box', steps: ['Download Streisand or V2Box from App Store', 'Copy the config link and import it into the app', 'Press the Connect button to establish connection'] },
+            { os: 'Windows', app: 'v2rayN', steps: ['Run v2rayN', 'Press Ctrl + V to import the config', 'Enable System Proxy mode'] }
+        ],
+
+        revSectionTitle: 'BlueGate User Reviews',
+        revDefaultCards: [
+            { name: 'AmirReza', rating: 5, text: "The Pro service speed is amazing! I use it for Binance trading without any drops." },
+            { name: 'Sara M.', rating: 5, text: "Their Telegram support is very fast and courteous." },
+            { name: 'MohammadReza', rating: 5, text: "Emergency service was the only thing that stayed connected during a complete internet blackout." }
+        ],
+
+        faqTitle: 'Frequently Asked Questions',
+        faqDefaultItems: [
+            { q: 'Which devices support the services?', a: 'All services are compatible with Android, iPhone (iOS), Windows, Mac, and Linux.' },
+            { q: 'Is the Pro service suitable for trading on Binance?', a: 'Yes, the Pro service has a dedicated static IP and high stability, making it ideal for exchange and trading activities.' },
+            { q: 'How does the money-back guarantee work?', a: 'If you are not satisfied with the service quality, you have 7 full days to request a refund — the full amount will be returned to your account.' }
+        ],
+
+        compTitle: 'Detailed Comparison of BlueGate Services',
+        compFeatureHeader: 'Feature',
+        compDefaultRows: [
+            { feature: 'IP Type', standard: 'Dynamic (Multi-Location)', pro: 'Static IP', emergency: 'Dedicated VIP Static IP' },
+            { feature: 'Server Variety', standard: 'UK, Sweden, Turkey', pro: 'Single Dedicated Location', emergency: 'Single Anti-Sanction Dedicated Location' },
+            { feature: 'Suitable for Trading', standard: '—', pro: '✅ Excellent', emergency: '✅ Dedicated' },
+            { feature: 'Stability During Full Outage', standard: 'Normal', pro: 'Very High', emergency: '🔥 Maximum (Anti-disruption)' },
+            { feature: 'Unlimited Volume Option', standard: '✅ Available', pro: 'Volume Plans', emergency: 'Emergency Volume Plans' }
+        ],
+
+        ctaTitle: 'Join the BlueGate Community Now!',
+        ctaSubtitle: 'Contact us on Telegram for free consultation, a trial, and fast purchase.',
+        ctaChannelLabel: 'Official Channel: ',
+        ctaSupportLabel: 'Telegram Support: ',
+        footerCopyright: '© 2026 BlueGate Network. All rights reserved.',
+
+        // Receipt / Modal
+        receiptTitle: 'Official BlueGate Purchase Invoice',
+        receiptTrackLabel: 'Tracking Code:',
+        receiptServiceLabel: 'Selected Service:',
+        receiptTypeLabel: 'Type / Spec:',
+        receiptVolumeLabel: 'Specified Volume:',
+        receiptTimeLabel: 'Invoice Timestamp:',
+        receiptDiscountPlaceholder: 'Discount code (e.g. BLUE20)',
+        receiptApplyBtn: 'Apply Code',
+        receiptTotalLabel: 'Total Amount Payable:',
+        receiptGuarantee: 'Includes 7-day 100% money-back guarantee',
+        receiptSendTgBtn: 'Send Invoice to Support',
+        receiptCopyBtn: 'Copy Invoice Text',
+        discountInvalidMsg: 'Invalid or expired discount code.',
+    };
+
     // Language Switcher Logic
     let currentLang = localStorage.getItem('bg_app_lang') || 'fa';
     const langToggleBtn = document.getElementById('langToggleBtn');
+
+    function applyEnglishTranslation() {
+        const cfg = appConfig || {};
+        const en = (cfg.en && typeof cfg.en === 'object') ? cfg.en : {};
+        const H = HARDCODED_EN;
+
+        // Page meta
+        document.title = (en.site && en.site.title) || H.pageTitle;
+
+        // Status bar
+        const statusSpan = document.querySelector('.status-indicator span:last-child');
+        if (statusSpan) statusSpan.textContent = H.statusBar;
+
+        // Calc button top bar
+        const calcBtnEl = document.getElementById('calculatorToggleBtn');
+        if (calcBtnEl) calcBtnEl.innerHTML = `<i class="fa-solid fa-calculator"></i> ${H.calcBtn}`;
+
+        // Announcement bar
+        const annTextEl = document.getElementById('announcementText');
+        if (annTextEl) {
+            const annTxt = (en.announcement && en.announcement.text) || H.annText;
+            annTextEl.innerHTML = `<i class="fa-solid fa-bullhorn text-cyan"></i> ${annTxt}`;
+        }
+
+        // Hero
+        const brandNameEl = document.querySelector('.brand-name');
+        if (brandNameEl) brandNameEl.innerHTML = 'Blue<span>Gate</span>';
+
+        const taglineEl = document.querySelector('.brand-tagline');
+        if (taglineEl) taglineEl.innerHTML = `<i class="fa-solid fa-shield-halved text-cyan"></i> ${(en.site && en.site.subtitle) || H.heroTagline}`;
+
+        const capsuleEl = document.querySelector('.services-badge span');
+        if (capsuleEl) capsuleEl.textContent = (en.site && en.site.capsuleText) || H.heroCapsule;
+
+        const promoLabel = document.querySelector('.promo-badge');
+        if (promoLabel) promoLabel.textContent = H.promoLabel;
+
+        const promoTitle = document.querySelector('.promo-text h3');
+        if (promoTitle) promoTitle.innerHTML = `${H.promoTitle} <span class="heart">💙</span>`;
+
+        const promoSub = document.querySelector('.promo-text p');
+        if (promoSub) promoSub.textContent = H.promoSubtitle;
+
+        // Countdown
+        const cdTitleEl = document.getElementById('cdTitleText');
+        if (cdTitleEl) cdTitleEl.textContent = (cfg.countdown && cfg.countdown.title) ? cfg.countdown.title : H.countdownTitle;
+        const cdHourLabel = document.querySelector('#countdownWidget .digit-box:nth-child(1) small');
+        if (cdHourLabel) cdHourLabel.textContent = H.cdHour;
+        const cdMinLabel = document.querySelector('#countdownWidget .digit-box:nth-child(3) small');
+        if (cdMinLabel) cdMinLabel.textContent = H.cdMin;
+        const cdSecLabel = document.querySelector('#countdownWidget .digit-box:nth-child(5) small');
+        if (cdSecLabel) cdSecLabel.textContent = H.cdSec;
+
+        // Calculator section
+        const calcTitle = document.querySelector('.calc-header h2');
+        if (calcTitle) calcTitle.innerHTML = `<i class="fa-solid fa-sliders text-cyan"></i> ${H.calcTitle}`;
+        const calcSubtitle = document.querySelector('.calc-header p');
+        if (calcSubtitle) calcSubtitle.textContent = H.calcSubtitle;
+        const gbLabel = document.querySelector('.calc-slider-group label');
+        const gbVal = document.getElementById('gbValue');
+        if (gbLabel && gbVal) gbLabel.innerHTML = `Data Needed: <span id="gbValue" class="text-cyan font-bold">${gbVal.textContent}</span> GB`;
+        const stdResplan = document.querySelector('.calc-res-item.standard .res-plan');
+        if (stdResplan) stdResplan.textContent = H.calcStdPlan;
+        const stdResNote = document.querySelector('.calc-res-item.standard small');
+        if (stdResNote) stdResNote.textContent = H.calcStdNote;
+        const proResplan = document.querySelector('.calc-res-item.pro .res-plan');
+        if (proResplan) proResplan.textContent = H.calcProPlan;
+        const proResNote = document.querySelector('.calc-res-item.pro small');
+        if (proResNote) proResNote.textContent = H.calcProNote;
+        const emgResplan = document.querySelector('.calc-res-item.emergency .res-plan');
+        if (emgResplan) emgResplan.textContent = H.calcEmgPlan;
+        const emgResNote = document.querySelector('.calc-res-item.emergency small');
+        if (emgResNote) emgResNote.textContent = H.calcEmgNote;
+        document.querySelectorAll('.btn-calc-buy').forEach(b => b.textContent = H.calcBuyBtn);
+
+        // Standard card
+        const stdCard = document.querySelector('.pricing-card.card-standard');
+        if (stdCard) {
+            const tags = stdCard.querySelector('.plan-tags');
+            if (tags) tags.textContent = H.stdPlanTags;
+            const locTitle = stdCard.querySelector('.loc-title');
+            if (locTitle) locTitle.innerHTML = `<i class="fa-solid fa-globe"></i> ${H.stdLocation}`;
+            const flagChips = stdCard.querySelectorAll('.flag-chip span:not(.flag-icon):not(.ping)');
+            const names = [H.stdGb_UK, H.stdGb_SE, H.stdGb_TR];
+            flagChips.forEach((s, i) => { if (names[i]) s.textContent = names[i]; });
+            const volBlockTitle = stdCard.querySelector('.sub-block-title.green span:first-of-type');
+            if (volBlockTitle) volBlockTitle.textContent = 'Volume';
+            const volBlockNote = stdCard.querySelector('.sub-block-title.green .sub-note');
+            if (volBlockNote) volBlockNote.textContent = H.stdVolumeNote;
+            const unlimTitle = stdCard.querySelector('.sub-pricing-block:last-child .sub-block-title span:first-of-type');
+            if (unlimTitle) unlimTitle.textContent = 'Unlimited';
+            const unlimNote = stdCard.querySelector('.sub-pricing-block:last-child .sub-block-title .sub-note');
+            if (unlimNote) unlimNote.textContent = H.stdUnlimitedNote;
+            const extraNote = stdCard.querySelector('.std-note span');
+            if (extraNote) extraNote.textContent = H.stdExtraGbNote;
+            const footBadge = stdCard.querySelector('.footer-badge span');
+            if (footBadge) footBadge.textContent = H.stdFooterBadge;
+            const buyBtn = stdCard.querySelector('.buy-btn-action');
+            if (buyBtn) buyBtn.innerHTML = `<i class="fa-solid fa-receipt"></i> ${H.stdBuyBtn}`;
+            // Translate unlimited box labels
+            stdCard.querySelectorAll('.unlimited-box .u-user').forEach(u => {
+                if (u.innerHTML.includes('fa-users')) u.innerHTML = u.innerHTML.replace(/دو کاربره|2 users?/i, 'Dual User');
+                else u.innerHTML = u.innerHTML.replace(/تک کاربر|single user/i, 'Single User');
+            });
+        }
+
+        // Pro card
+        const proCard = document.querySelector('.pricing-card.card-pro');
+        if (proCard) {
+            const ribbon = proCard.querySelector('.featured-ribbon');
+            if (ribbon) ribbon.textContent = 'Most Popular';
+            const tags = proCard.querySelector('.plan-tags');
+            if (tags) tags.textContent = H.proPlanTags;
+            const extraNote = proCard.querySelector('.pro-note span');
+            if (extraNote) extraNote.textContent = H.proExtraGbNote;
+            const footBadge = proCard.querySelector('.footer-badge span');
+            if (footBadge) footBadge.textContent = H.proFooterBadge;
+            const buyBtn = proCard.querySelector('.buy-btn-action');
+            if (buyBtn) buyBtn.innerHTML = `<i class="fa-solid fa-receipt"></i> ${H.proBuyBtn}`;
+            // Feature pills – only translate if NOT already injected by admin config
+            const featGrid = proCard.querySelector('.pro-features-grid');
+            const proFeats = (en.plans && en.plans[1] && en.plans[1].pills) ? en.plans[1].pills : H.proFeats;
+            if (featGrid) {
+                const pills = featGrid.querySelectorAll('.feat-pill .fp-text');
+                proFeats.forEach((f, i) => {
+                    if (pills[i]) {
+                        const t = pills[i].querySelector('strong');
+                        const s = pills[i].querySelector('small');
+                        if (t) t.textContent = f.title;
+                        if (s) s.textContent = f.subtitle;
+                    }
+                });
+            }
+        }
+
+        // Emergency card
+        const emgCard = document.querySelector('.pricing-card.card-emergency');
+        if (emgCard) {
+            const tags = emgCard.querySelector('.plan-tags');
+            if (tags) tags.textContent = H.emgPlanTags;
+            const footBadge = emgCard.querySelector('.footer-badge span');
+            if (footBadge) footBadge.textContent = H.emgFooterBadge;
+            const buyBtn = emgCard.querySelector('.buy-btn-action');
+            if (buyBtn) buyBtn.innerHTML = `<i class="fa-solid fa-receipt"></i> ${H.emgBuyBtn}`;
+            const featGrid = emgCard.querySelector('.pro-features-grid');
+            const emgFeats = (en.plans && en.plans[2] && en.plans[2].pills) ? en.plans[2].pills : H.emgFeats;
+            if (featGrid) {
+                const pills = featGrid.querySelectorAll('.feat-pill .fp-text');
+                emgFeats.forEach((f, i) => {
+                    if (pills[i]) {
+                        const t = pills[i].querySelector('strong');
+                        const s = pills[i].querySelector('small');
+                        if (t) t.textContent = f.title;
+                        if (s) s.textContent = f.subtitle;
+                    }
+                });
+            }
+        }
+
+        // Guarantee bar
+        const gTitle = document.querySelector('.g-content h3');
+        if (gTitle) gTitle.textContent = H.guaranteeTitle;
+        const gText = document.querySelector('.g-content p');
+        if (gText) gText.textContent = H.guaranteeText;
+        const gBadge = document.querySelector('.g-badge-gold');
+        if (gBadge) gBadge.textContent = H.guaranteeBadge;
+
+        // Features / Pillars
+        const pillarCards = document.querySelectorAll('.pillar-card');
+        const feats = (en.features && en.features.length >= 4) ? en.features : H.featuresDefault;
+        pillarCards.forEach((card, i) => {
+            if (!feats[i]) return;
+            const t = card.querySelector('h4');
+            const d = card.querySelector('p');
+            if (t) t.textContent = feats[i].title;
+            if (d) d.textContent = feats[i].text;
+        });
+
+        // Tutorials section title
+        const tutTitle = document.querySelector('.tutorials-panel .section-title');
+        if (tutTitle) tutTitle.innerHTML = `<i class="fa-solid fa-book-bookmark text-cyan"></i> ${H.tutSectionTitle}`;
+
+        // Tutorials cards — use admin-configured EN or hardcoded default
+        const tutGrid = document.querySelector('.tutorials-grid');
+        if (tutGrid) {
+            const tutData = (en.tutorials && en.tutorials.length > 0) ? en.tutorials : H.tutDefaultCard;
+            tutGrid.innerHTML = tutData.map(t => `
+                <div class="tutorial-card glass-panel">
+                    <h4>${escHtml(t.os)}</h4>
+                    <small>Recommended app: ${escHtml(t.app)}</small>
+                    <ol>${(t.steps || []).map(s => `<li>${escHtml(s)}</li>`).join('')}</ol>
+                </div>
+            `).join('');
+        }
+
+        // Reviews section title
+        const revTitle = document.querySelector('.reviews-panel .section-title');
+        if (revTitle) revTitle.innerHTML = `<i class="fa-solid fa-comments text-purple"></i> ${H.revSectionTitle}`;
+
+        // Review cards
+        const revGrid = document.querySelector('.reviews-grid');
+        if (revGrid) {
+            const revData = (en.reviews && en.reviews.length > 0) ? en.reviews : H.revDefaultCards;
+            revGrid.innerHTML = revData.map(r => `
+                <div class="review-card glass-panel">
+                    <div class="review-header">
+                        <strong>${escHtml(r.name)}</strong>
+                        <div class="review-stars">${'★'.repeat(r.rating || 5)}${'☆'.repeat(5 - (r.rating || 5))}</div>
+                    </div>
+                    <p>${escHtml(r.text)}</p>
+                </div>
+            `).join('');
+        }
+
+        // FAQ section
+        const faqTitle = document.querySelector('.faq-title');
+        if (faqTitle) faqTitle.innerHTML = `<i class="fa-solid fa-circle-question text-cyan"></i> ${H.faqTitle}`;
+        const faqList = document.querySelector('.faq-list');
+        if (faqList) {
+            const faqData = (en.faq && en.faq.length > 0) ? en.faq : H.faqDefaultItems;
+            faqList.innerHTML = faqData.map(f => `
+                <div class="faq-item glass-panel">
+                    <div class="faq-q">
+                        <span><i class="fa-solid fa-circle-question text-cyan"></i> ${escHtml(f.q)}</span>
+                        <i class="fa-solid fa-chevron-down faq-arrow"></i>
+                    </div>
+                    <div class="faq-a hidden"><p>${escHtml(f.a)}</p></div>
+                </div>
+            `).join('');
+        }
+
+        // Comparison table
+        const compTitle = document.querySelector('.comp-title');
+        if (compTitle) compTitle.innerHTML = `<i class="fa-solid fa-table-columns"></i> ${H.compTitle}`;
+        const compHead = document.querySelector('.comp-table thead th');
+        if (compHead) compHead.textContent = H.compFeatureHeader;
+        const compTbody = document.querySelector('.comp-table tbody');
+        if (compTbody) {
+            const compData = (en.comparison && en.comparison.length > 0) ? en.comparison : H.compDefaultRows;
+            compTbody.innerHTML = compData.map(c => `
+                <tr>
+                    <td><strong>${escHtml(c.feature)}</strong></td>
+                    <td>${escHtml(c.standard)}</td>
+                    <td>${escHtml(c.pro)}</td>
+                    <td>${escHtml(c.emergency)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Footer CTA
+        const ctaTitleEl = document.querySelector('.cta-title');
+        if (ctaTitleEl) ctaTitleEl.textContent = (cfg.telegram && cfg.telegram.joinBtnText_en) || H.ctaTitle;
+        const ctaSubEl = document.querySelector('.cta-subtitle');
+        if (ctaSubEl) ctaSubEl.textContent = H.ctaSubtitle;
+
+        const mainTgSpan = document.querySelector('.tg-btn.main-tg span');
+        if (mainTgSpan) {
+            const handle = mainTgSpan.querySelector('strong') ? mainTgSpan.querySelector('strong').textContent : '@BlueGate';
+            mainTgSpan.innerHTML = `${H.ctaChannelLabel}<strong>${handle}</strong>`;
+        }
+        const supportTgSpan = document.querySelector('.tg-btn.support-tg span');
+        if (supportTgSpan) {
+            const handle = supportTgSpan.querySelector('strong') ? supportTgSpan.querySelector('strong').textContent : '@BlueGateSupport';
+            supportTgSpan.innerHTML = `${H.ctaSupportLabel}<strong>${handle}</strong>`;
+        }
+
+        const footCopy = document.querySelector('.sub-footer p');
+        if (footCopy) footCopy.textContent = H.footerCopyright;
+
+        // Receipt modal
+        const recTitle = document.querySelector('.receipt-title-box h2');
+        if (recTitle) recTitle.textContent = H.receiptTitle;
+        document.querySelectorAll('.receipt-row .label').forEach((l, i) => {
+            const labels = [H.receiptServiceLabel, H.receiptTypeLabel, H.receiptVolumeLabel, H.receiptTimeLabel];
+            if (labels[i] !== undefined) {
+                const icon = l.querySelector('i');
+                l.innerHTML = (icon ? icon.outerHTML + ' ' : '') + labels[i];
+            }
+        });
+        const discInput = document.getElementById('receiptDiscountInput');
+        if (discInput) discInput.placeholder = H.receiptDiscountPlaceholder;
+        const applyBtn = document.getElementById('applyDiscountBtn');
+        if (applyBtn) applyBtn.textContent = H.receiptApplyBtn;
+        const totalLabel = document.querySelector('.receipt-total-box span');
+        if (totalLabel) totalLabel.textContent = H.receiptTotalLabel;
+        const guaranteeNote = document.querySelector('.receipt-guarantee-note span');
+        if (guaranteeNote) guaranteeNote.textContent = H.receiptGuarantee;
+        const copyBtn = document.getElementById('copyReceiptBtn');
+        if (copyBtn) copyBtn.innerHTML = `<i class="fa-solid fa-copy"></i> ${H.receiptCopyBtn}`;
+        const sendTgBtn = document.getElementById('sendTelegramBtn');
+        if (sendTgBtn) {
+            const supportHandle = (cfg.telegram && cfg.telegram.supportHandle) || '@BlueGateSupport';
+            sendTgBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> ${H.receiptSendTgBtn} (${supportHandle})`;
+        }
+    }
 
     function updateLanguageUI(lang) {
         currentLang = lang;
@@ -39,27 +465,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.lang = isEn ? 'en' : 'fa';
 
         if (langToggleBtn) {
-            langToggleBtn.innerHTML = isEn ? '<i class="fa-solid fa-globe"></i> فارسی' : '<i class="fa-solid fa-globe"></i> English';
+            langToggleBtn.innerHTML = isEn
+                ? '<i class="fa-solid fa-globe"></i> فارسی'
+                : '<i class="fa-solid fa-globe"></i> English';
         }
 
-        if (appConfig) {
-            if (isEn && appConfig.en) {
-                const en = appConfig.en;
-                if (en.site) {
-                    if (en.site.title) document.title = en.site.title;
-                    const brandNameEl = document.querySelector('.brand-name');
-                    if (brandNameEl && en.site.brandName) brandNameEl.innerHTML = escHtml(en.site.brandName).replace('Gate', '<span>Gate</span>');
-                    const taglineEl = document.querySelector('.brand-tagline');
-                    if (taglineEl && en.site.subtitle) taglineEl.innerHTML = `<i class="fa-solid fa-shield-halved text-cyan"></i> ${escHtml(en.site.subtitle)}`;
-                    const capsuleEl = document.querySelector('.services-badge span');
-                    if (capsuleEl && en.site.capsuleText) capsuleEl.textContent = en.site.capsuleText;
-                }
-                if (en.announcement && en.announcement.text) {
-                    const annText = document.getElementById('announcementText');
-                    if (annText) annText.innerHTML = `<i class="fa-solid fa-bullhorn text-cyan"></i> ${escHtml(en.announcement.text)}`;
-                }
-            } else {
+        if (isEn) {
+            applyEnglishTranslation();
+        } else {
+            // Restore Persian: re-apply config which overwrites everything back to FA
+            if (appConfig) {
                 applyConfigToPlantedLayout(appConfig);
+            } else {
+                // Reload the page to fully restore default Persian HTML
+                window.location.reload();
             }
         }
     }
@@ -69,6 +488,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const nextLang = (currentLang === 'fa') ? 'en' : 'fa';
             updateLanguageUI(nextLang);
         });
+    }
+
+    // Restore language from previous session
+    if (currentLang === 'en') {
+        // Wait for config to load, then apply
+        setTimeout(() => updateLanguageUI('en'), 500);
     }
 
     // Calculator Toggle (Default Closed)
