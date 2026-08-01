@@ -1193,6 +1193,11 @@ function applyConfigToPlantedLayout(cfg) {
 
     // Interactive Features
     initInteractiveFeatures(cfg);
+
+    // If current language is English, re-apply English translations on top of layout
+    if (typeof currentLang !== 'undefined' && currentLang === 'en') {
+        applyEnglishTranslation();
+    }
 }
 
 // ==========================================================================
@@ -1202,14 +1207,19 @@ function applyConfigToPlantedLayout(cfg) {
 let _interactiveCfg = null;
 
 function initInteractiveFeatures(cfg) {
-    if (!cfg || !cfg.interactive) return;
-    _interactiveCfg = cfg.interactive;
-    const int = _interactiveCfg;
+    const defaultInt = {
+        scanner: { enabled: true, title: "اینترنت شما چه اطلاعاتی درباره‌تان فاش می‌کند؟" },
+        bird:    { enabled: true, code: "SECRET10" },
+        wheel:   { enabled: true, code: "WHEEL20" },
+        speed:   { enabled: true, max: 850 }
+    };
+    const int = (cfg && cfg.interactive && typeof cfg.interactive === 'object') ? cfg.interactive : defaultInt;
+    _interactiveCfg = int;
 
     // 1. Expose Scanner
     const scannerSec = document.getElementById('scannerSection');
     if (scannerSec) {
-        if (int.scanner && int.scanner.enabled) {
+        if (int.scanner && int.scanner.enabled !== false) {
             scannerSec.classList.remove('hidden');
             const titleEl = document.getElementById('scannerTitle');
             if (titleEl && int.scanner.title) titleEl.textContent = int.scanner.title;
@@ -1222,7 +1232,7 @@ function initInteractiveFeatures(cfg) {
     // 2. Virtual Speed Test
     const speedSec = document.getElementById('speedTestSection');
     if (speedSec) {
-        if (int.speed && int.speed.enabled) {
+        if (int.speed && int.speed.enabled !== false) {
             speedSec.classList.remove('hidden');
         } else {
             speedSec.classList.add('hidden');
@@ -1232,7 +1242,7 @@ function initInteractiveFeatures(cfg) {
     // 3. Catch the Bird
     const birdEl = document.getElementById('flyingBird');
     if (birdEl) {
-        if (int.bird && int.bird.enabled) {
+        if (int.bird && int.bird.enabled !== false) {
             birdEl.classList.remove('hidden');
             initCatchTheBird(int.bird.code || 'SECRET10');
         } else {
@@ -1241,7 +1251,7 @@ function initInteractiveFeatures(cfg) {
     }
 
     // 4. Spin the Wheel
-    if (int.wheel && int.wheel.enabled) {
+    if (int.wheel && int.wheel.enabled !== false) {
         initSpinWheel(int.wheel.code || 'WHEEL20');
     }
 }
@@ -1277,25 +1287,28 @@ function initExposedScanner() {
     revealScanField('scan-os', os, 300);
     revealScanField('scan-browser', browser, 600);
 
-    // Fetch IP data (no auth, public CORS)
-    fetch('https://api.ipify.org?format=json')
+    // Fetch IP and Geo via ipwho.is (CORS friendly)
+    fetch('https://ipwho.is/')
         .then(r => r.json())
         .then(data => {
-            const ip = data.ip || '—';
-            revealScanField('scan-ip', ip, 0);
-            // Get ISP & location
-            return fetch(`https://ipapi.co/${ip}/json/`);
-        })
-        .then(r => r.json())
-        .then(geo => {
-            revealScanField('scan-isp', geo.org || geo.asn || '—', 0);
-            const loc = [geo.city, geo.country_name].filter(Boolean).join(', ') || '—';
-            revealScanField('scan-loc', loc, 0);
+            if (data && data.success !== false) {
+                if (data.ip) revealScanField('scan-ip', data.ip, 0);
+                const isp = (data.connection && data.connection.isp) || data.org || '—';
+                revealScanField('scan-isp', isp, 0);
+                const loc = [data.city, data.country].filter(Boolean).join(', ') || '—';
+                revealScanField('scan-loc', loc, 0);
+            } else {
+                throw new Error('ipwho.is failed');
+            }
         })
         .catch(() => {
-            revealScanField('scan-ip', '—', 0);
-            revealScanField('scan-isp', '—', 0);
-            revealScanField('scan-loc', '—', 0);
+            // Fallback to ipify.org
+            fetch('https://api.ipify.org?format=json')
+                .then(r => r.json())
+                .then(data => {
+                    if (data.ip) revealScanField('scan-ip', data.ip, 0);
+                })
+                .catch(() => {});
         });
 }
 
@@ -1404,10 +1417,11 @@ window.startSpeedTest = function() {
             }
         }, 50);
     }, 800);
+}; // end window.startSpeedTest
 
 // ────────────────────────────────────────────────────────────────────────────
-
 // 3. CATCH THE BIRD
+
 // ────────────────────────────────────────────────────────────────────────────
 let _birdMoveTimer = null;
 let _birdCaught = false;
@@ -1479,11 +1493,9 @@ function showBirdCatchModal(code) {
 // ────────────────────────────────────────────────────────────────────────────
 let _wheelSpinning = false;
 let _wheelCurrentAngle = 0;
+let _wheelListenersAttached = false;
 
 function initSpinWheel(code) {
-    // Only show on first visit in this session
-    if (sessionStorage.getItem('bg_wheel_shown')) return;
-
     const modal = document.getElementById('wheelModal');
     const spinBtn = document.getElementById('wheelSpinBtn');
     const closeBtn = document.getElementById('wheelCloseBtn');
@@ -1497,43 +1509,45 @@ function initSpinWheel(code) {
     // Draw the wheel
     drawWheel(code);
 
-    // Show modal after 2.5 seconds
-    setTimeout(() => {
-        modal.classList.remove('hidden');
-    }, 2500);
+    if (!_wheelListenersAttached) {
+        _wheelListenersAttached = true;
 
-    // Close button
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modal.classList.add('hidden');
-            sessionStorage.setItem('bg_wheel_shown', '1');
-        });
-    }
-
-    // Click outside to close
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.add('hidden');
-            sessionStorage.setItem('bg_wheel_shown', '1');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                sessionStorage.setItem('bg_wheel_shown', '1');
+            });
         }
-    });
 
-    // Copy button
-    if (copyBtn) {
-        copyBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(code).then(() => {
-                copyBtn.textContent = '✅ کپی شد!';
-                showToast('کد تخفیف کپی شد!');
-            }).catch(() => {});
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden');
+                sessionStorage.setItem('bg_wheel_shown', '1');
+            }
         });
-    }
 
-    // Spin button
-    if (spinBtn) {
-        spinBtn.addEventListener('click', () => {
-            if (_wheelSpinning) return;
-            spinWheel(code);
-        });
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(code).then(() => {
+                    copyBtn.textContent = '✅ کپی شد!';
+                    showToast('کد تخفیف کپی شد!');
+                }).catch(() => {});
+            });
+        }
+
+        if (spinBtn) {
+            spinBtn.addEventListener('click', () => {
+                if (_wheelSpinning) return;
+                spinWheel(code);
+            });
+        }
+
+        // Auto-show modal after 2.5 seconds ONLY if not shown in this session
+        if (!sessionStorage.getItem('bg_wheel_shown')) {
+            setTimeout(() => {
+                modal.classList.remove('hidden');
+            }, 2500);
+        }
     }
 }
 
