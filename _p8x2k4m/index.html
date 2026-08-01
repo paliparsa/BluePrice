@@ -240,6 +240,9 @@
       <div class="sidebar-item" onclick="switchTab('tab-reviews')" data-tab="tab-reviews">
         <i class="fas fa-star"></i> نظرات کاربران
       </div>
+      <div class="sidebar-item" onclick="switchTab('tab-comparison')" data-tab="tab-comparison">
+        <i class="fas fa-table-columns"></i> جدول مقایسه
+      </div>
       <div class="sidebar-item" onclick="switchTab('tab-interactive')" data-tab="tab-interactive">
         <i class="fas fa-magic"></i> ابزارهای تعاملی
       </div>
@@ -298,15 +301,47 @@
         </div>
 
         <div class="card" style="margin-top:20px;">
-          <div class="card-title">لوگوی سایت</div>
-          <div class="info-box">یک فایل تصویری با حجم کم (ترجیحا مربع زیر ۱۰۰ کیلوبایت) انتخاب کنید. این لوگو جایگزین آیکون سپر در سایت می‌شود.</div>
+          <div class="card-title"><i class="fas fa-eye"></i> کلیدهای نمایش بخش‌های سایت (On/Off Switches)</div>
+          <div class="info-box">می‌توانید هر بخش از سایت را به دلخواه مخفی یا نمایان سازید.</div>
           <div class="field-row">
             <div class="field">
-              <input type="file" id="logo-upload" accept="image/*" onchange="handleLogoUpload(event)" style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
-              <button class="del-btn" onclick="clearLogo()" style="margin-top: 10px; width: auto; padding: 5px 15px;"><i class="fas fa-trash"></i> حذف لوگو</button>
+              <label>بخش راهنمای اتصال (Guide/Tutorials)</label>
+              <select id="sec-tutorials">
+                <option value="true">نمایش (فعال)</option>
+                <option value="false">مخفی (غیرفعال)</option>
+              </select>
             </div>
-            <div class="field" style="display: flex; align-items: center; justify-content: center;">
-              <img id="logo-preview" src="" style="max-height: 64px; border-radius: 8px; display: none;">
+            <div class="field">
+              <label>بخش نظرات کاربران (Reviews)</label>
+              <select id="sec-reviews">
+                <option value="true">نمایش (فعال)</option>
+                <option value="false">مخفی (غیرفعال)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>بخش سوالات متداول (FAQ)</label>
+              <select id="sec-faq">
+                <option value="true">نمایش (فعال)</option>
+                <option value="false">مخفی (غیرفعال)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>جدول مقایسه (Comparison Table)</label>
+              <select id="sec-comparison">
+                <option value="true">نمایش (فعال)</option>
+                <option value="false">مخفی (غیرفعال)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>بخش محاسبه‌گر قیمت (Calculator)</label>
+              <select id="sec-calculator">
+                <option value="true">نمایش (فعال)</option>
+                <option value="false">مخفی (غیرفعال)</option>
+              </select>
             </div>
           </div>
         </div>
@@ -469,6 +504,16 @@
         <div id="reviews-editor"></div>
         <button class="add-option-btn" style="margin-top:8px;" onclick="addReview()">
           <i class="fas fa-plus"></i> افزودن نظر
+        </button>
+      </div>
+
+      <!-- COMPARISON TABLE -->
+      <div class="tab-panel" id="tab-comparison">
+        <div class="section-title"><i class="fas fa-table-columns"></i> جدول مقایسه سرویس‌ها</div>
+        <div class="info-box">سطرهای جدول مقایسه را در این بخش مدیریت کنید. می‌توانید عنوان ویژگی و اطلاعات هر سرویس را به دلخواه ویرایش یا کم و زیاد نمایید.</div>
+        <div id="comparison-editor"></div>
+        <button class="add-option-btn" style="margin-top:12px;" onclick="addComparisonItem()">
+          <i class="fas fa-plus"></i> افزودن سطر جدید به جدول مقایسه
         </button>
       </div>
 
@@ -685,7 +730,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$ezXKhCIXU8gwwoHeuFpEHOFgDKXnc0lidQ5KLuoCZpLG2eqxcAE7m';
+  var ADMIN_HASH = '$2b$12$4DDTbW9mfWDq6Jg3coD.8OVB4W47bhYKVSL39We9bG/DkCvKg/j9C';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -849,6 +894,14 @@
     document.getElementById('site-giftBadgeText').value = s.giftBadgeText || '';
     document.getElementById('refund-banner').value = config.refundBanner || '';
 
+    // Section Switches
+    var sec = config.sections || {};
+    if (document.getElementById('sec-tutorials')) document.getElementById('sec-tutorials').value = (sec.tutorials !== false) ? 'true' : 'false';
+    if (document.getElementById('sec-reviews')) document.getElementById('sec-reviews').value = (sec.reviews !== false) ? 'true' : 'false';
+    if (document.getElementById('sec-faq')) document.getElementById('sec-faq').value = (sec.faq !== false) ? 'true' : 'false';
+    if (document.getElementById('sec-comparison')) document.getElementById('sec-comparison').value = (sec.comparison !== false) ? 'true' : 'false';
+    if (document.getElementById('sec-calculator')) document.getElementById('sec-calculator').value = (sec.calculator !== false) ? 'true' : 'false';
+
     if (s.logoBase64) {
       document.getElementById('logo-preview').src = s.logoBase64;
       document.getElementById('logo-preview').style.display = 'block';
@@ -931,6 +984,7 @@
     renderFaq();
     renderTutorials();
     renderReviews();
+    renderComparison();
     renderEnglishEditor();
   }
 
@@ -1121,6 +1175,43 @@
   }
 
   // ============================================================
+  // COMPARISON EDITOR
+  // ============================================================
+  function renderComparison() {
+    var el = document.getElementById('comparison-editor');
+    if (!el) return;
+    el.innerHTML = '';
+    var compData = config.comparison || [];
+    compData.forEach(function(item, i) {
+      var card = document.createElement('div');
+      card.className = 'feature-card';
+      card.innerHTML =
+        '<div class="feature-card-header"><span>ویژگی مقایسه ' + (i+1) + '</span>' +
+        '<button class="del-btn" onclick="removeComparisonItem(' + i + ')"><i class="fas fa-trash"></i></button></div>' +
+        '<div class="field-row full">' +
+          '<div class="field"><label>نام ویژگی</label><input type="text" onchange="config.comparison[' + i + '].feature=this.value" value="' + escHtml(item.feature || '') + '"></div>' +
+        '</div>' +
+        '<div class="field-row">' +
+          '<div class="field"><label>مقدار Standard (سرویس استاندارد)</label><input type="text" onchange="config.comparison[' + i + '].standard=this.value" value="' + escHtml(item.standard || '') + '"></div>' +
+          '<div class="field"><label>مقدار Pro (سرویس پرو)</label><input type="text" onchange="config.comparison[' + i + '].pro=this.value" value="' + escHtml(item.pro || '') + '"></div>' +
+        '</div>' +
+        '<div class="field-row full">' +
+          '<div class="field"><label>مقدار Emergency (سرویس اضطراری)</label><input type="text" onchange="config.comparison[' + i + '].emergency=this.value" value="' + escHtml(item.emergency || '') + '"></div>' +
+        '</div>';
+      el.appendChild(card);
+    });
+  }
+  function addComparisonItem() {
+    config.comparison = config.comparison || [];
+    config.comparison.push({ feature: 'ویژگی جدید', standard: 'عادی', pro: 'عالی', emergency: 'اختصاصی' });
+    renderComparison();
+  }
+  function removeComparisonItem(idx) {
+    config.comparison.splice(idx, 1);
+    renderComparison();
+  }
+
+  // ============================================================
   // PLANS
   // ============================================================
   function renderPlans() {
@@ -1160,6 +1251,24 @@
           '</tr>';
       }).join('');
 
+      var unlimitedOptionsHTML = (plan.unlimitedOptions || []).map(function(opt, uoi) {
+        var volVal = opt.volume || opt.label || '';
+        return '<tr>' +
+          '<td><input type="text" value="' + escHtml(volVal) + '" placeholder="نامحدود (تک کاربر)" onchange="updatePlanUnlimitedOption(' + idx + ',' + uoi + ',\'volume\',this.value)"></td>' +
+          '<td><input type="number" value="' + opt.price + '" placeholder="249000" onchange="updatePlanUnlimitedOption(' + idx + ',' + uoi + ',\'price\',+this.value)"></td>' +
+          '<td style="width:50px;text-align:center;"><button class="del-btn" onclick="removePlanUnlimitedOption(' + idx + ',' + uoi + ')"><i class="fas fa-trash"></i></button></td>' +
+          '</tr>';
+      }).join('');
+
+      var pillsHTML = (plan.pills || []).map(function(pill, pi) {
+        return '<tr>' +
+          '<td><input type="text" value="' + escHtml(pill.title || '') + '" placeholder="عنوان (مثلاً آی‌پی ثابت)" onchange="updatePlanPill(' + idx + ',' + pi + ',\'title\',this.value)"></td>' +
+          '<td><input type="text" value="' + escHtml(pill.subtitle || '') + '" placeholder="زیرعنوان (مثلاً Static IP)" onchange="updatePlanPill(' + idx + ',' + pi + ',\'subtitle\',this.value)"></td>' +
+          '<td><input type="text" value="' + escHtml(pill.icon || '') + '" placeholder="fa-solid fa-lock text-purple" onchange="updatePlanPill(' + idx + ',' + pi + ',\'icon\',this.value)"></td>' +
+          '<td style="width:50px;text-align:center;"><button class="del-btn" onclick="removePlanPill(' + idx + ',' + pi + ')"><i class="fas fa-trash"></i></button></td>' +
+          '</tr>';
+      }).join('');
+
       editor.innerHTML =
         '<div class="card-title">' + plan.title + '</div>' +
         '<div class="field-row">' +
@@ -1167,12 +1276,18 @@
           '<div class="field"><label>توضیح کوتاه</label><input type="text" value="' + escHtml(plan.subtitle) + '" onchange="config.plans[' + idx + '].subtitle=this.value;"></div>' +
         '</div>' +
         '<div class="field-row full"><div class="field"><label>نکته (card note)</label><input type="text" value="' + escHtml(plan.note || '') + '" onchange="config.plans[' + idx + '].note=this.value;"></div></div>' +
-        '<br><div class="card-title">ویژگی‌های لیست</div>' +
+        '<br><div class="card-title">کارت‌های ویژگی بالایی (Feature Pills)</div>' +
+        '<table class="options-table"><thead><tr><th>عنوان</th><th>زیرعنوان</th><th>کلاس آیکون FontAwesome</th><th></th></tr></thead><tbody id="pills-' + idx + '">' + pillsHTML + '</tbody></table>' +
+        '<button class="add-option-btn" onclick="addPlanPill(' + idx + ')"><i class="fas fa-plus"></i> افزودن کارت ویژگی</button>' +
+        '<br><br><div class="card-title">ویژگی‌های متنی لیست</div>' +
         '<table class="options-table"><thead><tr><th>متن ویژگی</th><th></th></tr></thead><tbody id="features-' + idx + '">' + featuresHTML + '</tbody></table>' +
-        '<button class="add-option-btn" onclick="addPlanFeature(' + idx + ')"><i class="fas fa-plus"></i> افزودن ویژگی</button>' +
-        '<br><br><div class="card-title">گزینه‌های قیمت</div>' +
+        '<button class="add-option-btn" onclick="addPlanFeature(' + idx + ')"><i class="fas fa-plus"></i> افزودن ویژگی متنی</button>' +
+        '<br><br><div class="card-title">گزینه‌های قیمت حجمی</div>' +
         '<table class="options-table"><thead><tr><th>لیبل دکمه</th><th>حجم</th><th>قیمت (تومان)</th><th></th></tr></thead><tbody id="options-' + idx + '">' + optionsHTML + '</tbody></table>' +
-        '<button class="add-option-btn" onclick="addPlanOption(' + idx + ')"><i class="fas fa-plus"></i> افزودن گزینه</button>';
+        '<button class="add-option-btn" onclick="addPlanOption(' + idx + ')"><i class="fas fa-plus"></i> افزودن گزینه حجمی</button>' +
+        '<br><br><div class="card-title">گزینه‌های قیمت نامحدود</div>' +
+        '<table class="options-table"><thead><tr><th>حجم / عنوان نامحدود</th><th>قیمت (تومان)</th><th></th></tr></thead><tbody id="unlimited-options-' + idx + '">' + unlimitedOptionsHTML + '</tbody></table>' +
+        '<button class="add-option-btn" onclick="addPlanUnlimitedOption(' + idx + ')"><i class="fas fa-plus"></i> افزودن گزینه نامحدود</button>';
 
       editorsEl.appendChild(editor);
     });
@@ -1180,6 +1295,16 @@
 
   function updatePlanFeature(planIdx, featIdx, val) { config.plans[planIdx].features[featIdx] = val; }
   function updatePlanOption(planIdx, optIdx, key, val) { config.plans[planIdx].options[optIdx][key] = val; }
+  function updatePlanUnlimitedOption(planIdx, optIdx, key, val) {
+    config.plans[planIdx].unlimitedOptions = config.plans[planIdx].unlimitedOptions || [];
+    config.plans[planIdx].unlimitedOptions[optIdx] = config.plans[planIdx].unlimitedOptions[optIdx] || {};
+    config.plans[planIdx].unlimitedOptions[optIdx][key] = val;
+  }
+  function updatePlanPill(planIdx, pillIdx, key, val) {
+    config.plans[planIdx].pills = config.plans[planIdx].pills || [];
+    config.plans[planIdx].pills[pillIdx] = config.plans[planIdx].pills[pillIdx] || {};
+    config.plans[planIdx].pills[pillIdx][key] = val;
+  }
 
   function removePlanFeature(planIdx, featIdx) {
     config.plans[planIdx].features.splice(featIdx, 1);
@@ -1189,6 +1314,23 @@
     config.plans[planIdx].options.splice(optIdx, 1);
     renderPlans();
   }
+  function removePlanUnlimitedOption(planIdx, optIdx) {
+    if (config.plans[planIdx].unlimitedOptions) {
+      config.plans[planIdx].unlimitedOptions.splice(optIdx, 1);
+      renderPlans();
+      var tabs = document.querySelectorAll('.plan-tab');
+      if (tabs[planIdx]) tabs[planIdx].click();
+    }
+  }
+  function removePlanPill(planIdx, pillIdx) {
+    if (config.plans[planIdx].pills) {
+      config.plans[planIdx].pills.splice(pillIdx, 1);
+      renderPlans();
+      var tabs = document.querySelectorAll('.plan-tab');
+      if (tabs[planIdx]) tabs[planIdx].click();
+    }
+  }
+
   function addPlanFeature(planIdx) {
     config.plans[planIdx].features.push('ویژگی جدید');
     renderPlans();
@@ -1200,6 +1342,20 @@
     renderPlans();
     var tabs = document.querySelectorAll('.plan-tab');
     tabs[planIdx].click();
+  }
+  function addPlanUnlimitedOption(planIdx) {
+    config.plans[planIdx].unlimitedOptions = config.plans[planIdx].unlimitedOptions || [];
+    config.plans[planIdx].unlimitedOptions.push({ volume: 'نامحدود (کاربر جدید)', price: 249000 });
+    renderPlans();
+    var tabs = document.querySelectorAll('.plan-tab');
+    if (tabs[planIdx]) tabs[planIdx].click();
+  }
+  function addPlanPill(planIdx) {
+    config.plans[planIdx].pills = config.plans[planIdx].pills || [];
+    config.plans[planIdx].pills.push({ title: 'ویژگی جدید', subtitle: 'توضیح کوتاه', icon: 'fa-solid fa-star text-cyan' });
+    renderPlans();
+    var tabs = document.querySelectorAll('.plan-tab');
+    if (tabs[planIdx]) tabs[planIdx].click();
   }
 
   // ============================================================
@@ -1291,6 +1447,14 @@
     config.site.capsuleText = document.getElementById('site-capsuleText').value;
     config.site.giftBadgeText = document.getElementById('site-giftBadgeText').value;
     config.refundBanner = document.getElementById('refund-banner').value;
+
+    // Section Switches
+    config.sections = config.sections || {};
+    if (document.getElementById('sec-tutorials')) config.sections.tutorials = (document.getElementById('sec-tutorials').value === 'true');
+    if (document.getElementById('sec-reviews')) config.sections.reviews = (document.getElementById('sec-reviews').value === 'true');
+    if (document.getElementById('sec-faq')) config.sections.faq = (document.getElementById('sec-faq').value === 'true');
+    if (document.getElementById('sec-comparison')) config.sections.comparison = (document.getElementById('sec-comparison').value === 'true');
+    if (document.getElementById('sec-calculator')) config.sections.calculator = (document.getElementById('sec-calculator').value === 'true');
 
     config.countdown = config.countdown || {};
     config.countdown.title = document.getElementById('countdown-title').value;
