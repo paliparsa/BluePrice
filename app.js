@@ -156,6 +156,43 @@ document.addEventListener('DOMContentLoaded', () => {
         receiptSendTgBtn: 'Send Invoice to Support',
         receiptCopyBtn: 'Copy Invoice Text',
         discountInvalidMsg: 'Invalid or expired discount code.',
+
+        // Scanner section
+        scannerTitle: 'What does your internet reveal about you?',
+        scannerSubtitle: 'Without a VPN, every website sees this information',
+        scanLabel_ip: 'IP Address',
+        scanLabel_isp: 'Internet Service Provider',
+        scanLabel_loc: 'Location',
+        scanLabel_os: 'Operating System',
+        scanLabel_browser: 'Browser',
+        scanLabel_vpn: 'VPN Status',
+        scanBadgeDanger: 'Unprotected ⚠️',
+        scannerCtaText: 'This information is visible to any website. Hide it with BlueGate.',
+        scannerCtaBtn: 'Protect Yourself Now',
+
+        // Speed test section
+        speedTitle: 'Connection Speed Test',
+        speedSubtitle: 'See what speed BlueGate gives you',
+        speedDlLabel: 'Download',
+        speedUlLabel: 'Upload',
+        speedPingLabel: 'Ping',
+        speedReady: 'Ready',
+        speedConnecting: 'Connecting...',
+        speedTestingDl: 'Testing Download...',
+        speedTestingUl: 'Testing Upload...',
+        speedDone: '✅ BlueGate is Ready!',
+        speedStartBtn: 'Start Speed Test',
+        speedRetryBtn: 'Test Again',
+        speedNote: 'This is a simulated speed test demonstrating BlueGate capability',
+
+        // Wheel modal
+        wheelTitle: 'BlueGate Lucky Wheel',
+        wheelSubtitle: 'Spin once and claim your prize!',
+        wheelCodeLabel: 'Your discount code:',
+        wheelCopyBtn: 'Copy Code',
+        wheelHint: 'Enter this code when creating your invoice',
+        wheelSpinBtn: 'Spin!',
+        wheelTryAgain: 'Try again!',
     };
 
     // Language Switcher Logic
@@ -455,6 +492,79 @@ document.addEventListener('DOMContentLoaded', () => {
             const supportHandle = (cfg.telegram && cfg.telegram.supportHandle) || '@BlueGateSupport';
             sendTgBtn.innerHTML = `<i class="fa-brands fa-telegram"></i> ${H.receiptSendTgBtn} (${supportHandle})`;
         }
+
+        // ── Scanner section ────────────────────────────────────────────────
+        const scannerTitleEl = document.getElementById('scannerTitle');
+        if (scannerTitleEl) scannerTitleEl.textContent = (en.scanner && en.scanner.title) || H.scannerTitle;
+        const scannerSubEl = document.querySelector('.scanner-subtitle');
+        if (scannerSubEl) scannerSubEl.textContent = H.scannerSubtitle;
+
+        const scanLabelMap = [
+            { id: 'scan-ip',      text: H.scanLabel_ip },
+            { id: 'scan-isp',     text: H.scanLabel_isp },
+            { id: 'scan-loc',     text: H.scanLabel_loc },
+            { id: 'scan-os',      text: H.scanLabel_os },
+            { id: 'scan-browser', text: H.scanLabel_browser },
+            { id: 'scan-vpn',     text: H.scanLabel_vpn },
+        ];
+        scanLabelMap.forEach(({ id, text }) => {
+            const valEl = document.getElementById(id);
+            if (!valEl) return;
+            const row = valEl.closest('.scanner-row');
+            if (!row) return;
+            const labelEl = row.querySelector('.scan-label');
+            if (labelEl) {
+                const icon = labelEl.querySelector('i');
+                labelEl.innerHTML = (icon ? icon.outerHTML + ' ' : '') + text;
+            }
+        });
+        // VPN status badge
+        const vpnEl = document.getElementById('scan-vpn');
+        if (vpnEl) {
+            const badge = vpnEl.querySelector('.scan-badge');
+            if (badge) badge.textContent = H.scanBadgeDanger;
+        }
+        const scanCtaText = document.querySelector('.scanner-cta-text');
+        if (scanCtaText) {
+            const icon = scanCtaText.querySelector('i');
+            scanCtaText.innerHTML = (icon ? icon.outerHTML + ' ' : '') + H.scannerCtaText;
+        }
+        const scanCtaBtn = document.querySelector('.scanner-buy-btn');
+        if (scanCtaBtn) scanCtaBtn.innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${H.scannerCtaBtn}`;
+
+        // ── Speed test section ─────────────────────────────────────────────
+        const speedTitleEl = document.querySelector('.speed-panel .section-title');
+        if (speedTitleEl) speedTitleEl.innerHTML = `<i class="fa-solid fa-gauge-high text-cyan"></i> ${H.speedTitle}`;
+        const speedSubEl = document.querySelector('.speed-subtitle');
+        if (speedSubEl) speedSubEl.textContent = H.speedSubtitle;
+        const gaugeReadyEl = document.getElementById('gaugeLabel');
+        if (gaugeReadyEl && gaugeReadyEl.textContent === 'آماده') gaugeReadyEl.textContent = H.speedReady;
+        // Stat labels
+        const statItems = document.querySelectorAll('.speed-stat-item small');
+        const statLabels = [H.speedDlLabel, H.speedUlLabel, H.speedPingLabel];
+        statItems.forEach((s, i) => { if (statLabels[i]) s.textContent = statLabels[i]; });
+        // Start button (only if not mid-test)
+        const speedBtn = document.getElementById('speedStartBtn');
+        if (speedBtn && !speedBtn.disabled) {
+            const icon = speedBtn.querySelector('i');
+            speedBtn.innerHTML = (icon ? icon.outerHTML + ' ' : '<i class="fa-solid fa-play"></i> ') + H.speedStartBtn;
+        }
+        const speedNoteEl = document.getElementById('speedNote');
+        if (speedNoteEl) speedNoteEl.textContent = H.speedNote;
+
+        // ── Wheel modal ────────────────────────────────────────────────────
+        const wheelTitleEl = document.querySelector('.wheel-header h2');
+        if (wheelTitleEl) wheelTitleEl.textContent = H.wheelTitle;
+        const wheelSubEl = document.querySelector('.wheel-header p');
+        if (wheelSubEl) wheelSubEl.textContent = H.wheelSubtitle;
+        const wheelCodeLabelEl = document.querySelector('.wheel-code-label');
+        if (wheelCodeLabelEl) wheelCodeLabelEl.textContent = H.wheelCodeLabel;
+        const wheelCopyEl = document.getElementById('wheelCopyBtn');
+        if (wheelCopyEl) wheelCopyEl.innerHTML = `<i class="fa-solid fa-copy"></i> ${H.wheelCopyBtn}`;
+        const wheelHintEl = document.querySelector('.wheel-hint');
+        if (wheelHintEl) wheelHintEl.textContent = H.wheelHint;
+        const wheelSpinEl = document.getElementById('wheelSpinBtn');
+        if (wheelSpinEl) wheelSpinEl.innerHTML = `<i class="fa-solid fa-dharmachakra"></i> ${H.wheelSpinBtn}`;
     }
 
     function updateLanguageUI(lang) {
@@ -1008,6 +1118,79 @@ function applyConfigToPlantedLayout(cfg) {
         }
     }
 
+    // ── Restore Persian for Scanner ────────────────────────────────────────
+    const scannerTitleEl = document.getElementById('scannerTitle');
+    if (scannerTitleEl) {
+        const title = (cfg.interactive && cfg.interactive.scanner && cfg.interactive.scanner.title)
+            || 'اینترنت شما چه اطلاعاتی درباره‌تان فاش می‌کند؟';
+        scannerTitleEl.textContent = title;
+    }
+    const scannerSubEl = document.querySelector('.scanner-subtitle');
+    if (scannerSubEl) scannerSubEl.textContent = 'بدون VPN، هر سایتی این اطلاعات را می‌بیند';
+
+    const scanLabelsFa = [
+        { id: 'scan-ip',      text: 'آدرس IP' },
+        { id: 'scan-isp',     text: 'سرویس‌دهنده اینترنت' },
+        { id: 'scan-loc',     text: 'موقعیت مکانی' },
+        { id: 'scan-os',      text: 'سیستم‌عامل' },
+        { id: 'scan-browser', text: 'مرورگر' },
+        { id: 'scan-vpn',     text: 'وضعیت VPN' },
+    ];
+    const scanIcons = ['fa-globe', 'fa-building', 'fa-location-dot', 'fa-laptop', 'fa-window-maximize', 'fa-shield-halved'];
+    scanLabelsFa.forEach(({ id, text }, i) => {
+        const valEl = document.getElementById(id);
+        if (!valEl) return;
+        const row = valEl.closest('.scanner-row');
+        if (!row) return;
+        const labelEl = row.querySelector('.scan-label');
+        if (labelEl) labelEl.innerHTML = `<i class="fa-solid ${scanIcons[i]}"></i> ${text}`;
+    });
+    const vpnBadge = document.querySelector('#scan-vpn .scan-badge');
+    if (vpnBadge) vpnBadge.textContent = 'محافظت نشده ⚠️';
+    const scanCtaTextEl = document.querySelector('.scanner-cta-text');
+    if (scanCtaTextEl) {
+        const icon = scanCtaTextEl.querySelector('i');
+        scanCtaTextEl.innerHTML = (icon ? icon.outerHTML + ' ' : '<i class="fa-solid fa-circle-exclamation text-purple"></i> ')
+            + 'این اطلاعات توسط هر وبسایتی قابل مشاهده است. با BlueGate آن‌ها را پنهان کنید.';
+    }
+    const scanCtaBtnEl = document.querySelector('.scanner-buy-btn');
+    if (scanCtaBtnEl) scanCtaBtnEl.innerHTML = '<i class="fa-solid fa-shield-halved"></i> همین حالا محافظت کنید';
+
+    // ── Restore Persian for Speed Test ────────────────────────────────────
+    const speedTitleEl = document.querySelector('.speed-panel .section-title');
+    if (speedTitleEl) speedTitleEl.innerHTML = '<i class="fa-solid fa-gauge-high text-cyan"></i> تست سرعت اتصال';
+    const speedSubEl = document.querySelector('.speed-subtitle');
+    if (speedSubEl) speedSubEl.textContent = 'ببینید BlueGate چه سرعتی به شما می‌دهد';
+    const gaugeLabel = document.getElementById('gaugeLabel');
+    if (gaugeLabel && (gaugeLabel.textContent === 'Ready' || gaugeLabel.textContent === 'آماده')) {
+        gaugeLabel.textContent = 'آماده';
+    }
+    const statSmalls = document.querySelectorAll('.speed-stat-item small');
+    const faStatLabels = ['دانلود', 'آپلود', 'پینگ'];
+    statSmalls.forEach((s, i) => { if (faStatLabels[i]) s.textContent = faStatLabels[i]; });
+    const speedBtnEl = document.getElementById('speedStartBtn');
+    if (speedBtnEl && !speedBtnEl.disabled) {
+        speedBtnEl.innerHTML = '<i class="fa-solid fa-play"></i> شروع تست سرعت';
+    }
+    const speedNoteEl = document.getElementById('speedNote');
+    if (speedNoteEl) speedNoteEl.textContent = 'این یک تست سرعت شبیه‌سازی‌شده است که قابلیت BlueGate را نشان می‌دهد';
+
+    // ── Restore Persian for Wheel Modal ───────────────────────────────────
+    const wheelHeaderH2 = document.querySelector('.wheel-header h2');
+    if (wheelHeaderH2) wheelHeaderH2.textContent = 'گردونه شانس BlueGate';
+    const wheelHeaderP = document.querySelector('.wheel-header p');
+    if (wheelHeaderP) wheelHeaderP.textContent = 'یک بار بچرخان و جایزه‌ات را ببر!';
+    const wheelCodeLabelEl = document.querySelector('.wheel-code-label');
+    if (wheelCodeLabelEl) wheelCodeLabelEl.textContent = 'کد تخفیف شما:';
+    const wheelCopyBtnEl = document.getElementById('wheelCopyBtn');
+    if (wheelCopyBtnEl) wheelCopyBtnEl.innerHTML = '<i class="fa-solid fa-copy"></i> کپی کد';
+    const wheelHintEl = document.querySelector('.wheel-hint');
+    if (wheelHintEl) wheelHintEl.textContent = 'این کد را در هنگام ثبت فاکتور وارد کنید';
+    const wheelSpinBtnEl = document.getElementById('wheelSpinBtn');
+    if (wheelSpinBtnEl && !wheelSpinBtnEl.classList.contains('hidden')) {
+        wheelSpinBtnEl.innerHTML = '<i class="fa-solid fa-dharmachakra"></i> بچرخان!';
+    }
+
     // Interactive Features
     initInteractiveFeatures(cfg);
 }
@@ -1153,6 +1336,17 @@ window.startSpeedTest = function() {
     if (dlSpeed) dlSpeed.textContent = '— Mbps';
     if (ulSpeed) ulSpeed.textContent = '— Mbps';
 
+    // Language-aware labels for phase text
+    const isEnTest = (typeof currentLang !== 'undefined' && currentLang === 'en');
+    const L = {
+        connecting: isEnTest ? 'Connecting...'        : 'در حال اتصال...',
+        testingDl:  isEnTest ? 'Testing Download...'  : 'تست دانلود...',
+        testingUl:  isEnTest ? 'Testing Upload...'    : 'تست آپلود...',
+        done:       isEnTest ? '✅ BlueGate is Ready!' : '✅ BlueGate آماده است!',
+        retry:      isEnTest ? '<i class="fa-solid fa-rotate-right"></i> Test Again'
+                             : '<i class="fa-solid fa-rotate-right"></i> تست دوباره',
+    };
+
     const totalDasharray = 283;
 
     function setGauge(speed) {
@@ -1163,11 +1357,11 @@ window.startSpeedTest = function() {
     }
 
     // Phase 0: Ping
-    if (gaugeLabel) gaugeLabel.textContent = 'در حال اتصال...';
+    if (gaugeLabel) gaugeLabel.textContent = L.connecting;
     setTimeout(() => {
         const fakePing = Math.floor(15 + Math.random() * 20);
         if (pingVal) pingVal.textContent = fakePing + ' ms';
-        if (gaugeLabel) gaugeLabel.textContent = 'تست دانلود...';
+        if (gaugeLabel) gaugeLabel.textContent = L.testingDl;
 
         // Phase 1: Ramp up download speed
         let current = 0;
@@ -1184,7 +1378,7 @@ window.startSpeedTest = function() {
             if (step >= steps) {
                 clearInterval(rampInterval);
                 if (dlSpeed) dlSpeed.textContent = Math.round(target) + ' Mbps';
-                if (gaugeLabel) gaugeLabel.textContent = 'تست آپلود...';
+                if (gaugeLabel) gaugeLabel.textContent = L.testingUl;
 
                 // Phase 2: Ramp down for upload
                 const uploadTarget = maxSpeed * (0.55 + Math.random() * 0.1);
@@ -1198,11 +1392,11 @@ window.startSpeedTest = function() {
                     if (upStep >= 40) {
                         clearInterval(upInterval);
                         if (ulSpeed) ulSpeed.textContent = Math.round(uploadTarget) + ' Mbps';
-                        if (gaugeLabel) gaugeLabel.textContent = '✅ BlueGate آماده است!';
+                        if (gaugeLabel) gaugeLabel.textContent = L.done;
                         if (gaugeNumber) gaugeNumber.style.color = 'var(--green-glow)';
                         if (btn) {
                             btn.disabled = false;
-                            btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i> تست دوباره';
+                            btn.innerHTML = L.retry;
                         }
                         _speedTestRunning = false;
                     }
@@ -1210,9 +1404,9 @@ window.startSpeedTest = function() {
             }
         }, 50);
     }, 800);
-};
 
 // ────────────────────────────────────────────────────────────────────────────
+
 // 3. CATCH THE BIRD
 // ────────────────────────────────────────────────────────────────────────────
 let _birdMoveTimer = null;
