@@ -274,12 +274,12 @@ function initDelegatedListeners() {
 }
 
 function loadConfig() {
-    // 1. Instantly apply LocalStorage config if available (for dev/preview)
+    // 1. Instantly apply LocalStorage config if available (for local dev/preview)
     const localCfgStr = localStorage.getItem('bg_app_config');
     if (localCfgStr) {
         try {
             const localCfg = JSON.parse(localCfgStr);
-            if (localCfg && localCfg.site) {
+            if (localCfg && typeof localCfg === 'object') {
                 appConfig = localCfg;
                 applyConfigToPlantedLayout(localCfg);
             }
@@ -288,13 +288,22 @@ function loadConfig() {
 
     // 2. Fetch fresh network config.json and ALWAYS apply it so live published edits show
     fetch('config.json?v=' + Date.now())
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error('HTTP status ' + res.status);
+            return res.json();
+        })
         .then(data => {
-            appConfig = data;
-            applyConfigToPlantedLayout(data);
+            if (data && typeof data === 'object') {
+                appConfig = data;
+                applyConfigToPlantedLayout(data);
+            }
         })
         .catch(err => {
-            console.log('Config load note:', err);
+            console.warn('Network config.json load note:', err);
+            if (!appConfig) {
+                appConfig = {};
+                applyConfigToPlantedLayout(appConfig);
+            }
         });
 }
 
