@@ -730,7 +730,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$ICL9A2mze/lYhxDfhx18UuXT8Sm8lHmHweiYWY528ZsDvgx5Yvf0i';
+  var ADMIN_HASH = '$2b$12$H5mc2meFL.YpcObAdCGhq.vSAFUpefCxOK.K42LV1bh7ZARUZZitS';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -870,15 +870,35 @@
       updateGithubStatus(true);
     }
 
-    // Load config.json
+    // 1. Try loading cached config from localStorage first
+    var cached = localStorage.getItem('bg_app_config');
+    if (cached) {
+      try {
+        var parsed = JSON.parse(cached);
+        if (parsed && typeof parsed === 'object') {
+          config = parsed;
+          populateForm();
+        }
+      } catch(e) {}
+    }
+
+    // 2. Fetch fresh config.json
     fetch('../config.json?v=' + Date.now())
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        config = data;
-        populateForm();
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP status ' + r.status);
+        return r.json();
       })
-      .catch(function() {
-        showAdminToast('خطا در بارگذاری config.json', true);
+      .then(function(data) {
+        if (data && typeof data === 'object') {
+          config = data;
+          populateForm();
+        }
+      })
+      .catch(function(err) {
+        console.warn('Network config.json fetch note:', err);
+        // If config is not yet loaded, populate form using default fallbacks
+        config = config || {};
+        populateForm();
       });
   }
 
