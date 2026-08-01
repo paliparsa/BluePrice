@@ -730,7 +730,7 @@
   // ADMIN_HASH is injected at build time by GitHub Actions from the ADMIN_PASSWORD secret.
   // The placeholder below is replaced with a real bcrypt hash — the plaintext password
   // never appears in any source file or deployed file.
-  var ADMIN_HASH = '$2b$12$pPlsbOz7mCl33faYTsB8c.xWQZO9KVvs45AQgc8CWXOsu4gTewpd2';
+  var ADMIN_HASH = '$2b$12$5Dd3Bf..X/nlbFUOg3WPTO9TbOSaWG3B7/X1UjhaoIPo1luJ52P0y';
   var ADMIN_2FA_SECRET = '__ADMIN_2FA_SECRET_PLACEHOLDER__';
   var config = {};
   var githubCfg = {};
@@ -886,6 +886,30 @@
   // POPULATE FORM
   // ============================================================
   function populateForm() {
+    config = config || {};
+    config.features = (config.features && config.features.length > 0) ? config.features : [
+      { icon: "fa-rocket", title: "سرعت بالا", text: "پایداری بیشتر و پنگ پایین" },
+      { icon: "fa-shield-halved", title: "امنیت کامل", text: "رمزنگاری کامل داده‌ها" },
+      { icon: "fa-headset", title: "پشتیبانی ۲۴/۷", text: "پاسخگویی سریع تلگرام" },
+      { icon: "fa-award", title: "کیفیت تضمینی", text: "ضمانت بازگشت ۱۰۰٪ وجه" }
+    ];
+    config.faq = (config.faq && config.faq.length > 0) ? config.faq : [
+      { q: "سرویس‌ها بر روی چه دستگاه‌هایی قابل استفاده هستند؟", a: "تمامی سرویس‌های BlueGate بر روی اندروید، iOS، ویندوز و مک به راحتی قابل نصب و استفاده هستند." },
+      { q: "آیا محدودیتی در سرعت یا پهنای باند وجود دارد؟", a: "خیر، پهنای باند کاملاً نامحدود و سرعت متناسب با بالاترین کشش شبکه شما ارائه می‌شود." }
+    ];
+    config.tutorials = (config.tutorials && config.tutorials.length > 0) ? config.tutorials : [
+      { os: "اندروید", app: "v2rayNG", icon: "fab fa-android", steps: ["برنامه v2rayNG را دانلود کنید", "لینک را کپی و دکمه + را بزنید", "اتصال را برقرار کنید"] },
+      { os: "آیفون (iOS)", app: "Streisand / V2Box", icon: "fab fa-apple", steps: ["برنامه Streisand را دانلود کنید", "لینک را وارد کنید", "Connect را بزنید"] }
+    ];
+    config.reviews = (config.reviews && config.reviews.length > 0) ? config.reviews : [
+      { name: "امیررضا", rating: 5, text: "سرعت سرویس Pro فوق‌العاده‌ست!" },
+      { name: "سارا م.", rating: 5, text: "پشتیبانی تلگرامشون بسیار سریع پاسخ میدن." }
+    ];
+    config.comparison = (config.comparison && config.comparison.length > 0) ? config.comparison : [
+      { feature: "نوع آی‌پی", standard: "متغیر (Multi-Location)", pro: "ثابت (Static IP)", emergency: "ثابت اختصاصی VIP" },
+      { feature: "تنوع سرورها", standard: "انگلستان، سوئد، ترکیه", pro: "تک لوکیشن اختصاصی", emergency: "تک لوکیشن اختصاصی ضد تحریم" }
+    ];
+
     var s = config.site || {};
     document.getElementById('site-brandName').value = s.brandName || '';
     document.getElementById('site-title').value = s.title || '';
@@ -1042,8 +1066,8 @@
     (config.features || []).forEach(function(f, i) {
       en.features[i] = en.features[i] || { title:'', text:'' };
       var ef = en.features[i];
-      html += '<div class="field-row"><div class="field"><label>Feature '+(i+1)+' Title</label><input type="text" onchange="config.features['+i+'].title=this.value" value="' + escHtml(ef.title||'') + '"></div>';
-      html += '<div class="field"><label>Feature '+(i+1)+' Text</label><input type="text" onchange="config.features['+i+'].text=this.value" value="' + escHtml(ef.text||'') + '"></div></div>';
+      html += '<div class="field-row"><div class="field"><label>Feature '+(i+1)+' Title</label><input type="text" onchange="config.en.features['+i+'].title=this.value" value="' + escHtml(ef.title||'') + '"></div>';
+      html += '<div class="field"><label>Feature '+(i+1)+' Text</label><input type="text" onchange="config.en.features['+i+'].text=this.value" value="' + escHtml(ef.text||'') + '"></div></div>';
     });
     html += '</div>';
 
