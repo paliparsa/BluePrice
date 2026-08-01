@@ -20,7 +20,7 @@
     "faq": true,
     "comparison": true,
     "calculator": true,
-    "langToggle": true
+    "langToggle": false
   },
   "refundBanner": "اگر از کیفیت خدمات راضی نبودید، ضمانت بازگشت وجه داریم.",
   "telegram": {
