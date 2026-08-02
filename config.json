@@ -303,7 +303,7 @@
       "code": "SECRET5"
     },
     "wheel": {
-      "enabled": true,
+      "enabled": false,
       "code": "WHEEL10"
     },
     "speed": {
